@@ -422,9 +422,9 @@ end
 --
 Noble.Text = {}
 Noble.Text.system = Graphics.getSystemFont()
-Noble.Text.small = Graphics.font.new("noble/assets/fonts/NobleSans")
-Noble.Text.medium = Graphics.font.new("noble/assets/fonts/NobleSlab")
-Noble.Text.large = Graphics.font.new("noble/assets/fonts/SatchelRoughed")
+Noble.Text.small = Graphics.font.new("libraries/noble/assets/fonts/NobleSans")
+Noble.Text.medium = Graphics.font.new("libraries/noble/assets/fonts/NobleSlab")
+Noble.Text.large = Graphics.font.new("libraries/noble/assets/fonts/SatchelRoughed")
 local currentFont = Noble.Text.system
 
 Noble.Text.ALIGN_LEFT = kTextAlignment.left
