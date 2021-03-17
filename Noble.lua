@@ -36,12 +36,12 @@ Noble.isTransitioning = false
 Noble.showFPS = false;
 
 -- Third-party libraries
-import 'noble/libraries/Signal'
-import 'noble/libraries/Sequence'
+import 'libraries/noble/libraries/Signal'
+import 'libraries/noble/libraries/Sequence'
 
 -- Noble libraries
-import 'noble/utilities/Utilities'
-import 'noble/NobleScene'
+import 'libraries/noble/utilities/Utilities'
+import 'libraries/noble/NobleScene'
 
 
 
