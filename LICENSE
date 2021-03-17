@@ -1,0 +1,51 @@
+Licenses
+
+--
+
+"assets/images/NobleRobotLogo.png"
+
+© 2021 Mark LaCroix, Noble Robot
+
+You are granted a non-exclusive license to this version of the Noble Robot
+logo, solely for the purposes of providing credit, if you choose, in a
+resulting product which uses this software. You may not sell or create
+commercial derivative works from this asset, or use it in any other context.
+
+Where appropriate, and at your discretion, include the logo unmodified against
+a black background, or inverted against a white background, with a version of
+the following message:
+
+"Created with Noble Engine, by Noble Robot. https://noblerobot.com"
+
+--
+
+"libraries/"
+
+Sequence library by Nic Magnier
+Signal library by Dustin Mierau
+
+--
+
+All other assets
+
+MIT License
+
+© 2021 Mark LaCroix, Noble Robot
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
