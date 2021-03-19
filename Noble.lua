@@ -52,7 +52,13 @@ Noble.Input.handlers = {}
 Noble.Input.current = {}
 
 function Noble.Input.setHandler(__inputHandler)
-	playdate.inputHandlers.pop()
+	print(__inputHandler)
+	if (__inputHandler ~= nil) then printTable(__inputHandler) end
+
+	if (Noble.Input.current ~= nil) then
+		playdate.inputHandlers.pop()
+	end
+
 	if (__inputHandler == nil) then
 		Noble.Input.current = nil
 	else
@@ -130,8 +136,8 @@ end
 
 local updateCrankIndicator = false
 
--- bool:bool | Set true to start showing the on-screen crank indicator. Set false to stop showing it.
--- Enable/disable on-screen crank indicator.
+--- Enable/disable on-screen crank indicator.
+-- bool:__bool | Set true to start showing the on-screen crank indicator. Set false to stop showing it.
 function Noble.showCrankIndicator(__bool)
 	if (__bool) then
 		UI.crankIndicator:start()
@@ -585,12 +591,12 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		Noble.currentScene = nil		-- Allows current scene to be garbage collected.
 
 		Noble.currentScene = newScene	-- New scene's update loop begins.
-		Noble.currentScene:enter()		-- The new scene runs its "hello" code.
+		newScene:enter()				-- The new scene runs its "hello" code.
 	end
 	local onComplete = function()
 		previousSceneScreenCapture = nil-- Reset (if neccessary).
 		Noble.isTransitioning = false	-- Reset
-		Noble.currentScene:start()		-- The new scene is now active.
+		newScene:start()				-- The new scene is now active.
 	end
 
 	if (Utilities.startsWith(currentTransitionType, Noble.TransitionType.DIP)) then
@@ -702,6 +708,108 @@ local function transitionUpdate()
 		end
 
 	end
+end
+
+
+-- Menu object
+--
+Noble.Menu = {}
+
+function Noble.Menu.new(__menuItems, __localized, __color, __padding, __horizontalPadding, __font, __crankControlled, __dPadControlled, __selectedOutlineThickness)
+	local font = __font or Noble.Text.getCurrentFont()
+	local localized = __localized or false
+	local padding = __padding or 2
+	local horizontalPadding = __horizontalPadding or padding
+	local selectedOutlineThickness = __selectedOutlineThickness or 2
+	local crankControlled = __crankControlled or false
+	local dPadControlled = __dPadControlled or true
+
+	-- Colors
+	local color = __color or Graphics.kColorBlack		-- TO-DO allow for copy fill mode instead of color.
+	local fillMode = Graphics.kDrawModeFillBlack
+	local otherColor = Graphics.kColorWhite
+	local otherFillMode = Graphics.kDrawModeFillWhite
+	if (color == Graphics.kColorWhite) then
+		fillMode = Graphics.kDrawModeFillWhite
+		otherColor = Graphics.kColorBlack
+		otherFillMode = Graphics.kDrawModeFillBlack
+	end
+
+	local textHeight = font:getHeight()
+
+	-- Create gridview object
+	local menu = UI.gridview.new(0, textHeight+padding)
+
+	-- Gridview properties
+	menu:setNumberOfColumns(1)
+	menu:setNumberOfRows(#__menuItems)
+	menu:setCellPadding(0, 0, 0, 0)
+	menu.changeRowOnColumnWrap = false
+
+	-- New properties
+	menu.items = __menuItems
+	menu.clickHandlers = {}
+	menu.itemWidths = {}
+	for i = 1, #menu.items, 1 do
+		menu.clickHandlers[menu.items[i]] = function() print("Menu item " .. menu.items[i] .. " clicked!") end
+		menu.itemWidths[i] = font:getTextWidth(menu.items[i])
+		print(menu.itemWidths[i])
+	end
+	menu.currentMenuItemNumber = 1
+	menu.currentMenuItemName = menu.items[1]
+
+	-- Methods
+	--
+	function menu:activate()
+		self:setSelectedRow(self.currentMenuItemNumber)
+	end
+	function menu:deactivate()
+		self:setSelectedRow(0)
+	end
+	function menu:selectPrevious()
+		self:selectPreviousRow(true, false, false)
+		local _, row, _ = self:getSelection()
+		self.currentMenuItemNumber = row
+		self.currentMenuItemName = self.items[row]
+	end
+	function menu:selectNext()
+		self:selectNextRow(true, false, false)
+		local _, row, _ = self:getSelection()
+		self.currentMenuItemNumber = row
+		self.currentMenuItemName = self.items[row]
+	end
+	function menu:click()
+		self.clickHandlers[self.currentMenuItemName]()
+	end
+
+	-- Drawing
+	--
+	function menu:drawMenuItem(__x, __y, __item)
+		Graphics.setImageDrawMode(fillMode)
+		Noble.Text.draw(self.items[__item], __x + horizontalPadding/2, __y + padding/2, kTextAlignment.left, localized, font)	-- TO-DO allow for centered/right-aligned text.
+	end
+	function menu:drawSelectedMenuItem(__x, __y, __item)
+		Graphics.setColor(color)
+		Graphics.fillRoundRect(__x, __y, self.itemWidths[__item]+horizontalPadding, textHeight+padding, textHeight/4)
+		Graphics.setColor(otherColor)
+		Graphics.setLineWidth(selectedOutlineThickness)
+		Graphics.drawRoundRect(__x, __y, self.itemWidths[__item]+horizontalPadding, textHeight+padding, textHeight/4)
+		Graphics.setImageDrawMode(otherFillMode)
+		Noble.Text.draw(self.items[__item], __x+horizontalPadding/2, __y+padding/2, kTextAlignment.left, localized, font)
+	end
+	function menu:drawCell(_, row, _, selected, x, y, width, height)
+		if selected then
+			self:drawSelectedMenuItem(x, y, row)
+		else
+			self:drawMenuItem(x, y, row)
+		end
+	end
+
+	function menu:draw(__x, __y)
+		self:drawInRect(__x, __y, 200, (textHeight + padding) * #self.items)
+	end
+
+	return menu
 end
 
 
