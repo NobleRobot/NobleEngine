@@ -1,10 +1,12 @@
+--- Noble Engine
+-- @module Noble
+-- @author Mark LaCroix
+
 --
--- Noble Engine
--- A li'l game engine for Playdate, as a treat.
+-- Noble Engine: A li'l game engine for Playdate.
 --
 -- by Mark LaCroix
 -- https://noblerobot.com/
---
 --
 
 -- Playdate libraries
@@ -24,6 +26,7 @@ Display = playdate.display
 Geometry = playdate.geometry
 Ease = playdate.easingFunctions
 UI = playdate.ui
+File = playdate.file
 Datastore = playdate.datastore
 
 -- In lua, varibles are global by default, but having a "Global" object to put
@@ -43,101 +46,28 @@ import 'libraries/noble/libraries/Sequence'
 import 'libraries/noble/utilities/Utilities'
 import 'libraries/noble/NobleScene'
 
+-- Noble modules and classes
+import 'libraries/noble/Menu'
+import 'libraries/noble/Noble.Settings'
+import 'libraries/noble/Noble.Input'
 
 
--- Input mananger
---
-Noble.Input = {}
-Noble.Input.handlers = {}
-Noble.Input.current = {}
-
-function Noble.Input.setHandler(__inputHandler)
-	print(__inputHandler)
-	if (__inputHandler ~= nil) then printTable(__inputHandler) end
-
-	if (Noble.Input.current ~= nil) then
-		playdate.inputHandlers.pop()
-	end
-
-	if (__inputHandler == nil) then
-		Noble.Input.current = nil
-	else
-		Noble.Input.current = __inputHandler
-		playdate.inputHandlers.push(__inputHandler, true)	-- The Playdate SDK allows for multiple inputHanders to mix and match methods. Noble Engine removes this functionality.
-	end
-end
-
--- Noble Engine defines extra "buttonHold" methods that run every frame that a button is held down, but to impliment them, we need to do some magic.
-
-local buttonHoldBufferAmount = 3	-- This is how many frames to wait before the engine determines that a button is being held down. Using !buttonJustPressed() provides only 1 frame, which isn't enough.
-local AButtonHoldBufferCount = 0
-local BButtonHoldBufferCount = 0
-local upButtonHoldBufferCount = 0
-local downButtonHoldBufferCount = 0
-local leftButtonHoldBufferCount = 0
-local rightButtonHoldBufferCount = 0
-
-local function inputUpdate()
-	local handler = Noble.Input.current
-	if (handler == nil) then return end
-	if (handler.AButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonA)) then
-			if (AButtonHoldBufferCount == buttonHoldBufferAmount) then handler.AButtonHold()		-- Execute!
-			else AButtonHoldBufferCount = AButtonHoldBufferCount + 1 end							-- Wait another frame!
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonA)) then AButtonHoldBufferCount = 0 end		-- Reset!
-	end
-	if (handler.BButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonB)) then
-			if (BButtonHoldBufferCount == buttonHoldBufferAmount) then handler.BButtonHold()
-			else BButtonHoldBufferCount = BButtonHoldBufferCount + 1 end
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonB)) then BButtonHoldBufferCount = 0 end
-	end
-	if (handler.upButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonUp)) then
-			if (upButtonHoldBufferCount == buttonHoldBufferAmount) then handler.upButtonHold()
-			else upButtonHoldBufferCount = upButtonHoldBufferCount + 1 end
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonUp)) then upButtonHoldBufferCount = 0 end
-	end
-	if (handler.downButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonDown)) then
-			if (downButtonHoldBufferCount == buttonHoldBufferAmount) then handler.downButtonHold()
-			else downButtonHoldBufferCount = downButtonHoldBufferCount + 1 end
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonDown)) then downButtonHoldBufferCount = 0 end
-	end
-	if (handler.leftButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonLeft)) then
-			if (leftButtonHoldBufferCount == buttonHoldBufferAmount) then handler.leftButtonHold()
-			else leftButtonHoldBufferCount = leftButtonHoldBufferCount + 1 end
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonLeft)) then leftButtonHoldBufferCount = 0 end
-	end
-	if (handler.rightButtonHold ~= nil) then
-		if (playdate.buttonIsPressed(playdate.kButtonRight)) then
-			if (rightButtonHoldBufferCount == buttonHoldBufferAmount) then handler.rightButtonHold()
-			else rightButtonHoldBufferCount = rightButtonHoldBufferCount + 1 end
-		end
-		if (playdate.buttonJustReleased(playdate.kButtonRight)) then rightButtonHoldBufferCount = 0 end
-	end
-end
 function playdate.crankDocked()
-	if (Noble.Input.current.crankDocked ~= nil) then
-		Noble.Input.current.crankDocked()
+	if (Noble.Input.currentHandler.crankDocked ~= nil) then
+		Noble.Input.currentHandler.crankDocked()
 	end
 end
 function playdate.crankUndocked()
-	if (Noble.Input.current.crankUndocked ~= nil) then
-		Noble.Input.current.crankDocked()
+	if (Noble.Input.currentHandler.crankUndocked ~= nil) then
+		Noble.Input.currentHandler.crankDocked()
 	end
 end
 
 local updateCrankIndicator = false
 
---- Enable/disable on-screen crank indicator.
--- bool:__bool | Set true to start showing the on-screen crank indicator. Set false to stop showing it.
+------
+-- Enable/disable on-screen crank indicator.
+-- @param __bool Set true to start showing the on-screen crank indicator. Set false to stop showing it.
 function Noble.showCrankIndicator(__bool)
 	if (__bool) then
 		UI.crankIndicator:start()
@@ -147,280 +77,7 @@ end
 
 
 
--- Data (Settings and GameData)
---
-local function keyChange(__dataDefault, __data)
-	local defaultKeys = {}
-	local keys = {}
-	for key, value in pairs(__dataDefault) do	table.insert(defaultKeys, key) end
-	for key, value in pairs(__data) do table.insert(keys, key) end
-	for i = 1, #keys, 1 do
-		if (defaultKeys[i] ~= keys[i]) then return true end
-	end
-	return false
-end
 
-
-
--- Settings
---
-Noble.Settings = {}				-- This is the "class" that holds methods.
-local settings = nil			-- This is the actual settings object. We keep it local to avoid direct tampering.
-local settingsDefault = nil		-- We keep track of default values so they can be reset.
-
-local function settingExists(__key)
-	-- Check for valid data item.
-	for key, value in pairs(settings) do
-		if __key == key then
-			return true
-		end
-	end
-	error("BONK: Setting \'" .. __key .. "\' does not exist. Maybe you spellet ti wronlgly.", 3)
-	return false
-end
-
-local settingsHaveBeenSetup = false
-
--- __tableOfKeyValuePairs:table				| Your game's settings, and thier default values, as key/value pairs, i.e.: { difficulty = "normal", music = true, players = 2, highScore = 0 }. NOTE: Do not use "nil" as a value.
--- __saveToDisk:bool = true					| Saves your default values immediatly to disk.
--- __modifyExistingOnKeyChange:bool = true 	| Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
--- Sets up the settings for your game. You can only run this once. Ideally, it goes in your main.lua before you load your first scene.
-function Noble.Settings.setup(__tableOfKeyValuePairs, __saveToDisk, __modifyExistingOnKeyChange)
-	if (settingsHaveBeenSetup) then
-		error("BONK: You can only run Noble.Settings.setup() once.")
-		return
-	else
-		settingsHaveBeenSetup = true
-	end
-
-	local saveToDisk = __saveToDisk or true
-	local modifyExistingOnKeyChange = __modifyExistingOnKeyChange or true
-	settingsDefault = __tableOfKeyValuePairs
-
-	-- Get existing settings from disk, if any.
-	settings = Datastore.read("Settings")
-
-	if (settings == nil) then
-		-- No settings on disk, so we create a new settings object using default values.
-		settings = table.deepcopy(settingsDefault)
-	elseif (modifyExistingOnKeyChange and keyChange(settingsDefault, settings)) then
-		-- Found settings on disk, but key changes have been made...
-		-- ...so we start with a new default settings object...
-		local existingSettings = table.deepcopy(settings)
-		settings = table.deepcopy(settingsDefault)
-		for key, value in pairs(settings) do
-			-- ...then copy settings with unchanged keys to the new settings object,
-			-- naturally discarding keys that don't exist anymore.
-			if (existingSettings[key] ~= nil) then settings[key] = existingSettings[key] end
-		end
-
-	end
-
-	if (saveToDisk) then
-		Noble.Settings.save()
-	end
-end
-
--- __settingName:string | The name of the setting.
--- Returns the Value of the requested setting.
--- Get the value of a setting.
-function Noble.Settings.get(__settingName)
-	if (settingExists(__settingName)) then
-		return settings[__settingName]
-	end
-end
-
--- __settingName:string		| The name of the setting.
--- __value:any				| The setting's new value
--- __saveToDisk:bool = true	| Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc). See: Noble.Settings.save().
--- Set the value of a setting.
-function Noble.Settings.set(__settingName, __value, __saveToDisk)
-	if (settingExists(__settingName)) then
-		settings[__settingName] = __value
-		local saveToDisk = __saveToDisk or true
-		if (saveToDisk) then Noble.Settings.save() end
-	end
-end
-
--- __settingName:string		| The name of the setting.
--- __saveToDisk:bool = true	| Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc). See: Noble.Settings.save().
--- Resets the value of a setting to its default value, defined in Noble.Settings.setup().
-function Noble.Settings.reset(__settingName, __saveToDisk)
-	if (settingExists(__settingName)) then
-		settings[__settingName] = settingsDefault[__settingName]
-		local saveToDisk = __saveToDisk or true
-		if (saveToDisk) then Noble.Settings.save() end
-	end
-end
-
--- __saveToDisk:bool = true | Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc). See: Noble.Settings.save().
--- Resets all settings to thier default values, defined in Noble.Settings.setup().
-function Noble.Settings.resetAll(__saveToDisk)
-	settings = table.deepcopy(settingsDefault)
-	local saveToDisk = __saveToDisk or true
-	if (saveToDisk) then Noble.Settings.save() end
-end
-
--- Saves settings to disk. You don't need to call this unless you set "__saveToDisk" as false when setting or resetting a setting (say that five times fast!).
-function Noble.Settings.save()
-	Datastore.write(settings, "Settings")
-end
-
-
-
--- Game Data
---
-Noble.GameData = {} 			-- This is the "class" that holds methods.
-local gameDatas = {}			-- This is the actual "game datas" object, which holds multiple game data slots. We keep it local to avoid direct tampering.
-local gameDataDefault = nil
-local numberOfGameDataSlots = 1
-local currentGameDataSlot = 1	-- This is a helper value, so you don't have to specify a save slot with every GameData operation.
-
--- Returns the number of Game Data slots.
-function Noble.GameData.getNumberOfGameDataSlots() return numberOfGameDataSlots end
--- Returns the number of the current Game Data slot.
-function Noble.GameData.getCurrentGameDataSlot() return currentGameDataSlot end
-
-local function gameDatumExists(__key, __gameDataSlot)
-	-- Check for valid gameSlot.
-	if (__gameDataSlot > #gameDatas or __gameDataSlot <= 0 ) then
-		error("BONK: Game Slot number " .. __gameDataSlot .. " does not exist. Use Noble.Data.addGameSlots().", 3)
-		return false
-	end
-	-- Check for valid data item.
-	for key, value in pairs(gameDatas[__gameDataSlot]) do
-		if __key == key then
-			return true
-		end
-	end
-	error("BONK: Game Datum \"" .. __key .. "\" does not exist. Maybe you spellet it wronlgly.", 3)
-	return false
-end
-
-local gameDataHasBeenSetup = false
-
--- __tableOfKeyValuePairs:table				| All the data for a saved game, and thier default values, as key/value pairs, i.e.: { checkpoint = 15, name = "player", highScore = 0 }. NOTE: Do not use "nil" as a value.
--- __numberOfGameDataSlots:int = 1			| If you want multiple gameData slots, enter an integer here.
--- __saveToDisk:bool = true					| Saves your default values immediatly to disk.
--- __modifyExistingOnKeyChange:bool = true	| Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.
--- Sets up the Game Datas (save slots) for your game. You can only run this once. Ideally, it goes in your main.lua before you load your first scene.
-function Noble.GameData.setup(__tableOfKeyValuePairs, __numberOfGameDataSlots, __saveToDisk, __modifyExistingOnKeyChange)
-	if (gameDataHasBeenSetup) then
-		error("BONK: You can only run Noble.GaemData.setup() once.")
-		return
-	else
-		gameDataHasBeenSetup = true
-	end
-
-	numberOfGameDataSlots = __numberOfGameDataSlots or numberOfGameDataSlots
-	local saveToDisk = __saveToDisk or true
-	local modifyExistingOnKeyChange = __modifyExistingOnKeyChange or false
-	gameDataDefault = __tableOfKeyValuePairs
-
-	-- Noble Engine checks on disk for game data, including ones that were
-	-- added with Noble.GameData.addGameSlots(), but it assumes your game
-	-- will have no greater than 1000 of them.
-	for i = 1, 1000, 1 do
-		 -- We use a local here to avoid adding a nil item to the gameDatas table.
-		local gameData = Datastore.read("Game" .. i)
-
-		if (gameData == nil) then
-			if (i <= numberOfGameDataSlots) then
-				-- No gameData on disk, so we create a new ones using default values
-				-- up to the numberOfGameDataSlots.
-				gameDatas[i] = table.deepcopy(gameDataDefault)
-			else
-				-- We can't find any more game datas on disk, so we update the
-				-- value of numberOfGameDataSlots if nessessary and get outta town!
-				numberOfGameDataSlots = i - 1
-				print ("Total number of game slots: " .. numberOfGameDataSlots)
-				return
-			end
-		else
- 			-- We found a gameData on disk, so we use it (either as-is or modified by a key change).
-			if (modifyExistingOnKeyChange and keyChange(gameDataDefault, gameData)) then
-				-- Found gameData on disk, but key changes have been made...
-				-- ...so we start with a new one, with default values...
-				local existingGameData = table.deepcopy(gameData)
-				gameData = table.deepcopy(gameDataDefault)
-				for key, value in pairs(gameData) do
-					-- ...then copy data with unchanged keys to the new object,
-					-- naturally discarding keys that don't exist anymore.
-					if (existingGameData[key] ~= nil) then gameData[key] = existingGameData[key] end
-				end
-			end
-			gameDatas[i] = gameData
-		end
-
-	end
-
-end
-
--- __numberOfGameDataSlotsToAdd:int = 1 | What it says on the tin.
--- Add a save slot to the game. This is useful for games which have arbitrary save slots, or encourage save scumming.
-function Noble.GameData.addGameSlot(__numberOfGameDataSlotsToAdd)
-	local numberOfGameDataSlotsToAdd = __numberOfGameDataSlotsToAdd or 1
-	if (__numberOfGameDataSlotsToAdd < 1) then error ("BONK: Don't use a number smaller than 1, silly.", 2) return end
-	for i = 1, numberOfGameDataSlotsToAdd, 1 do
-		table.insert(gameDatas, table.deepcopy(gameDataDefault))
-		numberOfGameDataSlots = numberOfGameDataSlots + 1
-	end
-	print ("Added " .. numberOfGameDataSlotsToAdd .. " Game Slots. Total Game Slots: " .. numberOfGameDataSlots)
-end
-
--- __dataItemName:string					| The name of the data item.
--- __gameDataSlot:int = currentGameDataSlot	| If set, uses a specific game data slot. If not, uses the most recently touched game data slot.
--- Returns the value of the requested data item.
--- Get the value of a game data item.
-function Noble.GameData.get(__dataItemName, __gameDataSlot)
-	currentGameDataSlot = __gameDataSlot or currentGameDataSlot
-	if (gameDatumExists(__dataItemName, currentGameDataSlot)) then
-		return gameDatas[currentGameDataSlot][__dataItemName]
-	end
-end
-
--- __dataItemName:string					| The name of the data item.
--- __value: any								| The data item's new value
--- __gameDataSlot:int = currentGameDataSlot	| If set, uses a specific game data slot. If not, uses the most recently touched game data slot.
--- __saveToDisk: bool = true				| Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu). See: Noble.GameData.save().
--- Set the value of a game data item.
-function Noble.GameData.set(__dataItemName, __value, __gameDataSlot, __saveToDisk)
-	currentGameDataSlot = __gameDataSlot or currentGameDataSlot
-	if (gameDatumExists(__dataItemName, currentGameDataSlot)) then
-		gameDatas[currentGameDataSlot][__dataItemName] = __value
-		local saveToDisk = __saveToDisk or true
-		if (saveToDisk) then Noble.GameData.save() end
-	end
-end
-
--- __dataItemName:string					| The name of the data item.
--- __gameDataSlot:int = currentGameDataSlot	| If set, uses a specific game data slot. If not, uses the most recently touched game data slot.
--- __saveToDisk: bool = true				| Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu). See: Noble.GameData.save().
--- Reset a game data item to its default value, defined in Noble.GameData.setup().
-function Noble.GameData.reset(__dataItemName, __gameDataSlot, __saveToDisk)
-	currentGameDataSlot = __gameDataSlot or currentGameDataSlot
-	if (gameDatumExists(__dataItemName, currentGameDataSlot)) then
-		gameDatas[currentGameDataSlot][__dataItemName] = gameDataDefault[__dataItemName]
-		local saveToDisk = __saveToDisk or true
-		if (saveToDisk) then Noble.GameData.save() end
-	end
-end
-
--- __gameDataSlot:int = currentGameDataSlot	| If set, saves a specific game data. If not, saves the most recently touched game data.
--- Saves a single game data to disk. If you want to save all game datas, use Noble.GameGata.saveAll() instead.
-function Noble.GameData.save(__gameDataSlot)
-	local gameDataSlot = __gameDataSlot or currentGameDataSlot
-	if (gameDataSlot < 0) then error ("BONK: Don't use a number smaller than 0, silly.", 2) return end
-	currentGameDataSlot = gameDataSlot
-	Datastore.write(gameDatas[currentGameDataSlot], "Game" .. currentGameDataSlot)
-end
-
--- Save all game datas to disk. If you only have one, or want to save a specicic one, use Noble.GameGata.save() instead.
-function Noble.GameData.saveAll()
-	for i = 1, numberOfGameDataSlots, 1 do
-		Datastore.write(gameDatas[i], "Game" .. i)
-	end
-end
 
 
 
@@ -711,108 +368,6 @@ local function transitionUpdate()
 end
 
 
--- Menu object
---
-Noble.Menu = {}
-
-function Noble.Menu.new(__menuItems, __localized, __color, __padding, __horizontalPadding, __font, __crankControlled, __dPadControlled, __selectedOutlineThickness)
-	local font = __font or Noble.Text.getCurrentFont()
-	local localized = __localized or false
-	local padding = __padding or 2
-	local horizontalPadding = __horizontalPadding or padding
-	local selectedOutlineThickness = __selectedOutlineThickness or 2
-	local crankControlled = __crankControlled or false
-	local dPadControlled = __dPadControlled or true
-
-	-- Colors
-	local color = __color or Graphics.kColorBlack		-- TO-DO allow for copy fill mode instead of color.
-	local fillMode = Graphics.kDrawModeFillBlack
-	local otherColor = Graphics.kColorWhite
-	local otherFillMode = Graphics.kDrawModeFillWhite
-	if (color == Graphics.kColorWhite) then
-		fillMode = Graphics.kDrawModeFillWhite
-		otherColor = Graphics.kColorBlack
-		otherFillMode = Graphics.kDrawModeFillBlack
-	end
-
-	local textHeight = font:getHeight()
-
-	-- Create gridview object
-	local menu = UI.gridview.new(0, textHeight+padding)
-
-	-- Gridview properties
-	menu:setNumberOfColumns(1)
-	menu:setNumberOfRows(#__menuItems)
-	menu:setCellPadding(0, 0, 0, 0)
-	menu.changeRowOnColumnWrap = false
-
-	-- New properties
-	menu.items = __menuItems
-	menu.clickHandlers = {}
-	menu.itemWidths = {}
-	for i = 1, #menu.items, 1 do
-		menu.clickHandlers[menu.items[i]] = function() print("Menu item " .. menu.items[i] .. " clicked!") end
-		menu.itemWidths[i] = font:getTextWidth(menu.items[i])
-		print(menu.itemWidths[i])
-	end
-	menu.currentMenuItemNumber = 1
-	menu.currentMenuItemName = menu.items[1]
-
-	-- Methods
-	--
-	function menu:activate()
-		self:setSelectedRow(self.currentMenuItemNumber)
-	end
-	function menu:deactivate()
-		self:setSelectedRow(0)
-	end
-	function menu:selectPrevious()
-		self:selectPreviousRow(true, false, false)
-		local _, row, _ = self:getSelection()
-		self.currentMenuItemNumber = row
-		self.currentMenuItemName = self.items[row]
-	end
-	function menu:selectNext()
-		self:selectNextRow(true, false, false)
-		local _, row, _ = self:getSelection()
-		self.currentMenuItemNumber = row
-		self.currentMenuItemName = self.items[row]
-	end
-	function menu:click()
-		self.clickHandlers[self.currentMenuItemName]()
-	end
-
-	-- Drawing
-	--
-	function menu:drawMenuItem(__x, __y, __item)
-		Graphics.setImageDrawMode(fillMode)
-		Noble.Text.draw(self.items[__item], __x + horizontalPadding/2, __y + padding/2, kTextAlignment.left, localized, font)	-- TO-DO allow for centered/right-aligned text.
-	end
-	function menu:drawSelectedMenuItem(__x, __y, __item)
-		Graphics.setColor(color)
-		Graphics.fillRoundRect(__x, __y, self.itemWidths[__item]+horizontalPadding, textHeight+padding, textHeight/4)
-		Graphics.setColor(otherColor)
-		Graphics.setLineWidth(selectedOutlineThickness)
-		Graphics.drawRoundRect(__x, __y, self.itemWidths[__item]+horizontalPadding, textHeight+padding, textHeight/4)
-		Graphics.setImageDrawMode(otherFillMode)
-		Noble.Text.draw(self.items[__item], __x+horizontalPadding/2, __y+padding/2, kTextAlignment.left, localized, font)
-	end
-	function menu:drawCell(_, row, _, selected, x, y, width, height)
-		if selected then
-			self:drawSelectedMenuItem(x, y, row)
-		else
-			self:drawMenuItem(x, y, row)
-		end
-	end
-
-	function menu:draw(__x, __y)
-		self:drawInRect(__x, __y, 200, (textHeight + padding) * #self.items)
-	end
-
-	return menu
-end
-
-
 
 -- Bonk
 -- Noble Engine overrides/supercedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
@@ -859,8 +414,8 @@ local function bonkUpdate()
 	if (playdate.gameWillResume ~= Noble.Bonks.resume) then
 		error("BONK: Don't manaully define playdate.gameWillResume(). Put resume code in your scenes' resume() methods instead.")
 	end
-	if (Noble.Input.current == nil) then
-		error("BONK: Don't set Noble.Input.current to nil directly. To disable input, use Noble.Input.setHandler() (without an arguement) instead.")
+	if (Noble.Input.currentHandler == nil) then
+		error("BONK: Don't set Noble.Input.currentHandler to nil directly. To disable input, use Noble.Input.setHandler() (without an arguement) instead.")
 	end
 	if (Noble.currentScene.baseColor == Graphics.kColorClear) then
 		error("BONK: Don't set a scene's baseColor to Graphics.kColorClear, silly.")
@@ -872,7 +427,7 @@ end
 -- Game loop
 --
 function playdate.update()
-	inputUpdate()							-- Check for Noble Engine-specific input methods.
+	Noble.Input.update()							-- Check for Noble Engine-specific input methods.
 
 	Sequence.update()						-- Update all animations that use the Sequence library.
 
