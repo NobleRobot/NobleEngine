@@ -1,9 +1,0 @@
-title = "Noble Engine"
-project = 'Noble Engine'
-description = 'A li\'l game engine for Playdate.'
-one = true
-no_lua_ref = true
-wrap = true
-no_space_before_args = true
-format = mardown
-dir = "documentation"
