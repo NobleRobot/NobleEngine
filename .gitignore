@@ -40,3 +40,7 @@ luac.out
 *.hex
 
 .vscode
+
+# LDoc config file
+*.ld
+"documentation templates/"
