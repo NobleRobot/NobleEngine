@@ -41,6 +41,6 @@ luac.out
 
 .vscode
 
-# LDoc config file
-*.ld
-"documentation templates/"
+# LDoc config files
+config.ld
+documentation templates/

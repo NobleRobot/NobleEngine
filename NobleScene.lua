@@ -54,6 +54,7 @@ NobleScene.baseColor = Graphics.kColorWhite
 --	-- Reuse another scene's inputHandler.
 --	YourSceneName.inputHander = SomeOtherSceneName.inputHandler
 NobleScene.inputHandler = {}
+NobleScene.name = ""
 
 --- Impliment this in your scene if you have code to run when your scene's object is created.
 --
@@ -63,7 +64,10 @@ NobleScene.inputHandler = {}
 --		--[Your code here]--
 --	end
 --
-function NobleScene:init() end
+function NobleScene:init()
+	self.name = Utilities.varName[self]
+	print(self.name)
+end
 
 --- Impliment this in your scene if you want to run code as the transition from another scene begins such as UI animation logic, initial cutscene triggers, etc.
 --

@@ -22,6 +22,17 @@ function Utilities.endsWith(__string, __ending)
 	return __ending == "" or __string:sub(-#__ending) == __ending
 end
 
+Utilities.varName = {}
+setmetatable(
+	Utilities.varName,
+	{
+		__index = function(self, k, v)
+			return string.format('%s', k)
+		end
+	}
+)
+
+
 function Utilities.getHypotenuse(__x,__y)
 	return math.sqrt((__x*__x)+(__y*__y))
 end

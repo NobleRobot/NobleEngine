@@ -1,11 +1,9 @@
 --- Noble Engine
 -- @module Noble
 -- @author Mark LaCroix
+-- Noble Engine: A li'l game engine for Playdate.
 
 --
--- Noble Engine: A li'l game engine for Playdate.
---
--- by Mark LaCroix
 -- https://noblerobot.com/
 --
 
@@ -42,77 +40,15 @@ Noble.showFPS = false;
 import 'libraries/noble/libraries/Signal'
 import 'libraries/noble/libraries/Sequence'
 
--- Noble libraries
+-- Noble libraries, modules and classes.
 import 'libraries/noble/utilities/Utilities'
 import 'libraries/noble/NobleScene'
-
--- Noble modules and classes
-import 'libraries/noble/Menu'
+import 'libraries/noble/NobleMenu'
 import 'libraries/noble/Noble.Settings'
+import 'libraries/noble/Noble.GameData'
 import 'libraries/noble/Noble.Input'
-
-
-function playdate.crankDocked()
-	if (Noble.Input.currentHandler.crankDocked ~= nil) then
-		Noble.Input.currentHandler.crankDocked()
-	end
-end
-function playdate.crankUndocked()
-	if (Noble.Input.currentHandler.crankUndocked ~= nil) then
-		Noble.Input.currentHandler.crankDocked()
-	end
-end
-
-local updateCrankIndicator = false
-
-------
--- Enable/disable on-screen crank indicator.
--- @param __bool Set true to start showing the on-screen crank indicator. Set false to stop showing it.
-function Noble.showCrankIndicator(__bool)
-	if (__bool) then
-		UI.crankIndicator:start()
-	end
-	updateCrankIndicator = __bool
-end
-
-
-
-
-
-
-
--- Fonts/Text
---
-Noble.Text = {}
-Noble.Text.system = Graphics.getSystemFont()
-Noble.Text.small = Graphics.font.new("libraries/noble/assets/fonts/NobleSans")
-Noble.Text.medium = Graphics.font.new("libraries/noble/assets/fonts/NobleSlab")
-Noble.Text.large = Graphics.font.new("libraries/noble/assets/fonts/SatchelRoughed")
-local currentFont = Noble.Text.system
-
-Noble.Text.ALIGN_LEFT = kTextAlignment.left
-Noble.Text.ALIGN_RIGHT = kTextAlignment.right
-Noble.Text.ALIGN_CENTER = kTextAlignment.center
-
-function Noble.Text.getCurrentFont() return currentFont end
-function Noble.Text.setFont(__font, __variant)
-	currentFont = __font
-	local variant = __variant or Graphics.font.kVariantNormal
-	Graphics.setFont(__font, variant)
-end
-
-function Noble.Text.draw(__string, __x, __y, __alignment, __localized, __font)
-	if (__alignment == nil) then __alignment = kTextAlignment.left end
-	if (__localized == nil) then __localized = false end
-	if (__font ~= nil) then Graphics.setFont(__font) end -- Temporary font
-	if (__localized) then
-		Graphics.drawLocalizedTextAligned(__string, __x, __y, __alignment)
-	else
-		Graphics.drawTextAligned(__string, __x, __y, __alignment)
-	end
-	if (__font ~= nil) then Graphics.setFont(currentFont) end	-- Reset
-end
-
+import 'libraries/noble/Noble.Text'
+import 'libraries/noble/Noble.Bonk'
 
 
 -- Engine initialization
@@ -124,7 +60,7 @@ local engineInitialized = false
 -- transitionType = Noble.Transition.CROSS_DISSOLVE | See Noble.Transition for included transition types.
 -- checkForExtraBonks:bool = false 					| Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release
 -- Game initialization, run this once in your main.lua file.
-function Noble.new(StartingScene, __transitionDuration, __transitionType, __checkForExtraBonks)
+function Noble.new(StartingScene, __transitionDuration, __transitionType, __checkForBonks)
 	if (engineInitialized) then
 		error("BONK: You can only run Noble.new() once.")
 		return
@@ -133,7 +69,7 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __chec
 	end
 
 	-- Noble Engine refers to an engine-specific error as a "bonk."
-	local checkForExtraBonks = __checkForExtraBonks or false
+	local checkForExtraBonks = __checkForBonks or false
 	if (checkForExtraBonks) then Noble.Bonks.startChecking() end
 
 	-- Screen drawing: see the Playdate SDK for details on these methods.
@@ -369,61 +305,6 @@ end
 
 
 
--- Bonk
--- Noble Engine overrides/supercedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
--- You can check for bonks with "checkForBonks"
---
-Noble.Bonks = {}
-local bonksAreSetup = false
-local checkingForBonks = false
-local function setupBonks()
-	Noble.Bonks.crankDocked = playdate.crankDocked
-	Noble.Bonks.crankUndocked = playdate.crankUndocked
-	Noble.Bonks.update = playdate.update
-	Noble.Bonks.pause = playdate.gameWillPause
-	Noble.Bonks.resume = playdate.gameWillResume
-	bonksAreSetup = true
-end
-function Noble.startCheckingForBonks()
-	if (bonksAreSetup == false) then
-		setupBonks()
-	end
-	checkingForBonks = true
-end
-function Noble.stopCheckingForBonks()
-	Noble.Bonks = {}
-	checkingForBonks = false
-	bonksAreSetup = false
-end
-local function bonkUpdate()
-	if (Graphics.sprite.getAlwaysRedraw() == false) then
-		error("BONK: Don't use Graphics.sprite.setAlwaysRedraw(false) unless you know what you're doing...")
-	end
-	if (playdate.crankDocked ~= Noble.Bonks.crankDocked) then
-		error("BONK: Don't manaully define playdate.crankDocked(). Create a crankDocked() inside of an inputHandler instead.")
-	end
-	if (playdate.crankUndocked ~= Noble.Bonks.crankUndocked) then
-		error("BONK: Don't manaully define playdate.crankUndocked(). Create a crankUndocked() inside of an inputHandler instead.")
-	end
-	if (playdate.update ~= Noble.Bonks.update) then
-		error("BONK: Don't manaully define playdate.update(). Put update code in your scenes' update() methods instead.")
-	end
-	if (playdate.gameWillPause ~= Noble.Bonks.pause) then
-		error("BONK: Don't manaully define playdate.gameWillPause(). Put pause code in your scenes' pause() methods instead.")
-	end
-	if (playdate.gameWillResume ~= Noble.Bonks.resume) then
-		error("BONK: Don't manaully define playdate.gameWillResume(). Put resume code in your scenes' resume() methods instead.")
-	end
-	if (Noble.Input.currentHandler == nil) then
-		error("BONK: Don't set Noble.Input.currentHandler to nil directly. To disable input, use Noble.Input.setHandler() (without an arguement) instead.")
-	end
-	if (Noble.currentScene.baseColor == Graphics.kColorClear) then
-		error("BONK: Don't set a scene's baseColor to Graphics.kColorClear, silly.")
-	end
-end
-
-
-
 -- Game loop
 --
 function playdate.update()
@@ -441,7 +322,7 @@ function playdate.update()
 		transitionUpdate()					-- Update transition animations (if active).
 	end
 
-	if (updateCrankIndicator and playdate.isCrankDocked()) then
+	if (Noble.Input.crankIndicatorActive() and playdate.isCrankDocked()) then
 		UI.crankIndicator:update()			-- Draw crank indicator (if requested).
 	end
 
@@ -450,8 +331,8 @@ function playdate.update()
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
 	end
-	if (checkingForBonks) then				-- Checks for code that breaks the engine.
-		bonkUpdate()
+	if (Noble.Bonk.checkingDebugBonks()) then				-- Checks for code that breaks the engine.
+		Noble.Bonk.checkDebugBonks()
 	end
 
 end
