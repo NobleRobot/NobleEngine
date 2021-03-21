@@ -14,9 +14,9 @@ class("NobleScene").extends(Object)
 --
 NobleScene.baseColor = Graphics.kColorWhite
 
---- All scenes should have have a default inputHander which is made active when the scene starts.
--- You may define your scene's inputHandler, set it to a value defined elsewhere. If you do not define it,
--- input is cleared when the scene launches, and you may use Noble.Input.setHandler().
+--- All scenes have a default inputHander which is made active when the scene starts.
+-- If you do not define your scene's `inputHandler`, it is `nil` and input is disabled when this scene
+-- starts.
 -- @see Noble.Input.setHandler
 --
 -- @usage
@@ -54,6 +54,9 @@ NobleScene.baseColor = Graphics.kColorWhite
 --	-- Reuse another scene's inputHandler.
 --	YourSceneName.inputHander = SomeOtherSceneName.inputHandler
 NobleScene.inputHandler = {}
+
+--- The name of this scene. Optional.
+-- If you do not set this value, it will take on the scene's `className`.
 NobleScene.name = ""
 
 --- Impliment this in your scene if you have code to run when your scene's object is created.
@@ -65,11 +68,10 @@ NobleScene.name = ""
 --	end
 --
 function NobleScene:init()
-	self.name = Utilities.varName[self]
-	print(self.name)
+	self.name = self.className
 end
 
---- Impliment this in your scene if you want to run code as the transition from another scene begins such as UI animation logic, initial cutscene triggers, etc.
+--- Impliment if you want to run code as the transition to this scene begins, such as UI animation, triggers, etc.
 --
 -- @usage
 --	function YourSceneName:enter()
@@ -79,8 +81,8 @@ end
 --
 function NobleScene:enter() end
 
---- Impliment this in your scene if you have code to run once the transition from another scene is complete. This method signifies the full activation of a scene.
---
+--- Impliment if you have code to run once the transition to this scene is complete. This method signifies the full activation of a scene. If this scene's `inputHandler` is defined, it is enabled now.
+-- @see inputHandler
 -- @usage
 --	function YourSceneName:start()
 --		YourSceneName.super.start(self)
@@ -88,11 +90,11 @@ function NobleScene:enter() end
 --	end
 --
 function NobleScene:start()
-	Noble.Input.setHandler(self.inputHandler)		-- If the new scene has a default inputHandler, it is enabled now.
+	Noble.Input.setHandler(self.inputHandler)
 end
 
---- Impliment this in your scene to run scene-specfiic code on every frame.
--- NOTE: you may use coroutine.yield() inside this function, because it only runs inside of playdate.update() which is a coroutine.
+--- Impliment to run scene-specfiic code on every frame while this scene is active.
+-- NOTE: you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
 --
 -- @usage
 --	function YourSceneName:update()

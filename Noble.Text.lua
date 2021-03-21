@@ -18,6 +18,13 @@ function Noble.Text.setFont(__font, __variant)
 	Graphics.setFont(__font, variant)
 end
 
+--- Abstracts multiple `playdate.text` drawing functions into one.
+-- string: __string Text to draw.
+-- number: __x
+-- number: __y
+-- ?param: __alignment
+-- ?bool: __localized any
+-- ?any: __font
 function Noble.Text.draw(__string, __x, __y, __alignment, __localized, __font)
 	if (__alignment == nil) then __alignment = kTextAlignment.left end
 	if (__localized == nil) then __localized = false end

@@ -1,8 +1,8 @@
---- A menu object.
+--- A specialized implimentation of `playdate.ui.gridview`.
 -- @classmod NobleMenu
 --
 NobleMenu = {}
-class("NobleMenu").extends(Object)
+--class("NobleMenu").extends(Object)
 
 --- Create a new menu object
 -- @param __menuItems This is a table of strings, either menu item names, or localization keys.
@@ -56,7 +56,6 @@ function NobleMenu.new(__menuItems, __localized, __color, __padding, __horizonta
 	for i = 1, #menu.items, 1 do
 		menu.clickHandlers[menu.items[i]] = function() print("Menu item " .. menu.items[i] .. " clicked!") end
 		menu.itemWidths[i] = font:getTextWidth(menu.items[i])
-		print(menu.itemWidths[i])
 	end
 	menu.currentMenuItemNumber = 1
 	menu.currentMenuItemName = menu.items[1]
@@ -81,6 +80,8 @@ function NobleMenu.new(__menuItems, __localized, __color, __padding, __horizonta
 		self.currentMenuItemNumber = row
 		self.currentMenuItemName = self.items[row]
 	end
+
+	--- click!
 	function menu:click()
 		self.clickHandlers[self.currentMenuItemName]()
 	end
@@ -108,9 +109,9 @@ function NobleMenu.new(__menuItems, __localized, __color, __padding, __horizonta
 		end
 	end
 
-	return menu
-end
+	function menu:draw(__x, __y)
+		menu:drawInRect(__x, __y, 200, (self.textHeight + self.padding) * #self.items)
+	end
 
-function Noble.Menu:draw(__x, __y)
-	self:drawInRect(__x, __y, 200, (self.textHeight + self.padding) * #self.items)
+	return menu
 end

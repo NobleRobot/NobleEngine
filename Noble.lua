@@ -44,11 +44,11 @@ import 'libraries/noble/libraries/Sequence'
 import 'libraries/noble/utilities/Utilities'
 import 'libraries/noble/NobleScene'
 import 'libraries/noble/NobleMenu'
-import 'libraries/noble/Noble.Settings'
-import 'libraries/noble/Noble.GameData'
-import 'libraries/noble/Noble.Input'
-import 'libraries/noble/Noble.Text'
-import 'libraries/noble/Noble.Bonk'
+import 'libraries/noble/Noble.Settings.lua'
+import 'libraries/noble/Noble.GameData.lua'
+import 'libraries/noble/Noble.Input.lua'
+import 'libraries/noble/Noble.Text.lua'
+import 'libraries/noble/Noble.Bonk.lua'
 
 
 -- Engine initialization
@@ -162,8 +162,7 @@ Graphics.unlockFocus()
 -- Game initialization, run this once in your main.lua file.
 function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
 	if (Noble.isTransitioning) then
-		print("BONK ALERT: You can't start a transition in the middle of another transition, silly!")
-		return
+		error("BONK: You can't start a transition in the middle of another transition, silly!")
 	end
 
 	local newScene = NewScene()			-- Creates new scene object. Its init() function runs.

@@ -1,4 +1,4 @@
---- Settings for your game
+--- Operations for game settings / stats.
 -- @module Noble.Settings
 --
 Noble.Settings = {}				-- This is the "class" that holds methods.
@@ -30,7 +30,7 @@ end
 local settingsHaveBeenSetup = false
 
 --- Sets up the settings for your game. You can only run this once, and you must run it before using other Noble.Settings functions. It is recommended to place it in your main.lua, before Noble.new().
--- @tparam table __keyValuePairs table. Your game's settings, and thier default values, as key/value pairs, i.e.: { difficulty = "normal", music = true, players = 2, highScore = 0 }. NOTE: Do not use "nil" as a value.
+-- @tparam table __keyValuePairs table. Your game's settings, and thier default values, as key/value pairs, i.e. { difficulty = "normal", music = true, players = 2, highScore = 0 }. NOTE: Do not use "nil" as a value.
 -- @bool[opt=true] __saveToDisk Saves your default values immediatly to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
 function Noble.Settings.setup(__keyValuePairs, __saveToDisk, __modifyExistingOnKeyChange)

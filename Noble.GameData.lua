@@ -1,4 +1,4 @@
---- Operations for save game data.
+--- Operations for game data / save slots.
 -- @module Noble.GameData
 --
 Noble.GameData = {}
@@ -47,7 +47,7 @@ local function exists(__gameDataSlot, __key)
 end
 
 local function updateTimestamp(__gameData)
-	__gameData.data.timestamp = playdate.getGMTTime()
+	__gameData.timestamp = playdate.getGMTTime()
 end
 
 local gameDataHasBeenSetup = false
@@ -59,19 +59,19 @@ local gameDataHasBeenSetup = false
 -- @bool[opt=true] __saveToDisk Saves your default values immediatly to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.
 -- @usage
--- Noble.GameData.setup(
--- 	{
--- 		name = "",
--- 		checkpointReached = 0,
--- 		score = 0
--- 	},
--- 	3,
--- 	true,
--- 	true
--- )
--- Noble.GameData.set("name", "Game A", 1)
--- Noble.GameData.set("name", "Game B", 2)
--- Noble.GameData.set("name", "Game C", 3)
+--	Noble.GameData.setup(
+--		{
+--			name = "",
+--			checkpointReached = 0,
+--			score = 0
+--		},
+--		3,
+--		true,
+--		true
+--	)
+--	Noble.GameData.set("name", "Game A", 1)
+--	Noble.GameData.set("name", "Game B", 2)
+--	Noble.GameData.set("name", "Game C", 3)
 -- @see addSlot
 -- @see deleteSlot
 function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __modifyExistingOnKeyChange)
@@ -111,7 +111,12 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 				-- value of numberOfGameDataSlots if nessessary and get outta town!
 				numberOfSlots = i - 1
 				print ("Total number of game slots: " .. numberOfSlots)
-				return
+
+				if (saveToDisk and createdNewData) then
+					Noble.GameData.saveAll()
+				end
+
+				return -- This is our only way out!
 			end
 		else
  			-- We found a gameData on disk, so we use it (either as-is or modified by a key change).
@@ -125,16 +130,12 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 					-- naturally discarding keys that don't exist anymore.
 					if (existingGameData.data[key] ~= nil) then gameData.data[key] = existingGameData.data[key] end
 				end
-				gameDatas.data.timestamp = existingGameData.data.timestamp --
+				gameDatas.timestamp = existingGameData.timestamp
 				createdNewData = true
 			end
 			gameDatas[i] = gameData
 		end
 
-	end
-
-	if (saveToDisk and createdNewData) then
-		Noble.GameData.saveAll()
 	end
 
 end

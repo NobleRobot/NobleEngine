@@ -1,4 +1,4 @@
---- Input Handling
+--- Input manager.
 -- @module Noble.Input
 --
 Noble.Input = {}
@@ -52,7 +52,7 @@ end
 --
 -- NOTE: The indicator will only ever show if the crank is docked.
 -- @treturn bool
--- @see showCrankIndicator
+-- @see activateCrankIndicator
 function Noble.Input.crankIndicatorActive()
 	return crankIndicatorActive
 end

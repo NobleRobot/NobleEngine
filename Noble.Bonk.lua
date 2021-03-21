@@ -1,6 +1,9 @@
 --- Engine-specific error handling.
 -- Noble Engine overrides/supercedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
--- Some bonks will throw during normal operation, others need to be setup manually in a psudo-debug workflow.
+--
+-- Some bonks will throw during normal operation, but others ("debug bonks") introduce some execution overhead so are not
+-- checked by default.
+--
 -- @module Noble.Bonk
 --
 Noble.Bonk = {}
