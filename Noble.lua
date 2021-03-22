@@ -1,7 +1,7 @@
 --- Noble Engine
+-- A li'l game engine for Playdate.
 -- @module Noble
 -- @author Mark LaCroix
--- Noble Engine: A li'l game engine for Playdate.
 
 --
 -- https://noblerobot.com/
@@ -29,12 +29,11 @@ Datastore = playdate.datastore
 
 -- In lua, varibles are global by default, but having a "Global" object to put
 -- varibles into is useful for maintaining sanity if you're coming from an OOP language.
+-- It's included here for basically no reason at all. Noble Engine doesn't use it. (◔◡◔)
 Global = {}
 
+-- It's all inside this table, oooo!
 Noble = {}
-Noble.currentScene = nil
-Noble.isTransitioning = false
-Noble.showFPS = false;
 
 -- Third-party libraries
 import 'libraries/noble/libraries/Signal'
@@ -50,17 +49,29 @@ import 'libraries/noble/Noble.Input.lua'
 import 'libraries/noble/Noble.Text.lua'
 import 'libraries/noble/Noble.Bonk.lua'
 
+---
+-- Check to see if the game is transitioning between scenes.
+-- Useful to control game logic that lives outside of a scene's `update()` method.
+-- @field bool
+Noble.isTransitioning = false
 
--- Engine initialization
---
+---
+-- Show/hide the Playdate SDK's FPS counter.
+-- @field bool
+Noble.showFPS = false;
+
+local currentScene = nil
 local engineInitialized = false
 
--- StartingScene:NobleScene 						| This is the scene your game begins with, usually a title screen or main menu.
--- transitionDuration:number 						| If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
--- transitionType = Noble.Transition.CROSS_DISSOLVE | See Noble.Transition for included transition types.
--- checkForExtraBonks:bool = false 					| Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release
--- Game initialization, run this once in your main.lua file.
-function Noble.new(StartingScene, __transitionDuration, __transitionType, __checkForBonks)
+--- Engine initialization. Run this once in your main.lua file to begin your game.
+-- @tparam NobleScene StartingScene This is the scene your game begins with, a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
+-- @number[opt] __transitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
+-- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
+-- @bool[opt=false] __checkDebugBonks Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
+-- @see NobleScene
+-- @see Noble.TransitionType
+-- @see Noble.Bonk.startCheckingDebugBonks
+function Noble.new(StartingScene, __transitionDuration, __transitionType, __checkDebugBonks)
 	if (engineInitialized) then
 		error("BONK: You can only run Noble.new() once.")
 		return
@@ -69,16 +80,16 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __chec
 	end
 
 	-- Noble Engine refers to an engine-specific error as a "bonk."
-	local checkForExtraBonks = __checkForBonks or false
-	if (checkForExtraBonks) then Noble.Bonks.startChecking() end
+	local checkForExtraBonks = __checkDebugBonks or false
+	if (checkForExtraBonks) then Noble.Bonk.startCheckingDebugBonks() end
 
 	-- Screen drawing: see the Playdate SDK for details on these methods.
 	Graphics.sprite.setAlwaysRedraw(true)
 	Graphics.sprite.setBackgroundDrawingCallback(
 		function ()
-			if (Noble.currentScene ~= nil) then
+			if (currentScene ~= nil) then
 				 -- Each scene has its own method for this. We only want to run one at a time.
-				Noble.currentScene:drawBackground()
+				currentScene:drawBackground()
 			end
 		end
 	)
@@ -96,27 +107,10 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __chec
 	Noble.transition(StartingScene, __transitionDuration, transitionType)
 end
 
-
-
--- Scene Management
+-- Transition stuff
 --
 local transitionSequence = nil
 local previousSceneScreenCapture = nil
-
-Noble.TransitionType = {}
-Noble.TransitionType.CUT = "Cut"
-Noble.TransitionType.DIP = "Dip"
-Noble.TransitionType.DIP_TO_BLACK = Noble.TransitionType.DIP .. " to black"
-Noble.TransitionType.DIP_TO_WHITE = Noble.TransitionType.DIP .. " to white"
-Noble.TransitionType.DIP_CUSTOM = Noble.TransitionType.DIP .. ": Custom"
-Noble.TransitionType.DIP_WIDGET_SATCHEL = Noble.TransitionType.DIP .. ": Widget Satchel"
-Noble.TransitionType.DIP_METRO_NEXUS = Noble.TransitionType.DIP .. ": Metro Nexus"
-Noble.TransitionType.CROSS_DISSOLVE = "Cross dissolve"
-Noble.TransitionType.SLIDE_OFF = "Slide off"
-Noble.TransitionType.SLIDE_OFF_LEFT = Noble.TransitionType.SLIDE_OFF .. ": left"
-Noble.TransitionType.SLIDE_OFF_RIGHT = Noble.TransitionType.SLIDE_OFF .. ": right"
-Noble.TransitionType.SLIDE_OFF_UP = Noble.TransitionType.SLIDE_OFF .. ": up"
-Noble.TransitionType.SLIDE_OFF_DOWN = Noble.TransitionType.SLIDE_OFF .. ": down"
 
 local currentTransitionType = nil
 
@@ -155,11 +149,13 @@ Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
--- NewScene:NobleScene 									| The scene to transition to. You always transition from Noble.currentScene
--- duration:number = 1 									| Duration of the transition, in seconds.
--- transitionType = Noble.TransitionType.DIP_TO_BLACK 	| See Noble.Transition for included transition types.
--- holdDuration:number = 0.2							| The time spent holding at the transition midpoint. Does not increase the transition duration.
--- Game initialization, run this once in your main.lua file.
+--- Transition to a new scene. This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+-- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class name, not an instance of the scene. You always transition from `Noble.currentScene`
+-- @number[opt=1] __duration The length of the transition, in seconds.
+-- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
+-- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
+-- @see NobleScene
+-- @see Noble.TransitionType
 function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
 	if (Noble.isTransitioning) then
 		error("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -169,8 +165,8 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 
 	Noble.isTransitioning = true
 
-	if (Noble.currentScene ~= nil) then
-		Noble.currentScene:exit()		-- The current scene runs its "goodbye" code.
+	if (currentScene ~= nil) then
+		currentScene:exit()				-- The current scene runs its "goodbye" code.
 	end
 
 	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
@@ -180,11 +176,11 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	currentTransitionType = __transitionType
 
 	local onMidpoint = function()
-		Noble.currentScene = nil		-- Allows current scene to be garbage collected.
-
-		Noble.currentScene = newScene	-- New scene's update loop begins.
+		currentScene = nil				-- Allows current scene to be garbage collected.
+		currentScene = newScene			-- New scene's update loop begins.
 		newScene:enter()				-- The new scene runs its "hello" code.
 	end
+
 	local onComplete = function()
 		previousSceneScreenCapture = nil-- Reset (if neccessary).
 		Noble.isTransitioning = false	-- Reset
@@ -302,46 +298,59 @@ local function transitionUpdate()
 	end
 end
 
+--- Get the current scene object
+-- @treturn NobleScene
+function Noble.currentScene()
+	return currentScene
+end
 
+--- Get the name of the current scene
+-- @treturn string
+function Noble.currentSceneName()
+	return currentScene.name
+end
 
 -- Game loop
 --
 function playdate.update()
-	Noble.Input.update()							-- Check for Noble Engine-specific input methods.
+	Noble.Input.update()				-- Check for Noble Engine-specific input methods.
 
-	Sequence.update()						-- Update all animations that use the Sequence library.
+	Sequence.update()					-- Update all animations that use the Sequence library.
 
-	Graphics.sprite.update()				-- Let's draw our sprites (and backgrounds).
+	Graphics.sprite.update()			-- Let's draw our sprites (and backgrounds).
 
-	if (Noble.currentScene ~= nil) then
-		Noble.currentScene:update()			-- Scene-specific update code.
+	if (currentScene ~= nil) then
+		currentScene:update()			-- Scene-specific update code.
 	end
 
 	if (Noble.isTransitioning) then
-		transitionUpdate()					-- Update transition animations (if active).
+		transitionUpdate()				-- Update transition animations (if active).
 	end
 
 	if (Noble.Input.crankIndicatorActive() and playdate.isCrankDocked()) then
-		UI.crankIndicator:update()			-- Draw crank indicator (if requested).
+		UI.crankIndicator:update()		-- Draw crank indicator (if requested).
 	end
 
-	playdate.timer.updateTimers()			-- Finally, update all SDK timers.
+	playdate.timer.updateTimers()		-- Finally, update all SDK timers.
 
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
 	end
-	if (Noble.Bonk.checkingDebugBonks()) then				-- Checks for code that breaks the engine.
+
+	if (Noble.Bonk.checkingDebugBonks()) then	-- Checks for code that breaks the engine.
 		Noble.Bonk.checkDebugBonks()
 	end
 
 end
+
 function playdate.gameWillPause()
-	if (Noble.currentScene ~= nil) then
-		Noble.currentScene:gameWillPause()
+	if (currentScene ~= nil) then
+		currentScene:gameWillPause()
 	end
 end
+
 function playdate.gameWillResume()
-	if (Noble.currentScene ~= nil) then
-		Noble.currentScene:gameWillResume()
+	if (currentScene ~= nil) then
+		currentScene:gameWillResume()
 	end
 end
