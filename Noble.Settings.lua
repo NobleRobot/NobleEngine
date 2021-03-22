@@ -29,10 +29,18 @@ end
 
 local settingsHaveBeenSetup = false
 
---- Sets up the settings for your game. You can only run this once, and you must run it before using other Noble.Settings functions. It is recommended to place it in your main.lua, before Noble.new().
--- @tparam table __keyValuePairs table. Your game's settings, and thier default values, as key/value pairs, i.e. { difficulty = "normal", music = true, players = 2, highScore = 0 }. NOTE: Do not use "nil" as a value.
+--- Sets up the settings for your game. You can only run this once, and you must run it before using other `Noble.Settings` functions. It is recommended to place it in your main.lua, before `Noble.new()`.
+-- @tparam table __keyValuePairs table. Your game's settings, and thier default values, as key/value pairs. NOTE: Do not use "nil" as a value.
 -- @bool[opt=true] __saveToDisk Saves your default values immediatly to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
+-- @usage
+--	Noble.Settings.setup({
+--		difficulty = "normal",
+--		music = true,
+--		sfx = true,
+--		players = 2,
+--		highScore = 0	-- You can store persistant stats here, too!
+--	})
 function Noble.Settings.setup(__keyValuePairs, __saveToDisk, __modifyExistingOnKeyChange)
 	if (settingsHaveBeenSetup) then
 		error("BONK: You can only run Noble.Settings.setup() once.")
@@ -72,6 +80,7 @@ end
 --- Get the value of a setting.
 -- @string __settingName The name of the setting.
 -- @treturn any The value of the requested setting.
+-- @see set
 function Noble.Settings.get(__settingName)
 	if (settingExists(__settingName)) then
 		return settings[__settingName]
@@ -82,6 +91,7 @@ end
 -- @string __settingName The name of the setting.
 -- @tparam any __value The setting's new value
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+-- @see get
 -- @see save
 function Noble.Settings.set(__settingName, __value, __saveToDisk)
 	if (settingExists(__settingName)) then
@@ -91,9 +101,11 @@ function Noble.Settings.set(__settingName, __value, __saveToDisk)
 	end
 end
 
---- Resets the value of a setting to its default value, defined in Noble.Settings.setup().
+--- Resets the value of a setting to its default value defined in `setup()`.
 -- @string __settingName The name of the setting.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+-- @see resetSome
+-- @see resetAll
 -- @see save
 function Noble.Settings.reset(__settingName, __saveToDisk)
 	if (settingExists(__settingName)) then
@@ -103,8 +115,20 @@ function Noble.Settings.reset(__settingName, __saveToDisk)
 	end
 end
 
---- Resets all settings to thier default values, defined in Noble.Settings.setup().
+--- Resets the value of multiple settings to thier default value defined in `setup()`. This is useful if you are storing persistant stats like high scores in `Settings` and want the player to be able to reset them seperately.
+-- @tparam table __settingNames The names of the settings, in an array-style table.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+-- @see resetAll
+-- @see save
+function Noble.Settings.resetSome(__settingNames, __saveToDisk)
+	for i = 1, #__settingNames, 1 do
+		Noble.Settings.reset(__settingNames[i], __saveToDisk)
+	end
+end
+
+--- Resets all settings to thier default values defined in `setup()`.
+-- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+-- @see resetSome
 -- @see save
 function Noble.Settings.resetAll(__saveToDisk)
 	settings = table.deepcopy(settingsDefault)
@@ -113,7 +137,7 @@ function Noble.Settings.resetAll(__saveToDisk)
 end
 
 --- Saves settings to disk.
--- You don't need to call this unless you set "__saveToDisk" as false when setting or resetting a setting (say that five times fast!).
+-- You don't need to call this unless you set `__saveToDisk` as false when setting or resetting a setting (say that five times fast!).
 -- @see set
 -- @see reset
 -- @see resetAll

@@ -21,11 +21,10 @@ NobleScene.baseColor = Graphics.kColorWhite
 --
 -- @usage
 --	YourSceneName.inputHandler = {
---		-- These mothods come from the Playdate SDK
---		AButtonDown = function() end,	-- Fires when button is pressed down.
---		AButtonHold = function() end,	-- Fires every frame during which a button is held
---		AButtonHeld = function() end,	-- Fires after button is held for 1 second (only available for A and B).
---		AButtonUp = function() end,	-- Fires when button is released.
+--		AButtonDown = function() end,	-- Fires once when button is pressed down.
+--		AButtonHold = function() end,	-- Fires each frame while a button is held (Noble Engine implimentation).
+--		AButtonHeld = function() end,	-- Fires once after button is held for 1 second (available for A and B).
+--		AButtonUp = function() end,		-- Fires once when button is released.
 --		BButtonDown = function() end,
 --		BButtonHold = function() end,
 --		BButtonHeld = function() end,
@@ -43,9 +42,9 @@ NobleScene.baseColor = Graphics.kColorWhite
 --		upButtonHold = function() end
 --		upButtonUp = function() end,
 --
---		cranked = function(change, acceleratedChange) end, -- See Playdate SDK.
---		crankDocked = function() end,
---		crankUndocked = function() end,
+--		cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
+--		crankDocked = function() end,						-- Noble Engine implimentation.
+--		crankUndocked = function() end,						-- Noble Engine implimentation.
 --	}
 --	-- OR...
 --	-- Use a non-scene-specfiic inputHandler, defined elsewhere.

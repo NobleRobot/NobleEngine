@@ -1,0 +1,465 @@
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300,700);
+@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;700;900&display=swap);
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  margin-left: 1em;
+  margin-right: 1em;
+  font-family: "Lato", arial, helvetica, geneva, sans-serif;
+  background-color: #ffcb1f;
+  margin: 0px;
+  color: #31302f;
+}
+
+code, tt {
+  font-family: monospace;
+  font-size: 1.3em;
+  letter-spacing: -0.5px;
+  font-weight: bold;
+}
+
+span.parameter {
+  font-family: monospace;
+}
+
+span.parameter:after {
+  content: ":";
+}
+
+span.types:before {
+  content: "(";
+}
+
+span.types:after {
+  content: ")";
+}
+
+.type {
+  font-weight: bold;
+  font-style: italic;
+}
+
+body, p, td, th {
+  font-size: .95em;
+  line-height: 1.2em;
+}
+
+p, ul {
+  margin: 10px 0 0 0px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+.logo {
+  width: 100%;
+  background-image: url("logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 150px;
+}
+
+.logo h1 {
+  display: none;
+}
+
+h1 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: bold;
+  color: #cf5a5a;
+  font-size: 2.5em;
+  margin: 20px 0 30px 0;
+}
+
+h2, h3, h4 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+}
+
+h2 {
+  font-size: 1.25em;
+  color: #cf5a5a;
+}
+
+h3 {
+  font-size: 1.15em;
+}
+
+h4 {
+  font-size: 1em;
+}
+
+a:link {
+  font-weight: bold;
+  color: #cf5a5a;
+  text-decoration: none;
+}
+
+a:visited {
+  font-weight: bold;
+  color: #cf5a5a;
+  text-decoration: none;
+}
+
+a:link:hover {
+  text-decoration: underline;
+}
+
+hr {
+  color: #cf5a5a;
+  background: #00007f;
+  height: 3px;
+}
+
+blockquote {
+  margin-left: 3em;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+p.name {
+  font-family: "Andale Mono", monospace;
+  padding-top: 1em;
+}
+
+span.item-name {
+  background-color: rgba(255, 203, 31, 0.75);
+  display: inline-block;
+  color: #31302f;
+  padding: 5px 10px;
+  border-radius: 50px;
+  font-size: 1.15em;
+  font-family: "Source Code Pro", monospace;
+  font-weight: 700;
+  letter-spacing: -2px;
+}
+
+pre {
+  background-color: #056d8d;
+  -webkit-box-shadow: 0 0 10px 0 rgba(49, 48, 47, 0.5);
+          box-shadow: 0 0 10px 0 rgba(49, 48, 47, 0.5);
+  border-radius: 10px;
+  color: #f0ece3;
+  padding: 20px;
+  margin: 10px 0 10px 0;
+  font-family: "Source Code Pro", monospace;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
+  overflow-x: auto;
+  width: 100%;
+  font-weight: 400;
+}
+
+pre .keyword {
+  color: #ffcb1f;
+}
+
+pre .string, pre .number {
+  color: #eb6e6e;
+  font-weight: bold;
+}
+
+pre .comment {
+  color: #b4b1aa;
+}
+
+pre.example {
+  font-size: .85em;
+}
+
+table.index td {
+  text-align: left;
+  vertical-align: top;
+}
+
+#container {
+  margin: 2em;
+  border-radius: 25px;
+  -webkit-box-shadow: 0 0 25px 0 rgba(49, 48, 47, 0.3);
+          box-shadow: 0 0 25px 0 rgba(49, 48, 47, 0.3);
+  overflow: hidden;
+}
+
+#product {
+  text-align: center;
+  height: 500px;
+  background-color: #31302f;
+  color: #f0ece3;
+}
+
+#product > :before {
+  content: 'Noble Engine';
+}
+
+#product big {
+  font-size: 2em;
+}
+
+#main {
+  background-color: #31302f;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+#navigation {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-preferred-size: auto;
+      flex-basis: auto;
+  width: 275px;
+  padding: 0 10px;
+  overflow: hidden;
+  color: #f0ece3;
+}
+
+#navigation a:link, #navigation a:visited {
+  color: #ffcb1f;
+  font-weight: normal;
+}
+
+#navigation .nav-module {
+  background-color: #eb6e6e;
+}
+
+#navigation .nav-modules {
+  background-color: #f0ece3;
+}
+
+#navigation .nav-module,
+#navigation .nav-modules {
+  color: #31302f;
+  padding: 15px;
+  margin: 0 10px 30px -10px;
+  border-radius: 0 30px 30px 0;
+}
+
+#navigation .nav-module h2,
+#navigation .nav-modules h2 {
+  background-color: #cf5a5a;
+  color: #f0ece3;
+  margin: 0;
+}
+
+#navigation .nav-module a:link, #navigation .nav-module a:visited,
+#navigation .nav-modules a:link,
+#navigation .nav-modules a:visited {
+  color: #31302f;
+}
+
+#navigation ul a:active, #navigation ul a:hover {
+  color: #31302f;
+  background-color: #f0ece3;
+  padding: 5px 10px;
+  margin-left: -10px;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+#navigation h1 {
+  color: #eb6e6e;
+  line-height: 80%;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+#navigation h2 {
+  color: #31302f;
+  font-size: 1.1em;
+  background-color: #f0ece3;
+  padding: 5px 10px;
+  margin-right: 20px;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+#navigation ul {
+  font-size: 1em;
+  list-style-type: none;
+  margin: 1px 1px 10px 1px;
+  padding-left: 0px;
+}
+
+#navigation li {
+  display: block;
+  margin: 0px 0px 6px 12px;
+  padding-left: 0px;
+}
+
+#navigation li li a {
+  margin: 0px 3px 0px -1em;
+}
+
+#content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  -ms-flex-preferred-size: auto;
+      flex-basis: auto;
+  min-width: 0;
+  padding: 2em;
+  padding-left: 3.5em;
+  border-left: 4px solid #cf5a5a;
+  -webkit-box-shadow: inset 0 0 50px 0 rgba(207, 90, 90, 0.25);
+          box-shadow: inset 0 0 50px 0 rgba(207, 90, 90, 0.25);
+  background-color: #f0ece3;
+}
+
+#about {
+  clear: both;
+  padding: 20px;
+  border-top: 2px solid #31302f;
+  background-color: #cf5a5a;
+  color: #f0ece3;
+}
+
+#about a:link, #about a:visited, #about a:hover, #about a:active {
+  color: #ffcb1f;
+}
+
+@media print {
+  body {
+    font: 12pt "Times New Roman", "TimeNR", Times, serif;
+  }
+  a {
+    font-weight: bold;
+    color: #1c4e68;
+    text-decoration: underline;
+  }
+  #main {
+    background-color: #ffffff;
+    border-left: 0px;
+  }
+  #container {
+    margin-left: 2%;
+    margin-right: 2%;
+    background-color: #ffffff;
+  }
+  #content {
+    padding: 1em;
+    background-color: #ffffff;
+  }
+  #navigation {
+    display: none;
+  }
+  pre.example {
+    font-family: "Andale Mono", monospace;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+}
+
+table.module_list {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #b1e3fa;
+  border-collapse: collapse;
+}
+
+table.module_list td {
+  border-width: 1px;
+  padding: 3px;
+  border-style: solid;
+  border-color: #b1e3fa;
+}
+
+table.module_list td.name {
+  background-color: #e0f4fc;
+  min-width: 200px;
+}
+
+table.module_list td.summary {
+  width: 100%;
+}
+
+table.function_list {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #b1e3fa;
+  border-collapse: collapse;
+}
+
+table.function_list td {
+  border-width: 1px;
+  padding: 3px;
+  border-style: solid;
+  border-color: #b1e3fa;
+}
+
+table.function_list td.name {
+  background-color: #e0f4fc;
+  min-width: 200px;
+}
+
+table.function_list td.summary {
+  width: 100%;
+}
+
+ul.nowrap {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+dl.table dt, dl.function dt {
+  border-top: 1px solid #b1e3fa;
+  padding-top: 1em;
+}
+
+dl.table dd, dl.function dd {
+  padding-bottom: 1em;
+  margin: 10px 0 0 20px;
+}
+
+dl.table h3, dl.function h3 {
+  font-size: .95em;
+}
+
+/* stop sublists from having initial vertical space */
+ul ul {
+  margin-top: 0px;
+}
+
+ol ul {
+  margin-top: 0px;
+}
+
+ol ol {
+  margin-top: 0px;
+}
+
+ul ol {
+  margin-top: 0px;
+}
+
+/* make the target distinct; helps when we're navigating to a function */
+a:target + * {
+  border: 6px double #cf5a5a;
+  background-color: #31302f;
+  color: #ffcb1f;
+}
+/*# sourceMappingURL=ldoc.css.map */

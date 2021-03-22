@@ -1,21 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
     <title>Noble Engine</title>
-    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
 
 <div id="container">
-
-<div id="product">
-	<div id="product_logo"></div>
-	<div id="product_name"><big><b></b></big></div>
-	<div id="product_description"></div>
-</div> <!-- id="product" -->
-
 
 <div id="main">
 
@@ -23,129 +15,135 @@
 <!-- Menu -->
 
 <div id="navigation">
-<br/>
-<h1>Noble Engine</h1>
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
 
-<ul>
-  <li><a href="../index.html">Index</a></li>
-</ul>
+		<div class="nav-module">
+			<h2>Noble.Bonk</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.stopCheckingDebugBonks">Noble.Bonk.stopCheckingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.checkingDebugBonks">Noble.Bonk.checkingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.checkDebugBonks">Noble.Bonk.checkDebugBonks</a></li>
+					</ul>
+			</ul>
+		</div>
 
-<h2>Contents</h2>
-<ul>
-<li><a href="#Functions">Functions</a></li>
-</ul>
 
-
-<h2>Modules</h2>
-<ul class="nowrap">
-  <li><strong>Noble.Bonk</strong></li>
-  <li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
-  <li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
-  <li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
-  <li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
-  <li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
-  <li><a href="../modules/Noble.html">Noble</a></li>
-</ul>
-<h2>Classes</h2>
-<ul class="nowrap">
-  <li><a href="../classes/NobleMenu.html">NobleMenu</a></li>
-  <li><a href="../classes/NobleScene.html">NobleScene</a></li>
-</ul>
+	<div class="nav-modules">
+		<h2>Noble Engine</h2>
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><strong>Noble.Bonk</strong></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleMenu.html">NobleMenu</a></li>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+					</ul>
+			</div>
+	</div>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>Noble.Bonk</code></h1>
-<p>Engine-specific error handling.</p>
-<p>
+		<h1>Noble.Bonk</h1>
+		<p>Engine-specific error handling.</p>
+		<p>
  Noble Engine overrides/supercedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
 <p> Some bonks will throw during normal operation, but others ("debug bonks") introduce some execution overhead so are not
  checked by default.
 </p>
 
+				<h2><a href="#Functions">Functions</a></h2>
+				<table class="function_list">
+						<tr>
+							<td class="name" ><a href="#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></td>
+							<td class="summary">Begin checking for debug bonks on every frame.</td>
+						</tr>
+						<tr>
+							<td class="name" ><a href="#Noble.Bonk.stopCheckingDebugBonks">Noble.Bonk.stopCheckingDebugBonks</a></td>
+							<td class="summary">Stop checking for debug bonks on every frame.</td>
+						</tr>
+						<tr>
+							<td class="name" ><a href="#Noble.Bonk.checkingDebugBonks">Noble.Bonk.checkingDebugBonks</a></td>
+							<td class="summary">Are we checking for debug bonks?</td>
+						</tr>
+						<tr>
+							<td class="name" ><a href="#Noble.Bonk.checkDebugBonks">Noble.Bonk.checkDebugBonks</a></td>
+							<td class="summary">Manually check for debug bonks.</td>
+						</tr>
+				</table>
+			<br/>
+			<br/>
 
-<h2><a href="#Functions">Functions</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks()</a></td>
-	<td class="summary">Begin checking for debug bonks on every frame.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Noble.Bonk.stopCheckingDebugBonks">Noble.Bonk.stopCheckingDebugBonks()</a></td>
-	<td class="summary">Stop checking for debug bonks on every frame.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Noble.Bonk.checkingDebugBonks">Noble.Bonk.checkingDebugBonks()</a></td>
-	<td class="summary">Are we checking for debug bonks?</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Noble.Bonk.checkDebugBonks">Noble.Bonk.checkDebugBonks()</a></td>
-	<td class="summary">Manually check for debug bonks.</td>
-	</tr>
-</table>
-
-<br/>
-<br/>
-
-
-    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
-    Methods
-    <dl class="function">
-    <dt>
-    <a name = "Noble.Bonk.startCheckingDebugBonks"></a>
-    <strong>Noble.Bonk.startCheckingDebugBonks()</strong>
-    </dt>
-    <dd>
-    Begin checking for debug bonks on every frame.  This also resets values to check agaisnt, so you may wish to run it even if it's already running.
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!-- Methods -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Bonk.startCheckingDebugBonks"></a>
+						<span class="item-name">Noble.Bonk.startCheckingDebugBonks()<span>
+					</dt>
+					<dd>
+						Begin checking for debug bonks on every frame.  This also resets values to check agaisnt, so you may wish to run it even if it's already running.
 
 
 
 
 
 
-
-</dd>
-    <dt>
-    <a name = "Noble.Bonk.stopCheckingDebugBonks"></a>
-    <strong>Noble.Bonk.stopCheckingDebugBonks()</strong>
-    </dt>
-    <dd>
-    Stop checking for debug bonks on every frame.
-
+					</dd>
+					<dt>
+						<a name = "Noble.Bonk.stopCheckingDebugBonks"></a>
+						<span class="item-name">Noble.Bonk.stopCheckingDebugBonks()<span>
+					</dt>
+					<dd>
+						Stop checking for debug bonks on every frame.
 
 
 
 
 
 
-</dd>
-    <dt>
-    <a name = "Noble.Bonk.checkingDebugBonks"></a>
-    <strong>Noble.Bonk.checkingDebugBonks()</strong>
-    </dt>
-    <dd>
-    Are we checking for debug bonks?
+					</dd>
+					<dt>
+						<a name = "Noble.Bonk.checkingDebugBonks"></a>
+						<span class="item-name">Noble.Bonk.checkingDebugBonks()<span>
+					</dt>
+					<dd>
+						Are we checking for debug bonks?
+
+
+							<h3>Returns:</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+
+								</ol>
 
 
 
-    <h3>Returns:</h3>
-    <ol>
 
-           <span class="types"><span class="type">bool</span></span>
-
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Noble.Bonk.checkDebugBonks"></a>
-    <strong>Noble.Bonk.checkDebugBonks()</strong>
-    </dt>
-    <dd>
-    Manually check for debug bonks.
+					</dd>
+					<dt>
+						<a name = "Noble.Bonk.checkDebugBonks"></a>
+						<span class="item-name">Noble.Bonk.checkDebugBonks()<span>
+					</dt>
+					<dd>
+						Manually check for debug bonks.
  This method runs every frame when <code>checkingDebugBonks()</code> is true, but you may call it manually
 
 
@@ -153,17 +151,21 @@
 
 
 
-
-</dd>
-</dl>
+					</dd>
+			</dl>
 
 
 </div> <!-- id="content" -->
+
 </div> <!-- id="main" -->
+
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-03-21 19:02:26 </i>
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-22 15:58:31</span>
 </div> <!-- id="about" -->
+
 </div> <!-- id="container" -->
+
 </body>
 </html>
+
