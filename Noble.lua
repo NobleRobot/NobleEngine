@@ -41,13 +41,14 @@ import 'libraries/noble/libraries/Sequence'
 
 -- Noble libraries, modules and classes.
 import 'libraries/noble/utilities/Utilities'
-import 'libraries/noble/NobleScene'
-import 'libraries/noble/NobleMenu'
-import 'libraries/noble/Noble.Settings.lua'
+import 'libraries/noble/Noble.Bonk.lua'
 import 'libraries/noble/Noble.GameData.lua'
 import 'libraries/noble/Noble.Input.lua'
+import 'libraries/noble/Noble.Settings.lua'
 import 'libraries/noble/Noble.Text.lua'
-import 'libraries/noble/Noble.Bonk.lua'
+import 'libraries/noble/Noble.TransitionType.lua'
+import 'libraries/noble/NobleScene'
+import 'libraries/noble/NobleMenu'
 
 ---
 -- Check to see if the game is transitioning between scenes.
