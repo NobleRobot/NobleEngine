@@ -289,9 +289,11 @@ function Noble.GameData.getTimestamp(__gameDataSlot)
 end
 
 --- Returns the current number of GameData slots.
+-- @treturn int
 function Noble.GameData.getNumberOfSlots() return numberOfSlots end
 
 --- Returns the number of the current GameData slot.
+-- @treturn int
 function Noble.GameData.getCurrentSlot() return currentSlot end
 
 --- Saves a single GameData to disk. If you want to save all GameDatas, use Noble.GameGata.saveAll() instead.

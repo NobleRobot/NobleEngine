@@ -1,6 +1,7 @@
 ---
 -- A set of constants for scene transition animations.
 -- @module Noble.TransitionType
+-- @see Noble.transition
 
 Noble.TransitionType = {}
 

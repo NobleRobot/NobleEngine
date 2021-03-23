@@ -35,13 +35,12 @@
 
 
 	<div class="nav-modules">
-		<h2>Noble Engine</h2>
 			<div class="nav-kind">
 					<h3>Modules</h3>
 					<ul>
 								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
 								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
-								<li><strong>Noble.Input</strong></li>
+								<li><span class="selected">Noble.Input</span></li>
 								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
 								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
 								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
@@ -55,6 +54,12 @@
 								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
 					</ul>
 			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+					</ul>
+			</div>
 	</div>
 
 </div>
@@ -65,31 +70,7 @@
 		<p>Input manager.</p>
 		<p></p>
 
-				<h2><a href="#Functions">Functions</a></h2>
-				<table class="function_list">
-						<tr>
-							<td class="name" ><a href="#Noble.Input.getHandler">Noble.Input.getHandler</a></td>
-							<td class="summary">Get the currently active input handler.</td>
-						</tr>
-						<tr>
-							<td class="name" ><a href="#Noble.Input.setHandler">Noble.Input.setHandler</a></td>
-							<td class="summary">Use this to change the active inputHandler.</td>
-						</tr>
-						<tr>
-							<td class="name" ><a href="#Noble.Input.disable">Noble.Input.disable</a></td>
-							<td class="summary">A helper function that calls Noble.Input.setHandler() with no argument.</td>
-						</tr>
-						<tr>
-							<td class="name" ><a href="#Noble.Input.activateCrankIndicator">Noble.Input.activateCrankIndicator</a></td>
-							<td class="summary">Enable/disable on-screen crank indicator.</td>
-						</tr>
-						<tr>
-							<td class="name" ><a href="#Noble.Input.crankIndicatorActive">Noble.Input.crankIndicatorActive</a></td>
-							<td class="summary">Checks whethe the crank indicator has been activated via <code>Noble.Input.showCrankIndicator(true)</code>.</td>
-						</tr>
-				</table>
-			<br/>
-			<br/>
+		<hr/>
 
 			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
 			<!-- Methods -->
@@ -102,7 +83,7 @@
 						Get the currently active input handler.  Returns nil if none are active.
 
 
-							<h3>Returns:</h3>
+							<h3>Returns</h3>
 								<ol>
 
 											<span class="types"><span class="type">table</span></span>
@@ -120,18 +101,19 @@
 					<dd>
 						Use this to change the active inputHandler.  Enter nil to disable input.
 
-								<h3>Parameters:</h3>
-							<ul>
+								<h3>Parameters</h3>
+							<ul class="parameters">
 													<li><span class="parameter">__inputHandler</span>
 															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
 														 A table of callbacks which handle input events.
-															(<em>default</em> nil)
 													</li>
 							</ul>
 
 
 
-							<h3>See also:</h3>
+							<h3>See</h3>
 							<ul>
 									<a href="../classes/NobleScene.html#NobleScene.inputHandler">NobleScene.inputHandler</a>
 							</ul>
@@ -148,7 +130,7 @@
 
 
 
-							<h3>See also:</h3>
+							<h3>See</h3>
 							<ul>
 									<a href="../modules/Noble.Input.html#Noble.Input.setHandler">setHandler</a>
 							</ul>
@@ -161,11 +143,12 @@
 					</dt>
 					<dd>
 						Enable/disable on-screen crank indicator.
-<p> NOTE: The indicator will only ever show if the crank is docked.
+<p> <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
 
-								<h3>Parameters:</h3>
-							<ul>
+								<h3>Parameters</h3>
+							<ul class="parameters">
 													<li><span class="parameter">__bool</span>
+														<br/>
 														 Set true to start showing the on-screen crank indicator. Set false to stop showing it.
 													</li>
 							</ul>
@@ -180,11 +163,11 @@
 						<span class="item-name">Noble.Input.crankIndicatorActive()<span>
 					</dt>
 					<dd>
-						Checks whethe the crank indicator has been activated via <code>Noble.Input.showCrankIndicator(true)</code>.
-<p> NOTE: The indicator will only ever show if the crank is docked.
+						Checks whethe the crank indicator has been activated via <code>activateCrankIndicator(true)</code>.
+<p> <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
 
 
-							<h3>Returns:</h3>
+							<h3>Returns</h3>
 								<ol>
 
 											<span class="types"><span class="type">bool</span></span>
@@ -192,7 +175,7 @@
 								</ol>
 
 
-							<h3>See also:</h3>
+							<h3>See</h3>
 							<ul>
 									<a href="../modules/Noble.Input.html#Noble.Input.activateCrankIndicator">activateCrankIndicator</a>
 							</ul>
@@ -208,7 +191,7 @@
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-22 15:58:31</span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-22 23:35:14</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

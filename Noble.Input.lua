@@ -39,7 +39,7 @@ local crankIndicatorActive = false
 
 --- Enable/disable on-screen crank indicator.
 --
--- NOTE: The indicator will only ever show if the crank is docked.
+-- <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
 -- @param __bool Set true to start showing the on-screen crank indicator. Set false to stop showing it.
 function Noble.Input.activateCrankIndicator(__bool)
 	if (__bool) then
@@ -48,9 +48,9 @@ function Noble.Input.activateCrankIndicator(__bool)
 	crankIndicatorActive = __bool
 end
 
---- Checks whethe the crank indicator has been activated via `Noble.Input.showCrankIndicator(true)`.
+--- Checks whethe the crank indicator has been activated via `activateCrankIndicator(true)`.
 --
--- NOTE: The indicator will only ever show if the crank is docked.
+-- <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
 -- @treturn bool
 -- @see activateCrankIndicator
 function Noble.Input.crankIndicatorActive()
