@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Menu</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Menu.new">.new</a></li>
+							<li><a href="#menu:addItem">menu:addItem</a></li>
+							<li><a href="#menu:activate">menu:activate</a></li>
+							<li><a href="#menu:deactivate">menu:deactivate</a></li>
+							<li><a href="#menu:isActive">menu:isActive</a></li>
+							<li><a href="#menu:selectPrevious">menu:selectPrevious</a></li>
+							<li><a href="#menu:selectNext">menu:selectNext</a></li>
+							<li><a href="#menu:select">menu:select</a></li>
+							<li><a href="#menu:click">menu:click</a></li>
+							<li><a href="#menu:drawItem">menu:drawItem</a></li>
+							<li><a href="#menu:drawSelectedItem">menu:drawSelectedItem</a></li>
+							<li><a href="#menu:draw">menu:draw</a></li>
+					</ul>
+					<h3>Tables</h3>
+					<ul>
+							<li><a href="#menu.itemNames">menu.itemNames</a></li>
+							<li><a href="#menu.clickHandlers">menu.clickHandlers</a></li>
+							<li><a href="#menu.itemIndices">menu.itemIndices</a></li>
+							<li><a href="#menu.itemWidths">menu.itemWidths</a></li>
+					</ul>
+					<h3>Fields</h3>
+					<ul>
+							<li><a href="#menu.currentItemNumber">menu.currentItemNumber</a></li>
+							<li><a href="#menu.currentItemName">menu.currentItemName</a></li>
+							<li><a href="#menu.width">menu.width</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><span class="selected">Noble.Menu</span></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Menu</h1>
+		<p>An extended implementation of <code>playdate.ui.gridview</code>, meant for 1-dimensional, single-screen text menus.</p>
+		<p></p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Menu.new"></a>
+						<span class="item-name">Noble.Menu.new([__activate=true[, __alignment=kTextAlignment.left[, __localized=false[, __color=Graphics.kColorBlack[, __padding=2[, __horizontalPadding[, __font=Noble.Text.getCurrentFont()[, __selectedCornerRadius=__font:getHeight()/4[, __selectedOutlineThickness=2]]]]]]]]])<span>
+					</dt>
+					<dd>
+						Create a new menu object.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__activate</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 <a href="../modules/Noble.Menu.html#menu:activate">Activate</a> this menu upon creation.
+													</li>
+													<li><span class="parameter">__alignment</span>
+															<span class="default">= <span class="value">kTextAlignment.left</span> (default)</span>
+														<br/>
+														 The text alignment of menu items.
+													</li>
+													<li><span class="parameter">__localized</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If true, menu item names are localization keys rather than display names.
+													</li>
+													<li><span class="parameter">__color</span>
+															<span class="default">= <span class="value">Graphics.kColorBlack</span> (default)</span>
+														<br/>
+														 The color of menu item text. The selected highlight will be the inverse color.
+													</li>
+													<li><span class="parameter">__padding</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">2</span> (default)</span>
+														<br/>
+														 Cell padding for menu items.
+													</li>
+													<li><span class="parameter">__horizontalPadding</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 Use this to override horizontal padding, useful for certain fonts. If nil, uses __padding.
+													</li>
+													<li><span class="parameter">__font</span>
+															<span class="default">= <span class="value">Noble.Text.getCurrentFont()</span> (default)</span>
+														<br/>
+														 If nil, uses current set font.
+													</li>
+													<li><span class="parameter">__selectedCornerRadius</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">__font:getHeight()/4</span> (default)</span>
+														<br/>
+														 Sets rounded corners for a selected menu item.
+													</li>
+													<li><span class="parameter">__selectedOutlineThickness</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">2</span> (default)</span>
+														<br/>
+														 Sets the outline thickness for selected items.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+
+										<code>menu</code>, a new menu item.
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(
+	<span class="keyword">true</span>,
+	kTextAlignment.center,
+	<span class="keyword">false</span>,
+	Graphics.kColorWhite,
+	<span class="number">4</span>, <span class="number">6</span>,
+	Noble.Text.large,
+	<span class="keyword">nil</span>, <span class="number">3</span>
+)
+menu:addItem(<span class="string">"Play Game"</span>, <span class="keyword">function</span>() TitleScreen:playGame() <span class="keyword">end</span>)
+menu:addItem(<span class="string">"Options"</span>, <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span>)
+menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">function</span>() Noble.transition(CreditsScreen) <span class="keyword">end</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:addItem"></a>
+						<span class="item-name">menu:addItem(__nameOrKey[, __clickHandler])<span>
+					</dt>
+					<dd>
+						Adds a item to this menu.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__nameOrKey</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of this menu item. It can be a display name or a localization key. <strong>Must be unique.</strong>
+													</li>
+													<li><span class="parameter">__clickHandler</span>
+															<span class="types"><span class="type">function</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 The function that runs when this menu item is "clicked."
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#Noble.Menu.new">new</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "menu:activate"></a>
+						<span class="item-name">menu:activate()<span>
+					</dt>
+					<dd>
+						Activate this menu.
+ This selects the most recently selected menu item (or the first item if none have been previously selected), and enables this menu's <a href="../modules/Noble.Menu.html#menu:selectPrevious">selectPrevious</a>, <a href="../modules/Noble.Menu.html#menu:selectNext">selectNext</a>, and <a href="../modules/Noble.Menu.html#menu:click">click</a> methods.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">false</span>)
+menu:activate()</pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:deactivate"></a>
+						<span class="item-name">menu:deactivate()<span>
+					</dt>
+					<dd>
+						Deactivate this menu.
+ This deselects all menu items, and disables this menu's <a href="../modules/Noble.Menu.html#menu:selectPrevious">selectPrevious</a>, <a href="../modules/Noble.Menu.html#menu:selectNext">selectNext</a>, and <a href="../modules/Noble.Menu.html#menu:click">click</a> methods.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
+menu:deactivate()</pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:isActive"></a>
+						<span class="item-name">menu:isActive()<span>
+					</dt>
+					<dd>
+						Check to see if this menu is currently active.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "menu:selectPrevious"></a>
+						<span class="item-name">menu:selectPrevious([__force=false[, __wrapSelection=true]])<span>
+					</dt>
+					<dd>
+						Selects the previous item in this menu.  <strong>This menu must be active.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__force</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Force this method to run, even if this menu is not active.
+													</li>
+													<li><span class="parameter">__wrapSelection</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Selects the final menu item if the first menu item is currently selected.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:activate">activate</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">TitleScreen.inputHandler.upButtonDown = <span class="keyword">function</span>()
+	menu:selectPrevious()
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:selectNext"></a>
+						<span class="item-name">menu:selectNext([__force=false[, __wrapSelection=true]])<span>
+					</dt>
+					<dd>
+						Selects the next previous item in this menu.  <strong>This menu must be active.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__force</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Force this method to run, even if this menu is not active.
+													</li>
+													<li><span class="parameter">__wrapSelection</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Selects the first menu item if the final menu item is currently selected.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:activate">activate</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">TitleScreen.inputHandler.downButtonDown = <span class="keyword">function</span>()
+	menu:selectNext()
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:select"></a>
+						<span class="item-name">menu:select(__menuItem[, __force=false])<span>
+					</dt>
+					<dd>
+						Selects a specific item in this menu, either by it's index, or it's name.  <strong>This menu must be active.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__menuItem</span>
+															<span class="types"><span class="type">int</span> or <span class="type">string</span></span>
+														<br/>
+														 The menu item to select. You can enter the item's number or it's name/key.
+													</li>
+													<li><span class="parameter">__force</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Force this method to run, even if this menu is not active.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:activate">activate</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">TitleScreen.inputHandler.BButtonDown = <span class="keyword">function</span>()
+	menu:<span class="global">select</span>(<span class="number">1</span>, <span class="keyword">true</span>)
+<span class="keyword">end</span></pre>
+								<pre class="example">TitleScreen.inputHandler.BButtonDown = <span class="keyword">function</span>()
+	menu:<span class="global">select</span>(<span class="string">"Play Game"</span>, <span class="keyword">true</span>)
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:click"></a>
+						<span class="item-name">menu:click([__force=false])<span>
+					</dt>
+					<dd>
+						Runs the function associated with the currently selected menu item.  <strong>This menu must be active.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__force</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Force this method to run, even if this menu is not active.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:activate">activate</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">TitleScreen.inputHandler.AButtonDown = <span class="keyword">function</span>()
+	menu:click()
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:drawItem"></a>
+						<span class="item-name">menu:drawItem(__x, __y, __itemIndex)<span>
+					</dt>
+					<dd>
+						This method is called for every <strong>non-selected</strong> item when <a href="../modules/Noble.Menu.html#menu:draw">draw</a> is called.  You shouldn't call this yourself, but you may re-implement it if you wish.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__y</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__itemIndex</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Text.html#Noble.Text.draw">Noble.Text.draw</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> menu:drawItem(__x, __y, __itemIndex)
+	Graphics.setImageDrawMode(self.fillMode)
+	Noble.Text.draw(
+		self.itemNames[__itemIndex],
+		__x + self.horizontalPadding/<span class="number">2</span>, __y + self.padding/<span class="number">2</span>,
+		self.alignment, self.localized, self.font
+	)
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:drawSelectedItem"></a>
+						<span class="item-name">menu:drawSelectedItem(__x, __y, __itemIndex)<span>
+					</dt>
+					<dd>
+						This method is called for every <strong>selected</strong> item when <a href="../modules/Noble.Menu.html#menu:draw">draw</a> is called.  You shouldn't call this yourself, but you may re-implement it if you wish.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__y</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__itemIndex</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Text.html#Noble.Text.draw">Noble.Text.draw</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> menu:drawSelectedItem(__x, __y, __itemIndex)
+		Graphics.setColor(self.color)
+		Graphics.fillRoundRect(__x, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+		Graphics.setColor(self.otherColor)
+		Graphics.setLineWidth(self.selectedOutlineThickness)
+		Graphics.drawRoundRect(__x, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+		Graphics.setImageDrawMode(self.otherFillMode)
+		Noble.Text.draw(self.itemNames[__itemIndex], __x+self.horizontalPadding/<span class="number">2</span>, __y+self.padding/<span class="number">2</span>, self.alignment, self.localized, self.font)
+<span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu:draw"></a>
+						<span class="item-name">menu:draw(__x, __y)<span>
+					</dt>
+					<dd>
+						Draw's this menu to the screen.  You may call this manually, but ideally, you will put it in in your scene's <a href="../classes/NobleScene.html#NobleScene:update">update</a> or <a href="../classes/NobleScene.html#NobleScene:drawBackground">drawBackground</a> method.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__y</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourScene:update()
+	YourScene.super.update(self)
+	menu:draw(<span class="number">50</span>, <span class="number">100</span>)
+<span class="keyword">end</span></pre>
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "menu.itemNames"></a>
+						<span class="item-name">menu.itemNames<span>
+					</dt>
+					<dd>
+						A string "array" of menu item strings/keys.
+ <strong>You cannot add or remove menu items by modifying this table</strong>.
+ It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">for</span> i = <span class="number">1</span>, #menu.items, <span class="number">1</span> <span class="keyword">do</span>
+	menu.clickHandlers[menu.items[i]]	= <span class="keyword">nil</span> <span class="comment">-- Clears all click handlers, for some reason.
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.clickHandlers"></a>
+						<span class="item-name">menu.clickHandlers<span>
+					</dt>
+					<dd>
+						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their functions may be modified afterward.
+ <strong>You cannot add or remove menu items by modifying this table</strong>.
+ It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+ If you need to hide/show items at runtime, you can recreate the menu, or put fancy logic inside <a href="../modules/Noble.Menu.html#menu:drawItem">drawItem</a>.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
+menu.addItem(<span class="string">"Play Game"</span>)
+menu.addItem(<span class="string">"Options"</span>)
+
+menu.clickHandlers[<span class="string">"Play Game"</span>] = <span class="keyword">function</span>() TitleScreen:playGame() <span class="keyword">end</span>
+menu.clickHandlers[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span></pre>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
+menu.addItem(<span class="string">"Play Game"</span>)
+menu.addItem(<span class="string">"Options"</span>)
+
+menu.clickHandlers = {
+	[<span class="string">"Play Game"</span>] = <span class="keyword">function</span> TitleScreen:playGame() <span class="keyword">end</span>,
+	[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span>
+}</pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.itemIndices"></a>
+						<span class="item-name">menu.itemIndices<span>
+					</dt>
+					<dd>
+						A key/value table of menu item indices.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">menu.itemIndices[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
+</span>menu.itemIndices[<span class="string">"Options"</span>]]	<span class="comment">-- 2</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.itemWidths"></a>
+						<span class="item-name">menu.itemWidths<span>
+					</dt>
+					<dd>
+						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> playGameMenuItemWidth = menu.itemWidths[<span class="string">"Play Game"</span>]</pre>
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "menu.currentItemNumber"></a>
+						<span class="item-name">menu.currentItemNumber<span>
+					</dt>
+					<dd>
+						The current menu item's index.
+<p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:select">select</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "menu.currentItemName"></a>
+						<span class="item-name">menu.currentItemName<span>
+					</dt>
+					<dd>
+						The current menu item's index.
+<p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:select">select</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "menu.width"></a>
+						<span class="item-name">menu.width<span>
+					</dt>
+					<dd>
+						The width of the widest menu item plus the menu's horizontal padding.
+<p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
+
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-25 02:44:52</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

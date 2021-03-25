@@ -24,15 +24,16 @@
 			<ul>
 					<h3>Functions</h3>
 					<ul>
-							<li><a href="#new">new</a></li>
-							<li><a href="#transition">transition</a></li>
-							<li><a href="#currentScene">currentScene</a></li>
-							<li><a href="#currentSceneName">currentSceneName</a></li>
+							<li><a href="#new">.new</a></li>
+							<li><a href="#engineInitialized">.engineInitialized</a></li>
+							<li><a href="#transition">.transition</a></li>
+							<li><a href="#currentScene">.currentScene</a></li>
+							<li><a href="#currentSceneName">.currentSceneName</a></li>
 					</ul>
 					<h3>Fields</h3>
 					<ul>
-							<li><a href="#isTransitioning">isTransitioning</a></li>
-							<li><a href="#showFPS">showFPS</a></li>
+							<li><a href="#isTransitioning">.isTransitioning</a></li>
+							<li><a href="#showFPS">.showFPS</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -42,19 +43,19 @@
 			<div class="nav-kind">
 					<h3>Modules</h3>
 					<ul>
+								<li><span class="selected">Noble</span></li>
 								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
 								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
 								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
 								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
 								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
 								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
-								<li><span class="selected">Noble</span></li>
 					</ul>
 			</div>
 			<div class="nav-kind">
 					<h3>Classes</h3>
 					<ul>
-								<li><a href="../classes/NobleMenu.html">NobleMenu</a></li>
 								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
 					</ul>
 			</div>
@@ -71,22 +72,17 @@
 <div id="content">
 
 		<h1>Noble</h1>
-		<p>Noble Engine
- A li'l game engine for Playdate.</p>
+		<p>A li'l game engine for Playdate.</p>
 		<p></p>
-			<h3>Info</h3>
-			<ul>
-					<li><strong>Author</strong>: Mark LaCroix</li>
-			</ul>
 
 		<hr/>
 
 			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
-			<!-- Methods -->
+			<!--  -->
 			<dl class="function">
 					<dt>
 						<a name = "new"></a>
-						<span class="item-name">new(StartingScene[, __transitionDuration[, __transitionType=Noble.Transition.CROSS_DISSOLVE[, __checkDebugBonks=false]]])<span>
+						<span class="item-name">new(StartingScene[, __transitionDuration[, __transitionType=Noble.Transition.CROSS_DISSOLVE[, __enableDebugBonkChecking=false]]])<span>
 					</dt>
 					<dd>
 						Engine initialization.  Run this once in your main.lua file to begin your game.
@@ -96,7 +92,7 @@
 													<li><span class="parameter">StartingScene</span>
 															<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
 														<br/>
-														 This is the scene your game begins with, a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
+														 This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
 													</li>
 													<li><span class="parameter">__transitionDuration</span>
 															<span class="types"><span class="type">number</span></span>
@@ -110,7 +106,7 @@
 														<br/>
 														 If a transition duration is set, use this transition type.
 													</li>
-													<li><span class="parameter">__checkDebugBonks</span>
+													<li><span class="parameter">__enableDebugBonkChecking</span>
 															<span class="types"><span class="type">bool</span></span>
 															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
@@ -125,6 +121,29 @@
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
 									<li><a href="../modules/Noble.Bonk.html#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "engineInitialized"></a>
+						<span class="item-name">engineInitialized()<span>
+					</dt>
+					<dd>
+						This checks to see if <a href="../modules/Noble.html#new">Noble.new</a> has been run.  It is used internally to ward off bonks.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Bonk.html#">Noble.Bonk</a>
 							</ul>
 
 
@@ -263,7 +282,7 @@
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-22 23:35:14</span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-25 02:44:52</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

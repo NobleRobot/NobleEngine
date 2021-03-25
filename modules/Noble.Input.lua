@@ -25,7 +25,7 @@ function Noble.Input.setHandler(__inputHandler)
 		currentHandler = nil
 	else
 		currentHandler = __inputHandler
-		playdate.inputHandlers.push(__inputHandler, true)	-- The Playdate SDK allows for multiple inputHanders to mix and match methods. Noble Engine removes this functionality.
+		playdate.inputHandlers.push(__inputHandler, true)	-- The Playdate SDK allows for multiple inputHandlers to mix and match methods. Noble Engine removes this functionality.
 	end
 end
 
@@ -48,7 +48,7 @@ function Noble.Input.activateCrankIndicator(__bool)
 	crankIndicatorActive = __bool
 end
 
---- Checks whethe the crank indicator has been activated via `activateCrankIndicator(true)`.
+--- Checks whether the crank indicator has been activated via `activateCrankIndicator(true)`.
 --
 -- <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
 -- @treturn bool
@@ -57,7 +57,7 @@ function Noble.Input.crankIndicatorActive()
 	return crankIndicatorActive
 end
 
--- Noble Engine defines extra "buttonHold" methods that run every frame that a button is held down, but to impliment them, we need to do some magic.
+-- Noble Engine defines extra "buttonHold" methods that run every frame that a button is held down, but to implement them, we need to do some magic.
 local buttonHoldBufferAmount = 3 -- This is how many frames to wait before the engine determines that a button is being held down. Using !buttonJustPressed() provides only 1 frame, which isn't enough.
 local AButtonHoldBufferCount = 0
 local BButtonHoldBufferCount = 0
@@ -66,7 +66,7 @@ local downButtonHoldBufferCount = 0
 local leftButtonHoldBufferCount = 0
 local rightButtonHoldBufferCount = 0
 
--- Do not call this method directly, thanks.
+-- Do not call this method directly, or modify it, thanks. :-)
 function Noble.Input.update()
 	if (currentHandler == nil) then return end
 	if (currentHandler.AButtonHold ~= nil) then
@@ -112,11 +112,15 @@ function Noble.Input.update()
 		if (playdate.buttonJustReleased(playdate.kButtonRight)) then rightButtonHoldBufferCount = 0 end
 	end
 end
+
+-- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankDocked()
 	if (currentHandler.crankDocked ~= nil) then
 		currentHandler.crankDocked()
 	end
 end
+
+-- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankUndocked()
 	if (currentHandler.crankUndocked ~= nil) then
 		currentHandler.crankDocked()

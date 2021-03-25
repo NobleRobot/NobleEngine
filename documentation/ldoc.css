@@ -33,7 +33,8 @@ span.types:after {
 }
 
 .type,
-.default {
+.default,
+.optional {
   color: #74726e;
 }
 

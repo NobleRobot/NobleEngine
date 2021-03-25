@@ -24,10 +24,11 @@
 			<ul>
 					<h3>Functions</h3>
 					<ul>
-							<li><a href="#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
-							<li><a href="#Noble.Bonk.stopCheckingDebugBonks">Noble.Bonk.stopCheckingDebugBonks</a></li>
-							<li><a href="#Noble.Bonk.checkingDebugBonks">Noble.Bonk.checkingDebugBonks</a></li>
-							<li><a href="#Noble.Bonk.checkDebugBonks">Noble.Bonk.checkDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.startCheckingDebugBonks">.startCheckingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.stopCheckingDebugBonks">.stopCheckingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.disableDebugBonkChecking">.disableDebugBonkChecking</a></li>
+							<li><a href="#Noble.Bonk.checkingDebugBonks">.checkingDebugBonks</a></li>
+							<li><a href="#Noble.Bonk.checkDebugBonks">.checkDebugBonks</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -37,19 +38,19 @@
 			<div class="nav-kind">
 					<h3>Modules</h3>
 					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
 								<li><span class="selected">Noble.Bonk</span></li>
 								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
 								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
 								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
 								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
 								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
-								<li><a href="../modules/Noble.html">Noble</a></li>
 					</ul>
 			</div>
 			<div class="nav-kind">
 					<h3>Classes</h3>
 					<ul>
-								<li><a href="../classes/NobleMenu.html">NobleMenu</a></li>
 								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
 					</ul>
 			</div>
@@ -68,26 +69,31 @@
 		<h1>Noble.Bonk</h1>
 		<p>Engine-specific error handling.</p>
 		<p>
- Noble Engine overrides/supercedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
-<p> Some bonks will throw during normal operation, but others ("debug bonks") introduce some execution overhead so are not
+ Noble Engine overrides/supersedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
+<p> Most bonks will throw during normal operation, but others ("debug bonks") introduce some execution overhead so are not
  checked by default.
 </p>
 
 		<hr/>
 
 			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
-			<!-- Methods -->
+			<!--  -->
 			<dl class="function">
 					<dt>
 						<a name = "Noble.Bonk.startCheckingDebugBonks"></a>
 						<span class="item-name">Noble.Bonk.startCheckingDebugBonks()<span>
 					</dt>
 					<dd>
-						Begin checking for debug bonks on every frame.  This also resets values to check agaisnt, so you may wish to run it even if it's already running.
+						Begin checking for debug bonks, <strong>on every frame</strong>.  This introduces needless overhead, so don't do it in a release build.
+ You can only run this if you ran previously <code>Noble.new()</code> with <code>__enableDebugBonkChecking</code> as true, which you should also not do in a release build.
 
 
 
 
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.html#new">Noble.new</a>
+							</ul>
 
 
 					</dd>
@@ -97,6 +103,21 @@
 					</dt>
 					<dd>
 						Stop checking for debug bonks on every frame.
+<p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Bonk.disableDebugBonkChecking"></a>
+						<span class="item-name">Noble.Bonk.disableDebugBonkChecking()<span>
+					</dt>
+					<dd>
+						Disable the ability to check for debug bonks.  It frees up some memory. Once you disable debug bonk checking, you cannot re-enable it.
+<p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
 
 
 
@@ -109,7 +130,7 @@
 						<span class="item-name">Noble.Bonk.checkingDebugBonks()<span>
 					</dt>
 					<dd>
-						Are we checking for debug bonks?
+						Are we debug bonk checking for debug bonks?
 
 
 							<h3>Returns</h3>
@@ -129,7 +150,8 @@
 					</dt>
 					<dd>
 						Manually check for debug bonks.
- This method runs every frame when <code>checkingDebugBonks()</code> is true, but you may call it manually
+ This method runs every frame when <a href="../modules/Noble.Bonk.html#Noble.Bonk.checkingDebugBonks">checkingDebugBonks</a> is true, but you may call it manually instead.
+<p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
 
 
 
@@ -146,7 +168,7 @@
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-22 23:35:14</span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-25 02:44:52</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

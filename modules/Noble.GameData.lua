@@ -54,9 +54,9 @@ local gameDataHasBeenSetup = false
 
 --- Sets up the GameDatas (save slots) for your game, and/or loads any existing GameDatas from disk.
 -- You can only run this once, ideally in your main.lua before you load your first scene.
--- @tparam table __keyValuePairs All the data items for a saved game, and thier default values, as key/value pairs. NOTE: Do not use "nil" as a value.
+-- @tparam table __keyValuePairs All the data items for a saved game, and their default values, as key/value pairs. NOTE: Do not use "nil" as a value.
 -- @int[opt=1] __numberOfSlots If you want multiple save slots, enter an integer here. You can add additional slots later.
--- @bool[opt=true] __saveToDisk Saves your default values immediatly to disk.
+-- @bool[opt=true] __saveToDisk Saves your default values immediately to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.
 -- @usage
 --	Noble.GameData.setup(
@@ -76,7 +76,7 @@ local gameDataHasBeenSetup = false
 -- @see deleteSlot
 function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __modifyExistingOnKeyChange)
 	if (gameDataHasBeenSetup) then
-		error("BONK: You can only run Noble.GaemData.setup() once.")
+		error("BONK: You can only run Noble.GameData.setup() once.")
 		return
 	else
 		gameDataHasBeenSetup = true
@@ -94,8 +94,7 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 	local createdNewData = false
 
 	-- Noble Engine checks on disk for GameDatas, including ones that were
-	-- added with addSlot(), but it assumes your game
-	-- will have no greater than 1000 of them.
+	-- added with addSlot, but it assumes your game will have no greater than 1000 of them.
 	for i = 1, 1000, 1 do
 		 -- We use a local here to avoid adding a nil item to the gameDatas table.
 		local gameData = Datastore.read("Game" .. i)
@@ -108,7 +107,7 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 				createdNewData = true
 			else
 				-- We can't find any more GameDatas on disk, so we update the
-				-- value of numberOfGameDataSlots if nessessary and get outta town!
+				-- value of numberOfGameDataSlots if necessary and get outta town!
 				numberOfSlots = i - 1
 				print ("Total number of game slots: " .. numberOfSlots)
 
@@ -144,6 +143,8 @@ end
 -- @string __dataItemName The name of the data item.
 -- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 -- @treturn any
+-- @usage Noble.GameData.get("equippedItem")
+-- @usage Noble.GameData.get("equippedItem", 2)
 function Noble.GameData.get(__dataItemName, __gameDataSlot)
 	currentSlot = __gameDataSlot or currentSlot
 	if (exists(currentSlot, __dataItemName)) then
@@ -157,6 +158,8 @@ end
 -- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
 -- @bool[opt=true] __updateTimestamp Sets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+-- @usage Noble.GameData.set("score", 74205)
+-- @usage Noble.GameData.set("score", Noble.GameData.get("score") + 100)
 -- @see save
 function Noble.GameData.set(__dataItemName, __value, __gameDataSlot, __saveToDisk, __updateTimestamp)
 	currentSlot = __gameDataSlot or currentSlot
@@ -169,7 +172,7 @@ function Noble.GameData.set(__dataItemName, __value, __gameDataSlot, __saveToDis
 	end
 end
 
---- Reset a GameData item to its default value, defined in setup().
+--- Reset a GameData item to its default value, defined in @{setup|setup}.
 -- @string __dataItemName The name of the data item.
 -- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
@@ -186,7 +189,7 @@ function Noble.GameData.reset(__dataItemName, __gameDataSlot, __saveToDisk, __up
 	end
 end
 
---- Reset all values in a GameData slot to the default values, defined in setup().
+--- Reset all values in a GameData slot to the default values, defined in @{setup|setup}.
 -- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
 -- @bool[opt=true] __updateTimestamp Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
@@ -221,19 +224,22 @@ function Noble.GameData.addSlot(__numberToAdd, __saveToDisk)
 	print ("Added " .. numberToAdd .. " GameData slots. Total GameData slots: " .. numberOfSlots)
 end
 
---- Deletes a GameData from disk if its save slot is greater than the default number established in setup().
--- Otherwise, resets all data items to default values using resetAll().
--- Generally, you won't need this unless you've added save slots using addSlot(). In other cases, use resetAll().
+--- Deletes a GameData from disk if its save slot is greater than the default number established in `setup`.
+-- Otherwise, resets all data items to default values using @{resetAll|resetAll}.
+--
+-- Generally, you won't need this unless you've added save slots using @{addSlot|addSlot}. In other cases, use @{resetAll|resetAll}.
 -- @int __gameDataSlot The slot holding the GameData to delete. Unlike other methods that take this argument, this is not optional.
--- @bool[opt=true] __collapseGameDatasTable Renames existing GameDatas
+-- @bool[opt=true] __collapseGameDatas Re-sorts the gameDatas table (and renames existing JSON files on disk) to fill the gap left by the deleted GameData.
 -- @see deleteAllSlots
 -- @see addSlot
 -- @see resetAll
-function Noble.GameData.deleteSlot(__gameDataSlot, __collapseGameDatasTable)
+-- @usage Noble.GameData.deleteSlot(6)
+-- @usage Noble.GameData.deleteSlot(15, false)
+function Noble.GameData.deleteSlot(__gameDataSlot, __collapseGameDatas)
 	if (__gameDataSlot == nil) then
 		error("BONK: You must specify a GameData slot to delete.")
 	end
-	local collapseGameDatasTable = __collapseGameDatasTable or true
+	local collapseGameDatas = __collapseGameDatas or true
 	if (exists(__gameDataSlot)) then
 		if (__gameDataSlot > numberOfGameDataSlotsAtSetup) then
 			-- If this GameData is not one of the default ones from setup(), it is removed from disk.
@@ -241,7 +247,7 @@ function Noble.GameData.deleteSlot(__gameDataSlot, __collapseGameDatasTable)
 				gameDatas[__gameDataSlot] = nil					-- Clear from memory.
 				Datastore.delete("Game" .. __gameDataSlot)		-- Clear from disk.
 				if (currentSlot == __gameDataSlot) then currentSlot = 1 end -- Safety!
-				if (collapseGameDatasTable) then
+				if (collapseGameDatas) then
 					-- Collapse GameDatas
 					local newGameDatas = {}
 					for i = 1, numberOfSlots do
@@ -265,9 +271,9 @@ function Noble.GameData.deleteSlot(__gameDataSlot, __collapseGameDatasTable)
 	end
 end
 
---- Deletes all GameDatas from disk, except for the number specified in setup(), which are reset to default values.
--- Use this to clear all data as if you were running setup() again.
--- Generally, you don't need this unless you've added save slots using addSlot().  In other cases, use resetAll() on each slot.
+--- Deletes all GameDatas from disk, except for the number specified in setup, which are reset to default values.
+-- Use this to clear all data as if you were running setup again.
+-- Generally, you don't need this unless you've added save slots using @{addSlot|addSlot}. In other cases, use @{resetAll|resetAll} on each slot.
 -- @see deleteSlot
 -- @see addSlot
 function Noble.GameData.deleteAllSlots()
@@ -278,10 +284,11 @@ function Noble.GameData.deleteAllSlots()
 end
 
 --- Returns the timestamp of the requested GameData, as a tuple (local time, GMT time). The timestamp is updated
--- See Playdate SDK for details on how a time object is formatted. NOTE: Timestamps are stored internally in GMT.
--- @int __gameDataSlot The GaemData slot to get the timestamp of. Unlike other methods that take this argument, this is not optional.
+-- See Playdate SDK for details on how a time object is formatted. <strong>NOTE: Timestamps are stored internally in GMT.</strong>
+-- @int __gameDataSlot The GameData slot to get the timestamp of. Unlike other methods that take this argument, this is not optional.
 -- @treturn table Local time
 -- @treturn table GMT time
+-- @usage Noble.GameData.getTimestamp(1)
 function Noble.GameData.getTimestamp(__gameDataSlot)
 	if (exists(__gameDataSlot)) then
 		return playdate.timeFromEpoch(playdate.epochFromGMTTime(gameDatas[__gameDataSlot].timestamp)), gameDatas[__gameDataSlot].timestamp
@@ -296,9 +303,11 @@ function Noble.GameData.getNumberOfSlots() return numberOfSlots end
 -- @treturn int
 function Noble.GameData.getCurrentSlot() return currentSlot end
 
---- Saves a single GameData to disk. If you want to save all GameDatas, use Noble.GameGata.saveAll() instead.
+--- Saves a single GameData to disk. If you want to save all GameDatas, use @{saveAll|saveAll} instead.
 -- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 -- @see saveAll
+-- @usage Noble.GameData.save()
+-- @usage Noble.GameData.save(3)
 function Noble.GameData.save(__gameDataSlot)
 	local gameDataSlot = __gameDataSlot or currentSlot
 	if (exists(gameDataSlot)) then
@@ -307,7 +316,7 @@ function Noble.GameData.save(__gameDataSlot)
 	end
 end
 
---- Save all GameDatas to disk. If you only have one, or want to save a specicic one, use Noble.GameGata.save() instead.
+--- Save all GameDatas to disk. If you only have one, or want to save a specific one, use @{save|save} instead.
 -- @see save
 function Noble.GameData.saveAll()
 	for i = 1, numberOfSlots, 1 do

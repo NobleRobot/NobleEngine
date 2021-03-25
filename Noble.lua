@@ -1,7 +1,5 @@
---- Noble Engine
--- A li'l game engine for Playdate.
+--- A li'l game engine for Playdate.
 -- @module Noble
--- @author Mark LaCroix
 
 --
 -- https://noblerobot.com/
@@ -27,37 +25,35 @@ UI = playdate.ui
 File = playdate.file
 Datastore = playdate.datastore
 
--- In lua, varibles are global by default, but having a "Global" object to put
--- varibles into is useful for maintaining sanity if you're coming from an OOP language.
+-- In lua, variables are global by default, but having a "Global" object to put
+-- variables into is useful for maintaining sanity if you're coming from an OOP language.
 -- It's included here for basically no reason at all. Noble Engine doesn't use it. (◔◡◔)
 Global = {}
 
--- It's all inside this table, oooo!
+-- It all fits inside this table, oooo!
 Noble = {}
 
 -- Third-party libraries
 import 'libraries/noble/libraries/Signal'
 import 'libraries/noble/libraries/Sequence'
 
--- Noble libraries, modules and classes.
+-- Noble libraries, modules, and classes.
 import 'libraries/noble/utilities/Utilities'
-import 'libraries/noble/Noble.Bonk.lua'
-import 'libraries/noble/Noble.GameData.lua'
-import 'libraries/noble/Noble.Input.lua'
-import 'libraries/noble/Noble.Settings.lua'
-import 'libraries/noble/Noble.Text.lua'
-import 'libraries/noble/Noble.TransitionType.lua'
-import 'libraries/noble/NobleScene'
-import 'libraries/noble/NobleMenu'
+import 'libraries/noble/modules/Noble.Bonk.lua'
+import 'libraries/noble/modules/Noble.GameData.lua'
+import 'libraries/noble/modules/Noble.Input.lua'
+import 'libraries/noble/modules/Noble.Settings.lua'
+import 'libraries/noble/modules/Noble.Text.lua'
+import 'libraries/noble/modules/Noble.TransitionType.lua'
+import 'libraries/noble/modules/Noble.Menu.lua'
+import 'libraries/noble/modules/NobleScene'
 
----
--- Check to see if the game is transitioning between scenes.
+--- Check to see if the game is transitioning between scenes.
 -- Useful to control game logic that lives outside of a scene's `update()` method.
 -- @field bool
 Noble.isTransitioning = false
 
----
--- Show/hide the Playdate SDK's FPS counter.
+--- Show/hide the Playdate SDK's FPS counter.
 -- @field bool
 Noble.showFPS = false;
 
@@ -65,24 +61,25 @@ local currentScene = nil
 local engineInitialized = false
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
--- @tparam NobleScene StartingScene This is the scene your game begins with, a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
+-- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
 -- @number[opt] __transitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 -- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
--- @bool[opt=false] __checkDebugBonks Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
+-- @bool[opt=false] __enableDebugBonkChecking Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
 -- @see NobleScene
 -- @see Noble.TransitionType
 -- @see Noble.Bonk.startCheckingDebugBonks
-function Noble.new(StartingScene, __transitionDuration, __transitionType, __checkDebugBonks)
+function Noble.new(StartingScene, __transitionDuration, __transitionType, __enableDebugBonkChecking)
+
 	if (engineInitialized) then
 		error("BONK: You can only run Noble.new() once.")
 		return
 	else
+		-- Noble Engine refers to an engine-specific error as a "bonk." We check this before engineInitialized is set to true because we need it to be false.
+		local enableDebugBonkChecking = __enableDebugBonkChecking or false
+		if (enableDebugBonkChecking) then Noble.Bonk.enableDebugBonkChecking() end
+
 		engineInitialized = true
 	end
-
-	-- Noble Engine refers to an engine-specific error as a "bonk."
-	local checkForExtraBonks = __checkDebugBonks or false
-	if (checkForExtraBonks) then Noble.Bonk.startCheckingDebugBonks() end
 
 	-- Screen drawing: see the Playdate SDK for details on these methods.
 	Graphics.sprite.setAlwaysRedraw(true)
@@ -107,6 +104,14 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __chec
 	-- Now that everything is set, let's-a go!
 	Noble.transition(StartingScene, __transitionDuration, transitionType)
 end
+
+--- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
+-- @treturn bool
+-- @see Noble.Bonk
+function Noble.engineInitialized()
+	return engineInitialized
+end
+
 
 -- Transition stuff
 --
@@ -183,7 +188,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	end
 
 	local onComplete = function()
-		previousSceneScreenCapture = nil-- Reset (if neccessary).
+		previousSceneScreenCapture = nil-- Reset (if necessary).
 		Noble.isTransitioning = false	-- Reset
 		newScene:start()				-- The new scene is now active.
 	end
