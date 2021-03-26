@@ -7,11 +7,9 @@
 }
 
 body {
-  margin-left: 1em;
-  margin-right: 1em;
+  margin: 2em;
   font-family: "Lato", arial, helvetica, geneva, sans-serif;
   background-color: #ffcb1f;
-  margin: 0px;
   color: #31302f;
 }
 
@@ -218,11 +216,13 @@ table.index td {
 }
 
 #container {
-  margin: 2em;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 25px;
   -webkit-box-shadow: 0 0 25px 0 rgba(49, 48, 47, 0.3);
           box-shadow: 0 0 25px 0 rgba(49, 48, 47, 0.3);
   overflow: hidden;
+  max-width: 1600px;
 }
 
 #product {

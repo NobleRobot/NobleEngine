@@ -26,6 +26,7 @@
 					<ul>
 							<li><a href="#Noble.Menu.new">.new</a></li>
 							<li><a href="#menu:addItem">menu:addItem</a></li>
+							<li><a href="#menu:removeItem">menu:removeItem</a></li>
 					</ul>
 					<h3>Properties </h3>
 					<ul>
@@ -37,7 +38,7 @@
 					<ul>
 							<li><a href="#menu.itemNames">menu.itemNames</a></li>
 							<li><a href="#menu.clickHandlers">menu.clickHandlers</a></li>
-							<li><a href="#menu.itemIndices">menu.itemIndices</a></li>
+							<li><a href="#menu.itemPositions">menu.itemPositions</a></li>
 							<li><a href="#menu.itemWidths">menu.itemWidths</a></li>
 					</ul>
 					<h3>Methods </h3>
@@ -198,7 +199,7 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					</dd>
 					<dt>
 						<a name = "menu:addItem"></a>
-						<span class="item-name">menu:addItem(__nameOrKey[, __clickHandler])<span>
+						<span class="item-name">menu:addItem(__nameOrKey[, __clickHandler[, __position]])<span>
 					</dt>
 					<dd>
 						Adds a item to this menu.
@@ -216,13 +217,46 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 														<br/>
 														 The function that runs when this menu item is "clicked."
 													</li>
+													<li><span class="parameter">__position</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 Insert the item at a specific position. If not set, adds to the end of the list.
+													</li>
 							</ul>
 
 
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Menu.html#Noble.Menu.new">new</a>
+									<li><a href="../modules/Noble.Menu.html#Noble.Menu.new">new</a></li>
+									<li><a href="../modules/Noble.Menu.html#menu:removeItem">removeItem</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "menu:removeItem"></a>
+						<span class="item-name">menu:removeItem([__menuItem=#menu.itemNames])<span>
+					</dt>
+					<dd>
+						Removes a item from this menu.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__menuItem</span>
+															<span class="types"><span class="type">int</span> or <span class="type">string</span></span>
+															<span class="default">= <span class="value">#menu.itemNames</span> (default)</span>
+														<br/>
+														 The menu item to remove. You can enter either the item's name/key or it's position. If left blank, removes the last item.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
 							</ul>
 
 
@@ -344,8 +378,8 @@ menu.clickHandlers = {
 
 					</dd>
 					<dt>
-						<a name = "menu.itemIndices"></a>
-						<span class="item-name">menu.itemIndices<span>
+						<a name = "menu.itemPositions"></a>
+						<span class="item-name">menu.itemPositions<span>
 					</dt>
 					<dd>
 						A key/value table of menu item indices.
@@ -356,8 +390,8 @@ menu.clickHandlers = {
 
 
 							<h3>Usage</h3>
-								<pre class="example">menu.itemIndices[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
-</span>menu.itemIndices[<span class="string">"Options"</span>]]	<span class="comment">-- 2</span></pre>
+								<pre class="example">menu.itemPositions[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
+</span>menu.itemPositions[<span class="string">"Options"</span>]]		<span class="comment">-- 2</span></pre>
 
 					</dd>
 					<dt>
@@ -713,7 +747,7 @@ menu:deactivate()</pre>
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-25 20:34:52</span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-25 21:56:06</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

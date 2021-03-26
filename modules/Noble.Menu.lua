@@ -116,9 +116,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--
 	-- This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
 	-- @usage
-	--	menu.itemIndices["Play Game"]]	-- 1
-	--	menu.itemIndices["Options"]]	-- 2
-	menu.itemIndices = {}
+	--	menu.itemPositions["Play Game"]]	-- 1
+	--	menu.itemPositions["Options"]]		-- 2
+	menu.itemPositions = {}
 
 	--- A key/value table of pixel widths for each menu item, based on its text. Useful for animation, layout, etc.
 	--
@@ -153,17 +153,31 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--- Adds a item to this menu.
 	-- @string __nameOrKey The name of this menu item. It can be a display name or a localization key. <strong>Must be unique.</strong>
 	-- @tparam[opt] function __clickHandler The function that runs when this menu item is "clicked."
+	-- @int[opt] __position Insert the item at a specific position. If not set, adds to the end of the list.
 	-- @see new
-	function menu:addItem(__nameOrKey, __clickHandler)
+	-- @see removeItem
+	function menu:addItem(__nameOrKey, __clickHandler, __position)
 		local clickHandler = __clickHandler or function () print("Menu item \"" .. __nameOrKey .. "\" clicked!") end
-		table.insert(menu.itemNames, __nameOrKey)
-		menu.itemIndices[__nameOrKey] = #menu.itemNames
-		menu.clickHandlers[__nameOrKey] = clickHandler
+		if (__position ~= nil) then
+			if (__position <= 0 or __position > #self.itemNames) then error("BONK: Menu item out of range.", 3) return end
+			table.insert(self.itemNames, __position, __nameOrKey)
+			for key, value in pairs(self.itemPositions) do
+				if (value >= __position) then
+					self.itemPositions[key] = self.itemPositions[key] + 1
+				end
+			end
+			self.itemPositions[__nameOrKey] = __position
+		else
+			table.insert(self.itemNames, __nameOrKey)
+			self.itemPositions[__nameOrKey] = #self.itemNames
+		end
+		self.clickHandlers[__nameOrKey] = clickHandler
+
 		local nameOrKey = __nameOrKey
 		if (self.localized) then nameOrKey = playdate.graphics.getLocalizedText(__nameOrKey) end
-		menu.itemWidths[__nameOrKey] = menu.font:getTextWidth(nameOrKey)
+		self.itemWidths[__nameOrKey] = self.font:getTextWidth(nameOrKey)
 
-		menu:setNumberOfRows(#menu.itemNames)
+		self:setNumberOfRows(#self.itemNames)
 
 		-- Update width
 		local width = 0
@@ -171,6 +185,62 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			if value > width then width = value end
 		end
 		self.width =  width + (self.horizontalPadding * 2) + (self.selectedOutlineThickness * 2)
+	end
+
+	--- Removes a item from this menu.
+	-- @tparam[opt=#menu.itemNames] int|string __menuItem The menu item to remove. You can enter either the item's name/key or it's position. If left blank, removes the last item.
+	-- @see addItem
+	function menu:removeItem(__menuItem)
+		local itemString = nil
+		local itemPosition = nil
+
+		if (__menuItem == nil) then
+			__menuItem = #self.itemNames
+		end
+
+		print(type(__menuItem))
+
+		if (type(__menuItem) == "number") then
+			if (__menuItem <= 0 or __menuItem > #self.itemNames) then error("BONK: Menu item out of range.", 3) return end
+			itemString = self.itemNames[__menuItem]
+			itemPosition = __menuItem
+		elseif (type(__menuItem) == "string") then
+			itemString = __menuItem
+			itemPosition = self.itemPositions[__menuItem]
+			if (itemPosition == nil) then error("BONK: Menu item not found.", 3) return end
+		end
+
+		print(itemString)
+		print(itemPosition)
+
+		for key, value in pairs(self.itemPositions) do
+			if (value > itemPosition) then
+				self.itemPositions[key] = self.itemPositions[key] - 1
+			end
+		end
+
+		table.remove(self.itemNames, itemPosition)
+		self.itemPositions[itemString] = nil
+		self.clickHandlers[itemString] = nil
+		self.itemWidths[itemString] = nil
+
+		-- In case the current item is selected.
+		if (self.currentItemNumber == itemPosition and self.currentItemNumber ~= 1) then
+			self:select(self.currentItemNumber - 1, true)
+			if (self.isActive() == false) then
+				self:setSelectedRow(0)
+			end
+		end
+
+		self:setNumberOfRows(#self.itemNames)
+
+		-- Update width
+		local width = 0
+		for _, value in pairs(self.itemWidths) do
+			if value > width then width = value end
+		end
+		self.width =  width + (self.horizontalPadding * 2) + (self.selectedOutlineThickness * 2)
+
 	end
 
 	local active = __activate or true
@@ -264,7 +334,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 				end
 				self:setSelectedRow(__menuItem)
 			elseif (type(__menuItem) == 'string') then
-				self:setSelectedRow(self.itemIndices[__menuItem])
+				self:setSelectedRow(self.itemPositions[__menuItem])
 			else
 				error("BONK: _menuItem must be a number or string, silly.")
 			end
@@ -303,7 +373,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 			xAdjustment = self.width
 		end
-		menu:drawInRect(__x - xAdjustment, __y, self.width, ((self.textHeight + self.padding + self.margin) * #self.itemNames) + (self.selectedOutlineThickness * 2) - self.margin)
+		self:drawInRect(__x - xAdjustment, __y, self.width, ((self.textHeight + self.padding + self.margin) * #self.itemNames) + (self.selectedOutlineThickness * 2) - self.margin)
 	end
 
 	--- This method is called for every <strong>non-selected</strong> item when @{draw|draw} is called. You shouldn't call this directly, but you may re-implement it if you wish.
