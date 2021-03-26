@@ -74,7 +74,7 @@ function SceneTemplate:resume()
 end
 
 -- You can define this here, or within your scene's init() function.
-SceneTemplate.inputHander = {
+SceneTemplate.inputHandler = {
 
 	-- A button
 	--
