@@ -23,7 +23,7 @@ NobleScene.name = ""
 
 --- This is the background color of this scene.
 --
-NobleScene.baseColor = Graphics.kColorWhite
+NobleScene.backgroundColor = Graphics.kColorWhite
 
 --- Tables
 -- @section tables
@@ -125,8 +125,7 @@ function NobleScene:update() end
 --	end
 --
 function NobleScene:drawBackground()
-	Graphics.setColor(self.baseColor)
-	Graphics.fillRect(0, 0, 400, 240)
+	Graphics.clear(self.backgroundColor)
 end
 
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
@@ -164,6 +163,7 @@ function NobleScene:finish() end
 --		--[Your code here]--
 --	end
 function NobleScene:pause() end
+
 --- <span></span>
 -- @usage
 --	function YourSceneName:resume()
