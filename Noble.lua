@@ -179,7 +179,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 
 	local duration = __duration or 1
 	local holdDuration = __holdDuration or 0.2
-	currentTransitionType = __transitionType
+	currentTransitionType = __transitionType or Noble.TransitionType.DIP_TO_BLACK
 
 	local onMidpoint = function()
 		currentScene = nil				-- Allows current scene to be garbage collected.
