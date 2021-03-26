@@ -3,21 +3,25 @@
 --
 Noble.Menu = {}
 
+--- Setup
+--@section setup
+
 --- Create a new menu object.
 -- @bool[opt=true] __activate @{activate|Activate} this menu upon creation.
--- @param[opt=kTextAlignment.left] __alignment The text alignment of menu items.
+-- @param[opt=Noble.Text.ALIGN_LEFT] __alignment The text alignment of menu items.
 -- @bool[opt=false] __localized If true, menu item names are localization keys rather than display names.
 -- @param[opt=Graphics.kColorBlack] __color The color of menu item text. The selected highlight will be the inverse color.
 -- @int[opt=2] __padding Cell padding for menu items.
 -- @int[opt] __horizontalPadding Use this to override horizontal padding, useful for certain fonts. If nil, uses __padding.
+-- @int[opt=2] __margin Spacing between menu items.
 -- @param[opt=Noble.Text.getCurrentFont()] __font If nil, uses current set font.
 -- @int[opt=__font:getHeight()/4] __selectedCornerRadius Sets rounded corners for a selected menu item.
--- @int[opt=2] __selectedOutlineThickness Sets the outline thickness for selected items.
+-- @int[opt=1] __selectedOutlineThickness Sets the outline thickness for selected items.
 -- @return `menu`, a new menu item.
 -- @usage
 --	local menu = Noble.Menu.new(
 --		true,
---		kTextAlignment.center,
+--		Noble.Text.ALIGN_CENTER,
 --		false,
 --		Graphics.kColorWhite,
 --		4, 6,
@@ -28,7 +32,7 @@ Noble.Menu = {}
 --	menu:addItem("Options", function() Noble.transition(OptionsScreen) end)
 --	menu:addItem("Credits", function() Noble.transition(CreditsScreen) end)
 -- @see addItem
-function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding, __horizontalPadding, __font, __selectedCornerRadius, __selectedOutlineThickness)
+function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding, __horizontalPadding, __margin, __font, __selectedCornerRadius, __selectedOutlineThickness)
 
 	-- Prep for creating the gridview object
 	local paddingLocal = __padding or 2
@@ -38,20 +42,18 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- Create gridview object
 	local menu = UI.gridview.new(0, textHeightLocal + paddingLocal)
 
-	menu.alignment = __alignment or kTextAlignment.left
+	--- Properties
+	--@section properties
+
+	menu.alignment = __alignment or Noble.Text.ALIGN_LEFT
 	menu.localized = __localized or false
 	menu.textHeight = textHeightLocal
 	menu.padding = paddingLocal
 	menu.horizontalPadding = __horizontalPadding or menu.padding
+	menu.margin = __margin or 2
 	menu.font = fontLocal
 	menu.selectedCornerRadius = __selectedCornerRadius or textHeightLocal/4
-	menu.selectedOutlineThickness = __selectedOutlineThickness or 2
-
-	if (menu.alignment == kTextAlignment.center) then
-
-	elseif (menu.alignment == kTextAlignment.right) then
-
-	end
+	menu.selectedOutlineThickness = __selectedOutlineThickness or 1
 
 	-- Local cleanup. We don't need these anymore.
 	paddingLocal = nil
@@ -59,7 +61,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	textHeightLocal = nil
 
 	-- Colors
-	menu.color = __color or Graphics.kColorBlack		-- TO-DO allow for copy fill mode instead of color.
+	menu.color = __color or Graphics.kColorBlack -- TO-DO allow for copy fill mode instead of color.
 	menu.fillMode = Graphics.kDrawModeFillBlack
 	menu.otherColor = Graphics.kColorWhite
 	menu.otherFillMode = Graphics.kDrawModeFillWhite
@@ -74,7 +76,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	menu:setCellPadding(0, 0, 0, 0)
 	menu.changeRowOnColumnWrap = false
 
-	-- New properties
+	--- Tables
+	--@section tables
 
 	--- A string "array" of menu item strings/keys.
 	-- <strong>You cannot add or remove menu items by modifying this table</strong>.
@@ -123,6 +126,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- @usage local playGameMenuItemWidth = menu.itemWidths["Play Game"]
 	menu.itemWidths = {}
 
+	--- Properties
+	--@section properties
+
 	--- The current menu item's index.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
@@ -141,8 +147,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	menu.width = 0
 
-	-- Methods
-	--
+	--- Setup
+	--@section setup
 
 	--- Adds a item to this menu.
 	-- @string __nameOrKey The name of this menu item. It can be a display name or a localization key. <strong>Must be unique.</strong>
@@ -164,7 +170,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		for _, value in pairs(self.itemWidths) do
 			if value > width then width = value end
 		end
-		self.width =  width + (self.horizontalPadding * 2)
+		self.width =  width + (self.horizontalPadding * 2) + (self.selectedOutlineThickness * 2)
 	end
 
 	local active = __activate or true
@@ -173,6 +179,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	else
 		menu:setSelectedRow(0)
 	end
+
+	--- Methods
+	--@section methods
 
 	--- Activate this menu.
 	-- This selects the most recently selected menu item (or the first item if none have been previously selected), and enables this menu's @{selectPrevious|selectPrevious}, @{selectNext|selectNext}, and @{click|click} methods.
@@ -238,12 +247,14 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- @bool[opt=false] __force Force this method to run, even if this menu is not active.
 	-- @see activate
 	-- @usage
-	--	TitleScreen.inputHandler.BButtonDown = function()
+	--	function resetMenu()
 	--		menu:select(1, true)
+	--		menu:deactivate()
 	--	end
 	-- @usage
-	--	TitleScreen.inputHandler.BButtonDown = function()
+	--	function resetMenu()
 	--		menu:select("Play Game", true)
+	--		menu:deactivate()
 	--	end
 	function menu:select(__menuItem, __force)
 		if (self:isActive() or __force) then
@@ -276,70 +287,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		end
 	end
 
-	-- Drawing
-	--
-
-	--- This method is called for every <strong>non-selected</strong> item when @{draw|draw} is called. You shouldn't call this yourself, but you may re-implement it if you wish.
-	-- @usage
-	--	function menu:drawItem(__x, __y, __itemIndex)
-	--		Graphics.setImageDrawMode(self.fillMode)
-	--		Noble.Text.draw(
-	--			self.itemNames[__itemIndex],
-	--			__x + self.horizontalPadding/2, __y + self.padding/2,
-	--			self.alignment, self.localized, self.font
-	--		)
-	--	end
-	-- @see Noble.Text.draw
-	function menu:drawItem(__x, __y, __itemIndex)
-		Graphics.setImageDrawMode(self.fillMode)
-		local xAdjustment = 0
-		if (self.alignment == kTextAlignment.center) then
-			xAdjustment = self.width/2
-		elseif (self.alignment == kTextAlignment.right) then
-			xAdjustment = self.width - self.horizontalPadding
-		end
-		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2, self.alignment, self.localized, self.font)
-	end
-
-	--- This method is called for every <strong>selected</strong> item when @{draw|draw} is called. You shouldn't call this yourself, but you may re-implement it if you wish.
-	-- @usage
-	--	function menu:drawSelectedItem(__x, __y, __itemIndex)
-	-- 		Graphics.setColor(self.color)
-	-- 		Graphics.fillRoundRect(__x, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
-	-- 		Graphics.setColor(self.otherColor)
-	-- 		Graphics.setLineWidth(self.selectedOutlineThickness)
-	-- 		Graphics.drawRoundRect(__x, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
-	-- 		Graphics.setImageDrawMode(self.otherFillMode)
-	-- 		Noble.Text.draw(self.itemNames[__itemIndex], __x+self.horizontalPadding/2, __y+self.padding/2, self.alignment, self.localized, self.font)
-	--	end
-	-- @see Noble.Text.draw
-	function menu:drawSelectedItem(__x, __y, __itemIndex)
-		local xAdjustmentText = 0
-		local xAdjustmentRect = 0
-		if (self.alignment == kTextAlignment.center) then
-			xAdjustmentText = self.width/2
-			xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2
-		elseif (self.alignment == kTextAlignment.right) then
-			xAdjustmentText = self.width - self.horizontalPadding
-			xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding
-		end
-		Graphics.setColor(self.color)
-		Graphics.fillRoundRect(__x + xAdjustmentRect, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
-		Graphics.setColor(self.otherColor)
-		Graphics.setLineWidth(self.selectedOutlineThickness)
-		Graphics.drawRoundRect(__x + xAdjustmentRect, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
-		Graphics.setImageDrawMode(self.otherFillMode)
-		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustmentText, __y+self.padding/2, self.alignment, self.localized, self.font)
-	end
-
-	-- Don't call or modify this function.
-	function menu:drawCell(_, row, _, selected, x, y, width, height)
-		if selected then
-			self:drawSelectedItem(x, y, row)
-		else
-			self:drawItem(x, y, row)
-		end
-	end
+	--- Drawing
+	--@section drawing
 
 	--- Draw's this menu to the screen. You may call this manually, but ideally, you will put it in in your scene's @{NobleScene:update|update} or @{NobleScene:drawBackground|drawBackground} method.
 	-- @usage
@@ -349,12 +298,87 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:draw(__x, __y)
 		local xAdjustment = 0
-		if (self.alignment == kTextAlignment.center) then
+		if (self.alignment == Noble.Text.ALIGN_CENTER) then
 			xAdjustment = self.width/2
-		elseif (self.alignment == kTextAlignment.right) then
+		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 			xAdjustment = self.width
 		end
-		menu:drawInRect(__x - xAdjustment, __y, self.width, (self.textHeight + self.padding) * #self.itemNames)
+		menu:drawInRect(__x - xAdjustment, __y, self.width, ((self.textHeight + self.padding + self.margin) * #self.itemNames) + (self.selectedOutlineThickness * 2) - self.margin)
+	end
+
+	--- This method is called for every <strong>non-selected</strong> item when @{draw|draw} is called. You shouldn't call this directly, but you may re-implement it if you wish.
+	-- @usage
+	-- -- This is the default implementation for this method.
+	-- function menu:drawItem(__x, __y, __itemIndex)
+	-- 	Graphics.setImageDrawMode(self.fillMode)
+	-- 	local xAdjustment = 0
+	-- 	if (self.alignment == Noble.Text.ALIGN_CENTER) then
+	-- 		xAdjustment = self.width/2
+	-- 	elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
+	-- 		xAdjustment = self.width - self.horizontalPadding
+	-- 	end
+	-- 	Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2, self.alignment, self.localized, self.font)
+	-- end
+	-- @see Noble.Text.draw
+	function menu:drawItem(__x, __y, __itemIndex)
+		Graphics.setImageDrawMode(self.fillMode)
+		local xAdjustment = self.selectedOutlineThickness
+		if (self.alignment == Noble.Text.ALIGN_CENTER) then
+			xAdjustment = self.width/2
+		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
+			xAdjustment = self.width - self.horizontalPadding - self.selectedOutlineThickness
+		end
+		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.alignment, self.localized, self.font)
+	end
+
+	--- This method is called for every <strong>selected</strong> item when @{draw|draw} is called. You shouldn't call this directly, but you may re-implement it if you wish.
+	-- @usage
+	-- -- This is the default implementation for this method.
+	-- function menu:drawSelectedItem(__x, __y, __itemIndex)
+	-- 	local xAdjustmentText = 0
+	-- 	local xAdjustmentRect = 0
+	-- 	if (self.alignment == Noble.Text.ALIGN_CENTER) then
+	-- 		xAdjustmentText = self.width/2
+	-- 		xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2
+	-- 	elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
+	-- 		xAdjustmentText = self.width - self.horizontalPadding
+	-- 		xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding
+	-- 	end
+	-- 	Graphics.setColor(self.color)
+	-- 	Graphics.fillRoundRect(__x + xAdjustmentRect, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+	-- 	Graphics.setColor(self.otherColor)
+	-- 	Graphics.setLineWidth(self.selectedOutlineThickness)
+	-- 	Graphics.drawRoundRect(__x + xAdjustmentRect, __y, self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+	-- 	Graphics.setImageDrawMode(self.otherFillMode)
+	-- 	Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustmentText, __y+self.padding/2, self.alignment, self.localized, self.font)
+	-- end
+	-- @see Noble.Text.draw
+	function menu:drawSelectedItem(__x, __y, __itemIndex)
+		local xAdjustmentText = self.selectedOutlineThickness
+		local xAdjustmentRect = self.selectedOutlineThickness
+		if (self.alignment == Noble.Text.ALIGN_CENTER) then
+			xAdjustmentText = self.width/2
+			xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2
+		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
+			xAdjustmentText = self.width - self.horizontalPadding - self.selectedOutlineThickness
+			xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding - self.selectedOutlineThickness
+		end
+		Graphics.setColor(self.color)
+		Graphics.fillRoundRect(__x + xAdjustmentRect, __y + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+		Graphics.setColor(self.otherColor)
+		Graphics.setLineWidth(self.selectedOutlineThickness)
+		Graphics.drawRoundRect(__x + xAdjustmentRect, __y + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
+		Graphics.setImageDrawMode(self.otherFillMode)
+		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustmentText, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.alignment, self.localized, self.font)
+	end
+
+	-- Don't call or modify this function.
+	function menu:drawCell(_, row, _, selected, x, y, width, height)
+		if selected then
+			self:drawSelectedItem(x, y, row)
+		else
+			self:drawItem(x, y, row)
+		end
 	end
 
 	return menu

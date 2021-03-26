@@ -14,9 +14,19 @@
 NobleScene = {}
 class("NobleScene").extends(Object)
 
+--- Properties
+-- @section properties
+
+--- The name of this scene. Optional.
+-- If you do not set this value, it will take on the scene's `className`.
+NobleScene.name = ""
+
 --- This is the background color of this scene.
 --
 NobleScene.baseColor = Graphics.kColorWhite
+
+--- Tables
+-- @section tables
 
 --- All scenes have a default inputHandler which is made active when the scene starts.
 -- If you do not define your scene's `inputHandler`, it is `nil` and input is disabled when this scene
@@ -58,9 +68,8 @@ NobleScene.baseColor = Graphics.kColorWhite
 --	YourSceneName.inputHandler = SomeOtherSceneName.inputHandler
 NobleScene.inputHandler = {}
 
---- The name of this scene. Optional.
--- If you do not set this value, it will take on the scene's `className`.
-NobleScene.name = ""
+--- Callbacks
+-- @section callbacks
 
 --- Implement this in your scene if you have code to run when your scene's object is created.
 --

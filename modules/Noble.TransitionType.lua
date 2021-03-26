@@ -3,6 +3,9 @@
 -- @module Noble.TransitionType
 -- @see Noble.transition
 
+--- Constants
+-- @section constants
+
 Noble.TransitionType = {}
 
 --- An all-time classic.
@@ -17,7 +20,7 @@ Noble.TransitionType.DIP_TO_BLACK = Noble.TransitionType.DIP .. " to black"
 Noble.TransitionType.DIP_TO_WHITE = Noble.TransitionType.DIP .. " to white"
 
 Noble.TransitionType.DIP_CUSTOM = Noble.TransitionType.DIP .. ": Custom"
---- An "accordian" transition, from "Widget Satchel" by Noble Robot.
+--- An "accordion" transition, from "Widget Satchel" by Noble Robot.
 Noble.TransitionType.DIP_WIDGET_SATCHEL = Noble.TransitionType.DIP .. ": Widget Satchel"
 --- A "cascade" transition, from "Metro Nexus" by Noble Robot.
 Noble.TransitionType.DIP_METRO_NEXUS = Noble.TransitionType.DIP .. ": Metro Nexus"

@@ -56,7 +56,7 @@ span.types:after {
   color: #045771;
 }
 
-body, p, td, th {
+body, td, th {
   font-size: .95em;
   line-height: 1.2em;
 }
@@ -114,6 +114,17 @@ h3 {
 
 h4 {
   font-size: 1em;
+}
+
+.section-header {
+  margin-top: 50px;
+  padding: 10px;
+  padding-left: 15px;
+  margin-left: -25px;
+  border-radius: 50px;
+  border-left: 20px solid #cf5a5a;
+  background-color: #e9cfc8;
+  color: #31302f;
 }
 
 a:link {
@@ -464,17 +475,25 @@ ul.nowrap {
   white-space: nowrap;
 }
 
-dl.table dt, dl.function dt {
-  border-top: 2px solid #056d8d;
+dl.table dt,
+dl.function dt {
   padding-top: 1em;
 }
 
-dl.table dd, dl.function dd {
-  padding-bottom: 1em;
-  margin: 10px 0 0 20px;
+dl.table dd dd,
+dl.function dd {
+  padding-bottom: 30px;
+  margin: 10px 0 10px 20px;
+  border-bottom: 2px dotted #056d8d;
 }
 
-dl.table h3, dl.function h3 {
+dl.table dd > :last-child,
+dl.function > :last-child {
+  border-bottom: none;
+}
+
+dl.table h3,
+dl.function h3 {
   font-size: .95em;
 }
 
