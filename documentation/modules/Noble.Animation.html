@@ -26,8 +26,20 @@
 					<ul>
 							<li><a href="#Noble.Animation.new">.new</a></li>
 							<li><a href="#animation:addState">animation:addState</a></li>
+					</ul>
+					<h3>Properties </h3>
+					<ul>
+							<li><a href="#animation.current">animation.current</a></li>
+							<li><a href="#animation.currentName">animation.currentName</a></li>
+							<li><a href="#animation.currentFrame">animation.currentFrame</a></li>
+							<li><a href="#animation.direction">animation.direction</a></li>
+							<li><a href="#animation.imageTable">animation.imageTable</a></li>
+					</ul>
+					<h3>Methods </h3>
+					<ul>
 							<li><a href="#animation:setState">animation:setState</a></li>
 							<li><a href="#animation:draw">animation:draw</a></li>
+							<li><a href="#animation:drawFrame">animation:drawFrame</a></li>
 					</ul>
 					<h3>Constants </h3>
 					<ul>
@@ -92,7 +104,7 @@
 													<li><span class="parameter">__spritesheet</span>
 															<span class="types"><span class="type">string</span></span>
 														<br/>
-														 The path to the bitmap spritesheet/imagetable asset.
+														 The path to the bitmap spritesheet/imagetable asset. See Playdate SDK docs for imagetable file naming conventions.
 													</li>
 							</ul>
 
@@ -104,6 +116,21 @@
 
 
 
+							<h3>Usage</h3>
+								<pre class="example">MyHero = {}
+class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
+
+<span class="keyword">function</span> MyHero:init()
+	MyHero.super.init(self)
+	<span class="comment">-- ...
+</span>	self.animation = Noble.Animation.new(<span class="string">"assets/images/Hero"</span>)
+	self.animation:addState(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:addState(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:addState(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:addState(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:addState(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
@@ -111,7 +138,8 @@
 						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next)<span>
 					</dt>
 					<dd>
-						Add an animation state.  The first state added will be the default for this animation.
+						Add an animation state.  The first state added will be the default set for this animation.
+<p> NOTE: Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -133,9 +161,54 @@
 													<li><span class="parameter">__next</span>
 															<span class="types"><span class="type">string</span></span>
 														<br/>
-														 By default, animation states will loop, but if you want to sequence an animation, enter the name of the next animation here.
+														 By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 													</li>
 							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="comment">-- You can reference an animation's state's properties using bog-standard lua syntax:
+</span>
+animation.idle.endFrame			<span class="comment">-- 30
+</span>animation.walk.endFrame			<span class="comment">-- 65
+</span>animation.[<span class="string">"walk"</span>].endFrame		<span class="comment">-- 65
+</span>animation.jump.name				<span class="comment">-- "jump"
+</span>animation.jump.<span class="global">next</span>				<span class="comment">-- "float"
+</span>animation.idle.<span class="global">next</span>				<span class="comment">-- nil</span></pre>
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Properties"></a>Properties </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "animation.current"></a>
+						<span class="item-name">animation.current<span>
+					</dt>
+					<dd>
+						The currently set animation state.
+<p> This is intended as <code>read-only</code>. You should not modify this property directly.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Animation.html#animation:setState">setState</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "animation.currentName"></a>
+						<span class="item-name">animation.currentName<span>
+					</dt>
+					<dd>
+						The name of the current animation state.  Calling this instead of <code>animation.current.name</code> is <em>just</em> a little faster.
+<p> This is intended as <code>read-only</code>. You should not modify this property directly.
+
 
 
 
@@ -143,11 +216,68 @@
 
 					</dd>
 					<dt>
-						<a name = "animation:setState"></a>
-						<span class="item-name">animation:setState(__animationState[, __continuous=false])<span>
+						<a name = "animation.currentFrame"></a>
+						<span class="item-name">animation.currentFrame<span>
 					</dt>
 					<dd>
-						Changes
+						The current frame of the animation.  This is the index of the imagetable, not the frame of the current state.
+<p> Most of the time, you should not modify this directly, although you can if you're feeling saucy and are prepared for unpredictable results.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Animation.html#animation:draw">draw</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "animation.direction"></a>
+						<span class="item-name">animation.direction<span>
+					</dt>
+					<dd>
+						This controls the flipping of the image when drawing.  DIRECTION_RIGHT is unflipped, DIRECTION_LEFT is flipped on the X axis.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> MyHero:goLeft()
+	self.animation.direction = Noble.Animation.DIRECTION_LEFT
+	<span class="comment">-- ...
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "animation.imageTable"></a>
+						<span class="item-name">animation.imageTable<span>
+					</dt>
+					<dd>
+						This animation's spritesheet.  You can replace this with another <code>playdate.graphics.imagetable</code> object, but generally you would not want to.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Animation.html#Noble.Animation.new">new</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Methods"></a>Methods </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "animation:setState"></a>
+						<span class="item-name">animation:setState(__animationState[, __continuous=false], __unlessThisState)<span>
+					</dt>
+					<dd>
+						Sets the current animation state.  This can be run in a object's <code>update</code> method because it only changes the animation state if the new state is different from the current one.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -162,25 +292,53 @@
 														<br/>
 														 Set to true if your new state's frames line up with the previous one's, i.e.: two walk cycles but one is wearing a cute hat!
 													</li>
+													<li><span class="parameter">__unlessThisState</span>
+															<span class="types"><span class="type">string</span> or <span class="type">Noble.Animation</span></span>
+														<br/>
+														 If this state is the current state, do not set the new one.
+													</li>
 							</ul>
 
 
 
 
 							<h3>Usage</h3>
-								<pre class="example">animation:setState(<span class="string">"run"</span>)</pre>
-								<pre class="example">animation:setState(animation.run)</pre>
+								<pre class="example">animation:setState(<span class="string">"walk"</span>)</pre>
+								<pre class="example">animation:setState(animation.walk)</pre>
 								<pre class="example">animation:setState(animation.walkNoHat)
 <span class="comment">--
 </span>animation:setState(animation.walkYesHat, <span class="keyword">true</span>)</pre>
+								<pre class="example"><span class="keyword">function</span> MyHero:update()
+	<span class="comment">-- Input
+</span>	<span class="comment">-- ...
+</span>
+	<span class="comment">-- Physics/collisions
+</span>	<span class="comment">-- ...
+</span>
+	<span class="comment">-- Animation states
+</span>	<span class="keyword">if</span> (grounded) <span class="keyword">then</span>
+		<span class="keyword">if</span> (turning) <span class="keyword">then</span>
+			self.animation:setState(self.animation.turn)
+		<span class="keyword">elseif</span> (<span class="global">math</span>.abs(self.velocity.x) &gt; <span class="number">15</span>) <span class="keyword">then</span>
+			self.animation:setState(self.animation.walk, <span class="keyword">false</span>, self.animation.turn)
+		<span class="keyword">else</span>
+			self.animation:setState(self.animation.idle, <span class="keyword">false</span>, self.animation.turn)
+		<span class="keyword">end</span>
+	<span class="keyword">else</span>
+		self.animation:setState(self.animation.jump, <span class="keyword">false</span>, self.animation.float)
+	<span class="keyword">end</span>
+
+	groundedLastFrame = grounded
+<span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
 						<a name = "animation:draw"></a>
-						<span class="item-name">animation:draw([__x=0[, __y=0]])<span>
+						<span class="item-name">animation:draw([__x=0[, __y=0[, __advance=true]]])<span>
 					</dt>
 					<dd>
 						Draw the current frame.
+<p> The ideal place for this is in a <code>playdate.graphics.sprite:draw()</code> for characters and items, or <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a> for basic graphical scene objects.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -196,6 +354,12 @@
 														<br/>
 
 													</li>
+													<li><span class="parameter">__advance</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Advances to the next frame after drawing this one.
+													</li>
 							</ul>
 
 
@@ -210,6 +374,51 @@
 <span class="keyword">end</span></pre>
 
 					</dd>
+					<dt>
+						<a name = "animation:drawFrame"></a>
+						<span class="item-name">animation:drawFrame(__frameNumber[, __stateName=self.currentName[, __x=0[, __y=0[, __direction=self.direction]]]])<span>
+					</dt>
+					<dd>
+						Sometimes, you just want to draw a specific frame.
+ Use this for objects or sprites that you want to control outside of update loops, such as score counters, flipbook-style objects that respond to player input, etc.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__frameNumber</span>
+															<span class="types"><span class="type">int</span></span>
+														<br/>
+														 The frame to draw from the current state. This is not an imagetable index. Entering <code>1</code> will draw the selected state's <code>startFrame</code>.
+													</li>
+													<li><span class="parameter">__stateName</span>
+															<span class="types"><span class="type">string</span></span>
+															<span class="default">= <span class="value">self.currentName</span> (default)</span>
+														<br/>
+														 The specific state to pull the __frameNumber from.
+													</li>
+													<li><span class="parameter">__x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__direction</span>
+															<span class="default">= <span class="value">self.direction</span> (default)</span>
+														<br/>
+														 Override the current direction.
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
 			</dl>
 			<h2 class="section-header "><a name="Constants"></a>Constants </h2>
 			<!--  -->
@@ -219,7 +428,7 @@
 						<span class="item-name">Noble.Animation.DIRECTION_RIGHT<span>
 					</dt>
 					<dd>
-						...
+						A re-contextualized instance of <code>playdate.graphics.kImageUnflipped</code>
 
 
 
@@ -232,7 +441,7 @@
 						<span class="item-name">Noble.Animation.DIRECTION_LEFT<span>
 					</dt>
 					<dd>
-						...
+						A re-contextualized instance of <code>playdate.graphics.kImageFlippedX</code>
 
 
 
@@ -249,7 +458,9 @@
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-29 22:10:10</span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+	</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

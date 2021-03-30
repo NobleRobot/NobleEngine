@@ -34,13 +34,6 @@
 							<li><a href="#menu.currentItemName">menu.currentItemName</a></li>
 							<li><a href="#menu.width">menu.width</a></li>
 					</ul>
-					<h3>Tables </h3>
-					<ul>
-							<li><a href="#menu.itemNames">menu.itemNames</a></li>
-							<li><a href="#menu.clickHandlers">menu.clickHandlers</a></li>
-							<li><a href="#menu.itemPositions">menu.itemPositions</a></li>
-							<li><a href="#menu.itemWidths">menu.itemWidths</a></li>
-					</ul>
 					<h3>Methods </h3>
 					<ul>
 							<li><a href="#menu:activate">menu:activate</a></li>
@@ -50,6 +43,13 @@
 							<li><a href="#menu:selectNext">menu:selectNext</a></li>
 							<li><a href="#menu:select">menu:select</a></li>
 							<li><a href="#menu:click">menu:click</a></li>
+					</ul>
+					<h3>Tables </h3>
+					<ul>
+							<li><a href="#menu.itemNames">menu.itemNames</a></li>
+							<li><a href="#menu.clickHandlers">menu.clickHandlers</a></li>
+							<li><a href="#menu.itemPositions">menu.itemPositions</a></li>
+							<li><a href="#menu.itemWidths">menu.itemWidths</a></li>
 					</ul>
 					<h3>Drawing </h3>
 					<ul>
@@ -317,101 +317,6 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 
 					</dd>
 			</dl>
-			<h2 class="section-header "><a name="Tables"></a>Tables </h2>
-			<!--  -->
-			<dl class="function">
-					<dt>
-						<a name = "menu.itemNames"></a>
-						<span class="item-name">menu.itemNames<span>
-					</dt>
-					<dd>
-						A string "array" of menu item strings/keys.
- <strong>You cannot add or remove menu items by modifying this table</strong>.
- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
-
-
-
-
-							<h3>See</h3>
-							<ul>
-									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
-							</ul>
-
-							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">for</span> i = <span class="number">1</span>, #menu.items, <span class="number">1</span> <span class="keyword">do</span>
-	menu.clickHandlers[menu.items[i]]	= <span class="keyword">nil</span> <span class="comment">-- Clears all click handlers, for some reason.
-</span><span class="keyword">end</span></pre>
-
-					</dd>
-					<dt>
-						<a name = "menu.clickHandlers"></a>
-						<span class="item-name">menu.clickHandlers<span>
-					</dt>
-					<dd>
-						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their functions may be modified afterward.
- <strong>You cannot add or remove menu items by modifying this table</strong>.
- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
- If you need to hide/show items at runtime, you can recreate the menu, or put fancy logic inside <a href="../modules/Noble.Menu.html#menu:drawItem">drawItem</a>.
-
-
-
-
-							<h3>See</h3>
-							<ul>
-									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
-							</ul>
-
-							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
-menu.addItem(<span class="string">"Play Game"</span>)
-menu.addItem(<span class="string">"Options"</span>)
-
-menu.clickHandlers[<span class="string">"Play Game"</span>] = <span class="keyword">function</span>() TitleScreen:playGame() <span class="keyword">end</span>
-menu.clickHandlers[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span></pre>
-								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
-menu.addItem(<span class="string">"Play Game"</span>)
-menu.addItem(<span class="string">"Options"</span>)
-
-menu.clickHandlers = {
-	[<span class="string">"Play Game"</span>] = <span class="keyword">function</span> TitleScreen:playGame() <span class="keyword">end</span>,
-	[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span>
-}</pre>
-
-					</dd>
-					<dt>
-						<a name = "menu.itemPositions"></a>
-						<span class="item-name">menu.itemPositions<span>
-					</dt>
-					<dd>
-						A key/value table of menu item indices.
-<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
-
-
-
-
-
-							<h3>Usage</h3>
-								<pre class="example">menu.itemPositions[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
-</span>menu.itemPositions[<span class="string">"Options"</span>]]		<span class="comment">-- 2</span></pre>
-
-					</dd>
-					<dt>
-						<a name = "menu.itemWidths"></a>
-						<span class="item-name">menu.itemWidths<span>
-					</dt>
-					<dd>
-						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.
-<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
-
-
-
-
-
-							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">local</span> playGameMenuItemWidth = menu.itemWidths[<span class="string">"Play Game"</span>]</pre>
-
-					</dd>
-			</dl>
 			<h2 class="section-header "><a name="Methods"></a>Methods </h2>
 			<!--  -->
 			<dl class="function">
@@ -611,6 +516,101 @@ menu:deactivate()</pre>
 
 					</dd>
 			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "menu.itemNames"></a>
+						<span class="item-name">menu.itemNames<span>
+					</dt>
+					<dd>
+						A string "array" of menu item strings/keys.
+ <strong>You cannot add or remove menu items by modifying this table</strong>.
+ It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">for</span> i = <span class="number">1</span>, #menu.items, <span class="number">1</span> <span class="keyword">do</span>
+	menu.clickHandlers[menu.items[i]]	= <span class="keyword">nil</span> <span class="comment">-- Clears all click handlers, for some reason.
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.clickHandlers"></a>
+						<span class="item-name">menu.clickHandlers<span>
+					</dt>
+					<dd>
+						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their functions may be modified afterward.
+ <strong>You cannot add or remove menu items by modifying this table</strong>.
+ It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+ If you need to hide/show items at runtime, you can recreate the menu, or put fancy logic inside <a href="../modules/Noble.Menu.html#menu:drawItem">drawItem</a>.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
+menu.addItem(<span class="string">"Play Game"</span>)
+menu.addItem(<span class="string">"Options"</span>)
+
+menu.clickHandlers[<span class="string">"Play Game"</span>] = <span class="keyword">function</span>() TitleScreen:playGame() <span class="keyword">end</span>
+menu.clickHandlers[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span></pre>
+								<pre class="example"><span class="keyword">local</span> menu = Noble.Menu.new(<span class="keyword">true</span>)
+menu.addItem(<span class="string">"Play Game"</span>)
+menu.addItem(<span class="string">"Options"</span>)
+
+menu.clickHandlers = {
+	[<span class="string">"Play Game"</span>] = <span class="keyword">function</span> TitleScreen:playGame() <span class="keyword">end</span>,
+	[<span class="string">"Options"</span>] = <span class="keyword">function</span>() Noble.transition(OptionsScreen) <span class="keyword">end</span>
+}</pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.itemPositions"></a>
+						<span class="item-name">menu.itemPositions<span>
+					</dt>
+					<dd>
+						A key/value table of menu item indices.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">menu.itemPositions[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
+</span>menu.itemPositions[<span class="string">"Options"</span>]]		<span class="comment">-- 2</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "menu.itemWidths"></a>
+						<span class="item-name">menu.itemWidths<span>
+					</dt>
+					<dd>
+						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> playGameMenuItemWidth = menu.itemWidths[<span class="string">"Play Game"</span>]</pre>
+
+					</dd>
+			</dl>
 			<h2 class="section-header "><a name="Drawing"></a>Drawing </h2>
 			<!--  -->
 			<dl class="function">
@@ -748,7 +748,9 @@ menu:deactivate()</pre>
 
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
-	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-29 22:10:10</span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+	</span>
 </div> <!-- id="about" -->
 
 </div> <!-- id="container" -->

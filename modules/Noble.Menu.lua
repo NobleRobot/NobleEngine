@@ -4,7 +4,7 @@
 Noble.Menu = {}
 
 --- Setup
---@section setup
+-- @section setup
 
 --- Create a new menu object.
 -- @bool[opt=true] __activate @{activate|Activate} this menu upon creation.
