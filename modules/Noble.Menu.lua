@@ -127,7 +127,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	menu.itemWidths = {}
 
 	--- Properties
-	--@section properties
+	-- @section properties
 
 	--- The current menu item's index.
 	--
@@ -148,7 +148,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	menu.width = 0
 
 	--- Setup
-	--@section setup
+	-- @section setup
 
 	--- Adds a item to this menu.
 	-- @string __nameOrKey The name of this menu item. It can be a display name or a localization key. <strong>Must be unique.</strong>
@@ -240,7 +240,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 	local active = __activate or true
 	if (active) then
-		menu:setSelectedRow(1)
+		self.currentItemNumber = 1
+		self.currentItemName = self.itemNames[1]
+		self:setSelectedRow(1)
 	else
 		menu:setSelectedRow(0)
 	end
@@ -254,7 +256,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	local menu = Noble.Menu.new(false)
 	--	menu:activate()
 	function menu:activate()
-		self:setSelectedRow(self.currentItemNumber)
+		self:select(self.currentItemNumber)
 		active = true
 	end
 	--- Deactivate this menu.
