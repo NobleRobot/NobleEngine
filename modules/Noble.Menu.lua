@@ -240,9 +240,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 	local active = __activate or true
 	if (active) then
-		self.currentItemNumber = 1
-		self.currentItemName = self.itemNames[1]
-		self:setSelectedRow(1)
+		menu.currentItemNumber = 1
+		menu.currentItemName = menu.itemNames[1]
+		menu:setSelectedRow(1)
 	else
 		menu:setSelectedRow(0)
 	end
