@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Animation</h2>
+			<ul>
+					<h3>Setup </h3>
+					<ul>
+							<li><a href="#Noble.Animation.new">.new</a></li>
+							<li><a href="#animation:addState">animation:addState</a></li>
+							<li><a href="#animation:setState">animation:setState</a></li>
+							<li><a href="#animation:draw">animation:draw</a></li>
+					</ul>
+					<h3>Constants </h3>
+					<ul>
+							<li><a href="#Noble.Animation.DIRECTION_RIGHT">.DIRECTION_RIGHT</a></li>
+							<li><a href="#Noble.Animation.DIRECTION_LEFT">.DIRECTION_LEFT</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><span class="selected">Noble.Animation</span></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Animation</h1>
+		<p>Animation states using a spritesheet/imagetable.</p>
+		<p> Ideal for use with <code>playdate.graphics.sprite</code> objects, but suitable for other uses as well.</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Setup"></a>Setup </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Animation.new"></a>
+						<span class="item-name">Noble.Animation.new(__spritesheet)<span>
+					</dt>
+					<dd>
+						Create a new animation "state machine".
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__spritesheet</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The path to the bitmap spritesheet/imagetable asset.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+
+										<code>animation</code>, a new animation object.
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "animation:addState"></a>
+						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next)<span>
+					</dt>
+					<dd>
+						Add an animation state.  The first state added will be the default for this animation.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__name</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the animation, this is also used as the key for the animation.
+													</li>
+													<li><span class="parameter">__startFrame</span>
+															<span class="types"><span class="type">int</span></span>
+														<br/>
+														 This is the first frame for this animation in the imagetable/spritesheet
+													</li>
+													<li><span class="parameter">__endFrame</span>
+															<span class="types"><span class="type">int</span></span>
+														<br/>
+														 This is the first frame for this animation in the imagetable/spritesheet
+													</li>
+													<li><span class="parameter">__next</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 By default, animation states will loop, but if you want to sequence an animation, enter the name of the next animation here.
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "animation:setState"></a>
+						<span class="item-name">animation:setState(__animationState[, __continuous=false])<span>
+					</dt>
+					<dd>
+						Changes
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__animationState</span>
+															<span class="types"><span class="type">string</span> or <span class="type">Noble.Animation</span></span>
+														<br/>
+														 The name of the animation to set. You can pass the name of the state, or the object itself.
+													</li>
+													<li><span class="parameter">__continuous</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set to true if your new state's frames line up with the previous one's, i.e.: two walk cycles but one is wearing a cute hat!
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">animation:setState(<span class="string">"run"</span>)</pre>
+								<pre class="example">animation:setState(animation.run)</pre>
+								<pre class="example">animation:setState(animation.walkNoHat)
+<span class="comment">--
+</span>animation:setState(animation.walkYesHat, <span class="keyword">true</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "animation:draw"></a>
+						<span class="item-name">animation:draw([__x=0[, __y=0]])<span>
+					</dt>
+					<dd>
+						Draw the current frame.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+													</li>
+													<li><span class="parameter">__y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> MySprite:draw()
+	animation:draw()
+<span class="keyword">end</span></pre>
+								<pre class="example"><span class="keyword">function</span> MyScene:update()
+	animation:draw(<span class="number">100</span>,<span class="number">100</span>)
+<span class="keyword">end</span></pre>
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Constants"></a>Constants </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Animation.DIRECTION_RIGHT"></a>
+						<span class="item-name">Noble.Animation.DIRECTION_RIGHT<span>
+					</dt>
+					<dd>
+						...
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Animation.DIRECTION_LEFT"></a>
+						<span class="item-name">Noble.Animation.DIRECTION_LEFT<span>
+					</dt>
+					<dd>
+						...
+
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>. Last updated 2021-03-29 22:10:10</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

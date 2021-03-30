@@ -40,6 +40,7 @@ import 'libraries/noble/libraries/Sequence'
 
 -- Noble libraries, modules, and classes.
 import 'libraries/noble/utilities/Utilities'
+import 'libraries/noble/modules/Noble.Animation.lua'
 import 'libraries/noble/modules/Noble.Bonk.lua'
 import 'libraries/noble/modules/Noble.GameData.lua'
 import 'libraries/noble/modules/Noble.Input.lua'

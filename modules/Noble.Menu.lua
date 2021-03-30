@@ -198,8 +198,6 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			__menuItem = #self.itemNames
 		end
 
-		print(type(__menuItem))
-
 		if (type(__menuItem) == "number") then
 			if (__menuItem <= 0 or __menuItem > #self.itemNames) then error("BONK: Menu item out of range.", 3) return end
 			itemString = self.itemNames[__menuItem]
@@ -209,9 +207,6 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			itemPosition = self.itemPositions[__menuItem]
 			if (itemPosition == nil) then error("BONK: Menu item not found.", 3) return end
 		end
-
-		print(itemString)
-		print(itemPosition)
 
 		for key, value in pairs(self.itemPositions) do
 			if (value > itemPosition) then

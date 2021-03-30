@@ -109,7 +109,7 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 				-- We can't find any more GameDatas on disk, so we update the
 				-- value of numberOfGameDataSlots if necessary and get outta town!
 				numberOfSlots = i - 1
-				print ("Total number of game slots: " .. numberOfSlots)
+				print("Total number of game slots: " .. numberOfSlots)
 
 				if (saveToDisk and createdNewData) then
 					Noble.GameData.saveAll()
@@ -221,7 +221,7 @@ function Noble.GameData.addSlot(__numberToAdd, __saveToDisk)
 		if (saveToDisk) then Noble.GameData.save() end
 	end
 	numberOfSlots = numberOfSlots + numberToAdd
-	print ("Added " .. numberToAdd .. " GameData slots. Total GameData slots: " .. numberOfSlots)
+	print("Added " .. numberToAdd .. " GameData slots. Total GameData slots: " .. numberOfSlots)
 end
 
 --- Deletes a GameData from disk if its save slot is greater than the default number established in `setup`.

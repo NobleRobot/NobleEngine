@@ -15,7 +15,7 @@ end
 -- @tparam[opt=nil] table __inputHandler A table of callbacks which handle input events.
 -- @see NobleScene.inputHandler
 function Noble.Input.setHandler(__inputHandler)
-	if (__inputHandler ~= nil) then printTable(__inputHandler) end
+	--if (__inputHandler ~= nil) then printTable(__inputHandler) end
 
 	if (currentHandler ~= nil) then
 		playdate.inputHandlers.pop()
