@@ -81,7 +81,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 	--- A string "array" of menu item strings/keys.
 	-- <strong>You cannot add or remove menu items by modifying this table</strong>.
-	-- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+	-- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying its values may break other methods.
 	-- @usage
 	--	for i = 1, #menu.items, 1 do
 	--		menu.clickHandlers[menu.items[i]]	= nil -- Clears all click handlers, for some reason.
@@ -89,10 +89,9 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- @see addItem
 	menu.itemNames = {}
 
-	--- A table of functions associated with menu items. Items are a defined when calling @{addItem|addItem}, but their functions may be modified afterward.
+	--- A table of functions associated with menu items. Items are a defined when calling @{addItem|addItem}, but their associated functions may be modified afterward.
+	--
 	-- <strong>You cannot add or remove menu items by modifying this table</strong>.
-	-- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
-	-- If you need to hide/show items at runtime, you can recreate the menu, or put fancy logic inside @{drawItem|drawItem}.
 	-- @usage
 	--	local menu = Noble.Menu.new(true)
 	--	menu.addItem("Play Game")
@@ -110,19 +109,20 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--		["Options"] = function() Noble.transition(OptionsScreen) end
 	--	}
 	-- @see addItem
+	-- @see removeItem
 	menu.clickHandlers = {}
 
 	--- A key/value table of menu item indices.
 	--
-	-- This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+	-- This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 	-- @usage
-	--	menu.itemPositions["Play Game"]]	-- 1
-	--	menu.itemPositions["Options"]]		-- 2
+	--	menu.itemPositions["Play Game"]	-- 1
+	--	menu.itemPositions["Options"]	-- 2
 	menu.itemPositions = {}
 
 	--- A key/value table of pixel widths for each menu item, based on its text. Useful for animation, layout, etc.
 	--
-	-- This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+	-- This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 	-- @usage local playGameMenuItemWidth = menu.itemWidths["Play Game"]
 	menu.itemWidths = {}
 

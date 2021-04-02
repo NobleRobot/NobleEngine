@@ -526,7 +526,7 @@ menu:deactivate()</pre>
 					<dd>
 						A string "array" of menu item strings/keys.
  <strong>You cannot add or remove menu items by modifying this table</strong>.
- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
+ It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying its values may break other methods.
 
 
 
@@ -547,17 +547,16 @@ menu:deactivate()</pre>
 						<span class="item-name">menu.clickHandlers<span>
 					</dt>
 					<dd>
-						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their functions may be modified afterward.
- <strong>You cannot add or remove menu items by modifying this table</strong>.
- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying it has no effect on the menu object.
- If you need to hide/show items at runtime, you can recreate the menu, or put fancy logic inside <a href="../modules/Noble.Menu.html#menu:drawItem">drawItem</a>.
+						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their associated functions may be modified afterward.
+<p> <strong>You cannot add or remove menu items by modifying this table</strong>.
 
 
 
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>
+									<li><a href="../modules/Noble.Menu.html#menu:addItem">addItem</a></li>
+									<li><a href="../modules/Noble.Menu.html#menu:removeItem">removeItem</a></li>
 							</ul>
 
 							<h3>Usage</h3>
@@ -583,15 +582,15 @@ menu.clickHandlers = {
 					</dt>
 					<dd>
 						A key/value table of menu item indices.
-<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 
 
 
 
 
 							<h3>Usage</h3>
-								<pre class="example">menu.itemPositions[<span class="string">"Play Game"</span>]]	<span class="comment">-- 1
-</span>menu.itemPositions[<span class="string">"Options"</span>]]		<span class="comment">-- 2</span></pre>
+								<pre class="example">menu.itemPositions[<span class="string">"Play Game"</span>]	<span class="comment">-- 1
+</span>menu.itemPositions[<span class="string">"Options"</span>]	<span class="comment">-- 2</span></pre>
 
 					</dd>
 					<dt>
@@ -600,7 +599,7 @@ menu.clickHandlers = {
 					</dt>
 					<dd>
 						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.
-<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying it has no effect on the menu object.
+<p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 
 
 

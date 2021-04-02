@@ -63,7 +63,7 @@ local currentScene = nil
 local engineInitialized = false
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
--- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class name, not an instance of the scene.
+-- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class, not an instance of the scene.
 -- @number[opt] __transitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 -- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
 -- @bool[opt=false] __enableDebugBonkChecking Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
@@ -158,7 +158,7 @@ Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
 --- Transition to a new scene. This method will create a new scene, mark the previous one for garbage collection, and animate between them.
--- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class name, not an instance of the scene. You always transition from `Noble.currentScene`
+-- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1] __duration The length of the transition, in seconds.
 -- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
 -- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
@@ -214,8 +214,13 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	transitionSequence:start()
 end
 
+local transitionCanvas = Graphics.image.new(400,240, Graphics.kColorClear)
+
 local function transitionUpdate()
 	local progress = transitionSequence:get()
+
+	transitionCanvas:clear(Graphics.kColorClear)
+	Graphics.lockFocus(transitionCanvas)
 
 	-- Transition type: Dip to black
 	if (currentTransitionType == Noble.TransitionType.DIP_TO_BLACK) then
@@ -302,8 +307,11 @@ local function transitionUpdate()
 		if (progress < 1) then
 			previousSceneScreenCapture:draw(0, Ease.inQuart(progress, 0, 1, 1) * 240, 0)
 		end
-
 	end
+
+	Graphics.unlockFocus()
+	transitionCanvas:drawIgnoringOffset(0,0)
+
 end
 
 --- Get the current scene object
