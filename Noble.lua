@@ -169,22 +169,24 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		error("BONK: You can't start a transition in the middle of another transition, silly!")
 	end
 
-	local newScene = NewScene()			-- Creates new scene object. Its init() function runs.
-
+	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
 	Noble.isTransitioning = true
 
 	if (currentScene ~= nil) then
-		currentScene:exit()				-- The current scene runs its "goodbye" code.
+		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
+	local newScene = NewScene()			-- Creates new scene object. Its init() function runs.
 
 	local duration = __duration or 1
 	local holdDuration = __holdDuration or 0.2
 	currentTransitionType = __transitionType or Noble.TransitionType.DIP_TO_BLACK
 
 	local onMidpoint = function()
-		currentScene = nil				-- Allows current scene to be garbage collected.
+		if (currentScene ~= nil) then
+			currentScene:finish()
+			currentScene = nil			-- Allows current scene to be garbage collected.
+		end
 		currentScene = newScene			-- New scene's update loop begins.
 		newScene:enter()				-- The new scene runs its "hello" code.
 	end
@@ -326,6 +328,9 @@ function Noble.currentSceneName()
 	return currentScene.name
 end
 
+local crankIndicatorActive = false
+local crankIndicatorForced = false
+
 -- Game loop
 --
 function playdate.update()
@@ -343,8 +348,11 @@ function playdate.update()
 		transitionUpdate()				-- Update transition animations (if active).
 	end
 
-	if (Noble.Input.crankIndicatorActive() and playdate.isCrankDocked()) then
-		UI.crankIndicator:update()		-- Draw crank indicator (if requested).
+	crankIndicatorActive, crankIndicatorForced = Noble.Input.getCrankIndicatorStatus()
+	if (crankIndicatorActive) then
+		if (playdate.isCrankDocked() or crankIndicatorForced) then
+			UI.crankIndicator:update()	-- Draw crank indicator (if requested).
+		end
 	end
 
 	playdate.timer.updateTimers()		-- Finally, update all SDK timers.

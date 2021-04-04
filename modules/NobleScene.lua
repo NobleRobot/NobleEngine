@@ -68,6 +68,34 @@ NobleScene.backgroundColor = Graphics.kColorWhite
 --	YourSceneName.inputHandler = SomeOtherSceneName.inputHandler
 NobleScene.inputHandler = {}
 
+--- When you add a sprite to your scene, it is put in this table so the scene can keep track of it.
+--
+-- This is intended as `read-only`. You should not modify this table directly.
+-- @see addSprite
+NobleScene.sprites = {}
+
+--- Methods
+-- @section Methods
+
+--- Use this to add sprites to your scene instead of `playdate.graphics.sprite:add()`
+--
+-- Sprites not manually removed before transitioning to another scene are automatically removed in @{finish|finish}.
+-- @tparam playdate.graphics.sprite __sprite The sprite to add to the scene.
+function NobleScene:addSprite(__sprite)
+	__sprite:add()
+	table.insert(self.sprites, __sprite)
+	print(#self.sprites)
+end
+
+--- Use this to remove sprites from your scene instead of `playdate.graphics.sprite:remove()`
+--
+-- Sprites not manually removed before transitioning to another scene are automatically removed in @{finish|finish}.
+-- @tparam playdate.graphics.sprite __sprite The sprite to add to the scene.
+function NobleScene:removeSprite(__sprite)
+	__sprite:remove()
+	table.remove(self.sprites, self.sprites.indexOfElement(__sprite))
+end
+
 --- Callbacks
 -- @section callbacks
 
@@ -128,6 +156,12 @@ function NobleScene:drawBackground()
 	Graphics.clear(self.backgroundColor)
 end
 
+-- This is an internal read-only value used by Noble Engine. It's not useful to you. ;-)
+NobleScene.activeSprites = {}
+
+-- This is an internal read-only value used by Noble Engine. It's not useful to you. ;-)
+NobleScene.previousSceneSprites = {}
+
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
 -- begins, such as UI animation, saving to disk, etc.
 --
@@ -137,7 +171,13 @@ end
 --		--[Your code here]--
 --	end
 --
-function NobleScene:exit() end
+function NobleScene:exit()
+	for i = 1, #self.sprites do
+		NobleScene.previousSceneSprites[i] = self.sprites[i]
+		self.sprites[i]:setUpdatesEnabled(false)
+		self.sprites[i]:setCollisionsEnabled(false)
+	end
+end
 
 --- Implement this in your scene if you have code to run when a transition to another scene
 -- is complete, such as resetting variables.
@@ -148,7 +188,16 @@ function NobleScene:exit() end
 --		--[Your code here]--
 --	end
 --
-function NobleScene:finish() end
+function NobleScene:finish()
+	for i = 1, #NobleScene.previousSceneSprites do
+		print("Finish: " .. self.name)
+		print(NobleScene.previousSceneSprites[i][i])
+		NobleScene.previousSceneSprites[i]:remove()
+		table.remove(self.sprites, table.indexOfElement(NobleScene.previousSceneSprites[i]))
+	end
+	NobleScene.previousSceneSprites = {}
+	print("finished!")
+end
 
 --- `pause()` / `resume()`
 --

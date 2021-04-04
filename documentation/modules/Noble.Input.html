@@ -27,8 +27,27 @@
 							<li><a href="#Noble.Input.getHandler">.getHandler</a></li>
 							<li><a href="#Noble.Input.setHandler">.setHandler</a></li>
 							<li><a href="#Noble.Input.disable">.disable</a></li>
-							<li><a href="#Noble.Input.activateCrankIndicator">.activateCrankIndicator</a></li>
-							<li><a href="#Noble.Input.crankIndicatorActive">.crankIndicatorActive</a></li>
+							<li><a href="#Noble.Input.setCrankIndicatorStatus">.setCrankIndicatorStatus</a></li>
+							<li><a href="#Noble.Input.getCrankIndicatorStatus">.getCrankIndicatorStatus</a></li>
+					</ul>
+					<h3>Constants
+  </h3>
+					<ul>
+							<li><a href="#Noble.Input.BUTTON_A">.BUTTON_A</a></li>
+							<li><a href="#Noble.Input.BUTTON_B">.BUTTON_B</a></li>
+							<li><a href="#Noble.Input.BUTTON_MENU">.BUTTON_MENU</a></li>
+							<li><a href="#Noble.Input.DPAD">.DPAD</a></li>
+							<li><a href="#Noble.Input.DPAD_HORIZONTAL">.DPAD_HORIZONTAL</a></li>
+							<li><a href="#Noble.Input.DPAD_VERTICAL">.DPAD_VERTICAL</a></li>
+							<li><a href="#Noble.Input.DPAD_UP">.DPAD_UP</a></li>
+							<li><a href="#Noble.Input.DPAD_DOWN">.DPAD_DOWN</a></li>
+							<li><a href="#Noble.Input.DPAD_LEFT">.DPAD_LEFT</a></li>
+							<li><a href="#Noble.Input.DPAD_RIGHT">.DPAD_RIGHT</a></li>
+							<li><a href="#Noble.Input.CRANK">.CRANK</a></li>
+							<li><a href="#Noble.Input.CRANK_FORWARD">.CRANK_FORWARD</a></li>
+							<li><a href="#Noble.Input.CRANK_REVERSE">.CRANK_REVERSE</a></li>
+							<li><a href="#Noble.Input.CRANK_DOCK">.CRANK_DOCK</a></li>
+							<li><a href="#Noble.Input.CRANK_UNDOCK">.CRANK_UNDOCK</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -139,18 +158,25 @@
 
 					</dd>
 					<dt>
-						<a name = "Noble.Input.activateCrankIndicator"></a>
-						<span class="item-name">Noble.Input.activateCrankIndicator(__bool)<span>
+						<a name = "Noble.Input.setCrankIndicatorStatus"></a>
+						<span class="item-name">Noble.Input.setCrankIndicatorStatus(__active[, __evenWhenUndocked=false])<span>
 					</dt>
 					<dd>
-						Enable/disable on-screen crank indicator.
-<p> <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
+						Enable/disable on-screen system crank indicator.
+<p> <strong>NOTE: The indicator will only ever show if the crank is docked, unless <code>__evenWhenUndocked</code> is true.</strong>
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
-													<li><span class="parameter">__bool</span>
+													<li><span class="parameter">__active</span>
+															<span class="types"><span class="type">bool</span></span>
 														<br/>
 														 Set true to start showing the on-screen crank indicator. Set false to stop showing it.
+													</li>
+													<li><span class="parameter">__evenWhenUndocked</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set true to show the crank indicator even if the crank is already undocked (<code>__active</code> must also be true).
 													</li>
 							</ul>
 
@@ -160,26 +186,253 @@
 
 					</dd>
 					<dt>
-						<a name = "Noble.Input.crankIndicatorActive"></a>
-						<span class="item-name">Noble.Input.crankIndicatorActive()<span>
+						<a name = "Noble.Input.getCrankIndicatorStatus"></a>
+						<span class="item-name">Noble.Input.getCrankIndicatorStatus()<span>
 					</dt>
 					<dd>
-						Checks whether the crank indicator has been activated via <code>activateCrankIndicator(true)</code>.
-<p> <strong>NOTE: The indicator will only ever show if the crank is docked.</strong>
+						Checks whether the system crank indicator status.  Returns a tuple.
+
 
 
 							<h3>Returns</h3>
 								<ol>
-
+										<li>
 											<span class="types"><span class="type">bool</span></span>
-
+										Is the crank indicator active?</li>
+										<li>
+											<span class="types"><span class="type">bool</span></span>
+										Is the crank indicator being forced when active, even when the crank is undocked?</li>
 								</ol>
 
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Input.html#Noble.Input.activateCrankIndicator">activateCrankIndicator</a>
+									<a href="../modules/Noble.Input.html#Noble.Input.setCrankIndicatorStatus">setCrankIndicatorStatus</a>
 							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header has-description"><a name="Constants"></a>Constants
+  </h2>
+			<!--  -->
+					<div class="section-description">
+						 A set of constants referencing device inputs, stored as strings. Can be used for querying button input,
+ but are mainly for on-screen prompts or other elements where a string literal is useful, such as a filename or GameData value.
+ For faster performance, use the ones that exist in the Playdate SDK (i.e.: <code>playdate.kButtonA</code>), which are stored as binary values.
+					</div>
+					<h3>Usage</h3>
+					<pre class="example"><span class="keyword">function</span> newPrompt(__input, __promptString)
+	<span class="comment">-- ...
+</span>	<span class="keyword">local</span> icon = Graphics.image.new(<span class="string">"assets/images/UI/Icon_"</span> .. __input)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span>
+
+promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"</span>)				<span class="comment">-- assets/images/UI/Icon_dPadHorizontal.png"
+</span>promptJump = newPrompt(Noble.Input.BUTTON_A, <span class="string">"Jump!"</span>) 						<span class="comment">-- assets/images/UI/Icon_buttonA.png"
+</span>promptCharge = newPrompt(Noble.Input.CRANK_FORWARD, <span class="string">"Charge the battery!"</span>)	<span class="comment">-- assets/images/UI/Icon_crankForward.png"</span></pre>
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Input.BUTTON_A"></a>
+						<span class="item-name">Noble.Input.BUTTON_A<span>
+					</dt>
+					<dd>
+						<code>&quot;buttonA&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.BUTTON_B"></a>
+						<span class="item-name">Noble.Input.BUTTON_B<span>
+					</dt>
+					<dd>
+						<code>&quot;buttonB&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.BUTTON_MENU"></a>
+						<span class="item-name">Noble.Input.BUTTON_MENU<span>
+					</dt>
+					<dd>
+						The system menu button.
+<p> <code>&quot;buttonMenu&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD"></a>
+						<span class="item-name">Noble.Input.DPAD<span>
+					</dt>
+					<dd>
+						Referencing the D-pad component itself, rather than an input.
+<p> <code>&quot;dPad&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_HORIZONTAL"></a>
+						<span class="item-name">Noble.Input.DPAD_HORIZONTAL<span>
+					</dt>
+					<dd>
+						Referencing the left and right input D-pad inputs.
+<p> <code>&quot;dPadHorizontal&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_VERTICAL"></a>
+						<span class="item-name">Noble.Input.DPAD_VERTICAL<span>
+					</dt>
+					<dd>
+						Referencing the up and down input D-pad inputs.
+<p> <code>&quot;dPadVertical&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_UP"></a>
+						<span class="item-name">Noble.Input.DPAD_UP<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadUp&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_DOWN"></a>
+						<span class="item-name">Noble.Input.DPAD_DOWN<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadDown&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_LEFT"></a>
+						<span class="item-name">Noble.Input.DPAD_LEFT<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadLeft&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_RIGHT"></a>
+						<span class="item-name">Noble.Input.DPAD_RIGHT<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadRight&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK"></a>
+						<span class="item-name">Noble.Input.CRANK<span>
+					</dt>
+					<dd>
+						Referencing the crank component itself, rather than an input.
+<p> <code>&quot;crank&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_FORWARD"></a>
+						<span class="item-name">Noble.Input.CRANK_FORWARD<span>
+					</dt>
+					<dd>
+						AKA: Clockwise.  See Playdate SDK.
+<p> <code>&quot;crankForward&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_REVERSE"></a>
+						<span class="item-name">Noble.Input.CRANK_REVERSE<span>
+					</dt>
+					<dd>
+						AKA: Anticlockwise.  See Playdate SDK.
+<p> <code>&quot;crankReverse&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_DOCK"></a>
+						<span class="item-name">Noble.Input.CRANK_DOCK<span>
+					</dt>
+					<dd>
+						Referencing the action of docking the crank.
+<p> <code>&quot;crankDock&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_UNDOCK"></a>
+						<span class="item-name">Noble.Input.CRANK_UNDOCK<span>
+					</dt>
+					<dd>
+						Referencing the action of undocking the crank.
+<p> <code>&quot;crankUndock&quot;</code>
+
+
+
+
 
 
 					</dd>

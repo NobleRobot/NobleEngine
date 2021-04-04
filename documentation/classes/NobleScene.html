@@ -30,6 +30,12 @@
 					<h3>Tables </h3>
 					<ul>
 							<li><a href="#NobleScene.inputHandler">.inputHandler</a></li>
+							<li><a href="#NobleScene.sprites">.sprites</a></li>
+					</ul>
+					<h3>Methods</h3>
+					<ul>
+							<li><a href="#NobleScene:addSprite">:addSprite</a></li>
+							<li><a href="#NobleScene:removeSprite">:removeSprite</a></li>
 					</ul>
 					<h3>Callbacks </h3>
 					<ul>
@@ -178,6 +184,70 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 <span class="comment">-- OR...
 </span><span class="comment">-- Reuse another scene's inputHandler.
 </span>YourSceneName.inputHandler = SomeOtherSceneName.inputHandler</pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene.sprites"></a>
+						<span class="item-name">NobleScene.sprites<span>
+					</dt>
+					<dd>
+						When you add a sprite to your scene, it is put in this table so the scene can keep track of it.
+<p> This is intended as <code>read-only</code>. You should not modify this table directly.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Methods"></a>Methods</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "NobleScene:addSprite"></a>
+						<span class="item-name">NobleScene:addSprite(__sprite)<span>
+					</dt>
+					<dd>
+						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>  Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__sprite</span>
+															<span class="types"><span class="type">playdate.graphics.sprite</span></span>
+														<br/>
+														 The sprite to add to the scene.
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:removeSprite"></a>
+						<span class="item-name">NobleScene:removeSprite(__sprite)<span>
+					</dt>
+					<dd>
+						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>  Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__sprite</span>
+															<span class="types"><span class="type">playdate.graphics.sprite</span></span>
+														<br/>
+														 The sprite to add to the scene.
+													</li>
+							</ul>
+
+
+
+
 
 					</dd>
 			</dl>
