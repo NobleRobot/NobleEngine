@@ -73,6 +73,8 @@ function Noble.Animation.new(__spritesheet)
 	-- @int __startFrame This is the first frame for this animation in the imagetable/spritesheet
 	-- @int __endFrame This is the first frame for this animation in the imagetable/spritesheet
 	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
+	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
+	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
 	-- @usage
 	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
 	--
@@ -80,15 +82,19 @@ function Noble.Animation.new(__spritesheet)
 	--	animation.walk.endFrame			-- 65
 	--	animation.["walk"].endFrame		-- 65
 	--	animation.jump.name				-- "jump"
-	--	animation.jump.next				-- "float"
+	--	animation.["jump"].next			-- "float"
 	--	animation.idle.next				-- nil
-	function animation:addState(__name, __startFrame, __endFrame, __next)
+	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete)
+
+		local loop = __loop or true
 
 		self[__name] = {
 			name = __name,
 			startFrame = __startFrame,
 			endFrame = __endFrame,
-			next = __next
+			next = __next,
+			loop = loop,
+			onComplete = __onComplete
 		}
 
 		-- Set this animation state as default if it is the first one added.
@@ -187,21 +193,30 @@ function Noble.Animation.new(__spritesheet)
 	--	end
 	function animation:draw(__x, __y, __advance)
 
+		if (__advance == nil) then __advance = true end
+
 		if(self.currentFrame < self.current.startFrame or self.currentFrame > self.current.endFrame + 1) then
-			self.currentFrame = self.current.startFrame
-		elseif(self.currentFrame == self.current.endFrame + 1) then
+			self.currentFrame = self.current.startFrame				-- Error correction.
+		elseif(self.currentFrame == self.current.endFrame + 1) then	-- End frame behavior.
 			if (self.current.next ~= nil) then
-				self:setState(self.current.next) -- Goes to next animation state.
+				self.currentFrame = self.current.next.startFrame	-- Set to first frame of next animation.
+				self:setState(self.current.next)					-- Set next animation state.
+			elseif (self.current.loop == true) then
+				self.currentFrame = self.current.startFrame 		-- Loop animation state. (TO-DO: account for continuous somehow?)
+			elseif(__advance) then
+				self.currentFrame = self.currentFrame - 1			-- Undo advance frame because we want to draw the same frame again.
 			end
-			self.currentFrame = self.current.startFrame -- Loop animation state. (TO-DO: account for continuous somehow?)
+
+			if (self.current.onComplete ~= nil) then
+				self.current.onComplete()
+			end
 		end
 
 		local x = __x or 0
 		local y = __y or 0
 		self.imageTable:drawImage(self.currentFrame, x, y, self.direction)
 
-		local advance = __advance or true
-		if (advance) then
+		if (__advance == true) then
 			self.currentFrame = self.currentFrame + 1
 		end
 

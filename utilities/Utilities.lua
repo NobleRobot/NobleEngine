@@ -132,3 +132,16 @@ function table.each(t, fn)
 		fn(e)
 	end
 end
+
+function table.filter(t, filterIter)
+	local out = {}
+
+	for _, value in pairs(t) do
+	  --if filterIter(v, k, table) then out[k] = v end
+		if (filterIter(value)) then
+			table.insert (out,value)
+		end
+	end
+
+	return out
+  end

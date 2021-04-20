@@ -84,7 +84,7 @@ NobleScene.sprites = {}
 function NobleScene:addSprite(__sprite)
 	__sprite:add()
 	table.insert(self.sprites, __sprite)
-	print(#self.sprites)
+	--print(#self.sprites)
 end
 
 --- Use this to remove sprites from your scene instead of `playdate.graphics.sprite:remove()`
@@ -93,7 +93,7 @@ end
 -- @tparam playdate.graphics.sprite __sprite The sprite to add to the scene.
 function NobleScene:removeSprite(__sprite)
 	__sprite:remove()
-	table.remove(self.sprites, self.sprites.indexOfElement(__sprite))
+	table.remove(self.sprites, table.indexOfElement(self.sprites, __sprite))
 end
 
 --- Callbacks
@@ -190,13 +190,10 @@ end
 --
 function NobleScene:finish()
 	for i = 1, #NobleScene.previousSceneSprites do
-		print("Finish: " .. self.name)
-		print(NobleScene.previousSceneSprites[i][i])
 		NobleScene.previousSceneSprites[i]:remove()
 		table.remove(self.sprites, table.indexOfElement(NobleScene.previousSceneSprites[i]))
 	end
 	NobleScene.previousSceneSprites = {}
-	print("finished!")
 end
 
 --- `pause()` / `resume()`

@@ -132,8 +132,8 @@ end
 
 --- Constants
 -- . A set of constants referencing device inputs, stored as strings. Can be used for querying button input,
--- but are mainly for on-screen prompts or other elements where a string literal is useful, such as a filename or GameData value.
--- For faster performance, use the ones that exist in the Playdate SDK (i.e.: `playdate.kButtonA`), which are stored as binary values.
+-- but are mainly for on-screen prompts or other elements where a string literal is useful, such as a filename, GameData value, or localization key.
+-- For faster performance, use the ones that exist in the Playdate SDK (i.e.: `playdate.kButtonA`), which are stored as binary numbers.
 -- @usage
 --	function newPrompt(__input, __promptString)
 --		-- ...
