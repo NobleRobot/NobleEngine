@@ -46,6 +46,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--@section properties
 
 	menu.alignment = __alignment or Noble.Text.ALIGN_LEFT
+	--- Indicates whether this menu's item names are treated as localization keys.
 	menu.localized = __localized or false
 	menu.textHeight = textHeightLocal
 	menu.padding = paddingLocal
@@ -88,6 +89,12 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	-- @see addItem
 	menu.itemNames = {}
+
+	-- This is an internal table. Modifying its may break other methods.
+	menu.displayNames = {}
+
+	-- This is an internal table. Modifying its may break other methods.
+	menu.displayNamesAreLocalized = {}
 
 	--- A table of functions associated with menu items. Items are a defined when calling @{addItem|addItem}, but their associated functions may be modified afterward.
 	--
@@ -154,9 +161,12 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- @string __nameOrKey The name of this menu item. It can be a display name or a localization key. <strong>Must be unique.</strong>
 	-- @tparam[opt] function __clickHandler The function that runs when this menu item is "clicked."
 	-- @int[opt] __position Insert the item at a specific position. If not set, adds to the end of the list.
+	-- @string[opt] __displayName You can create an optional, separate display name for this item. You can add or change this at runtime via @{setItemDisplayName|setItemDisplayName}.
+	-- @bool[opt=false] __displayNameIsALocalizationKey If true, will treat the `__displayName` as a localization key. This is separate from this menu's @{localized|localized} value.
 	-- @see new
 	-- @see removeItem
-	function menu:addItem(__nameOrKey, __clickHandler, __position)
+	-- @see setItemDisplayName
+	function menu:addItem(__nameOrKey, __clickHandler, __position, __displayName, __displayNameIsALocalizationKey)
 		local clickHandler = __clickHandler or function () print("Menu item \"" .. __nameOrKey .. "\" clicked!") end
 		if (__position ~= nil) then
 			if (__position <= 0 or __position > #self.itemNames) then error("BONK: Menu item out of range.", 3) return end
@@ -171,15 +181,49 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			table.insert(self.itemNames, __nameOrKey)
 			self.itemPositions[__nameOrKey] = #self.itemNames
 		end
+
 		self.clickHandlers[__nameOrKey] = clickHandler
 
-		local nameOrKey = __nameOrKey
-		if (self.localized) then nameOrKey = playdate.graphics.getLocalizedText(__nameOrKey) end
-		self.itemWidths[__nameOrKey] = self.font:getTextWidth(nameOrKey)
+		-- Item name
+		local nameOrKey
+		if (self.localized) then
+			nameOrKey = Graphics.getLocalizedText(__nameOrKey)
+		else
+			nameOrKey = __nameOrKey
+		end
+
+		-- Display name
+		local displayName = nil
+		if (__displayName ~= nil) then
+			if (__displayNameIsALocalizationKey == true) then
+				displayName = Graphics.getLocalizedText(__displayName)
+			else
+				displayName = __displayName
+			end
+			self.displayNames[__nameOrKey] = displayName
+		end
+
+		if (displayName == nil) then
+			self:updateWidths(__nameOrKey, nameOrKey)
+		else
+			self:updateWidths(__nameOrKey, displayName)
+		end
 
 		self:setNumberOfRows(#self.itemNames)
 
-		-- Update width
+	end
+
+	-- Internal method.
+	function menu:updateWidths(__nameOrKey, __string)
+
+		if (__string == nil) then
+			__string = __nameOrKey
+		end
+
+		-- Item width
+		self.itemWidths[__nameOrKey] = self.font:getTextWidth(__string)
+
+		-- Menu width
 		local width = 0
 		for _, value in pairs(self.itemWidths) do
 			if value > width then width = value end
@@ -218,6 +262,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		self.itemPositions[itemString] = nil
 		self.clickHandlers[itemString] = nil
 		self.itemWidths[itemString] = nil
+		self.displayNames[itemString] = nil
+		self.displayNamesAreLocalized[itemString] = nil
 
 		-- In case the current item is selected.
 		if (self.currentItemNumber == itemPosition and self.currentItemNumber ~= 1) then
@@ -237,6 +283,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		self.width =  width + (self.horizontalPadding * 2) + (self.selectedOutlineThickness * 2)
 
 	end
+
+	--
 
 	local active = __activate or true
 	if (active) then
@@ -349,9 +397,65 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--		menu:click()
 	--	end
 	function menu:click(__force)
-		if (self:isActive() or __force) then
+		if ((self:isActive() or __force) and self.clickHandlers[self.currentItemName] ~= nil) then
 			self.clickHandlers[self.currentItemName]()
 		end
+	end
+
+	--- Gets the display name of a menu item.
+	-- . If a menu item does not have an entry in `displayName`, then @{itemName|itemName} will be returned instead. This method is used internally when @{draw|draw} is called.
+	-- If this menu's `localized` value is true, a returned `itemName` will always be localized, but a returned `displayName` is only localized if it's `__displayNameIsALocalizationKey` is set to `true` when it was added.
+	-- @string __nameOrKey The menu item you want the display name of.
+	-- @treturn string
+	function menu:getItemDisplayName(__nameOrKey)
+		if (self.displayNames[__nameOrKey] == nil) then
+			-- No display name.
+			if (self.localized) then
+				return Graphics.getLocalizedText(__nameOrKey)
+			else
+				return __nameOrKey
+			end
+		else
+			-- Has display name.
+			if (self.displayNamesAreLocalized[__nameOrKey] == true) then
+				return Graphics.getLocalizedText(self.displayNames[__nameOrKey])
+			else
+				return self.displayNames[__nameOrKey]
+			end
+		end
+	end
+
+	--- When you add a menu item, you can give it a display name that's different from it's actual name. This method adds or changes the display name of a menu item.
+	-- @string __nameOrKey The menu item name (or key if this menu uses localization keys).
+	-- @string __displayNameOrKey The display name.
+	-- @bool[opt=false] __displayNameIsALocalizationKey Set to use to indicate that this display name is a localization key. This setting is separate from @{localized|localized}
+	-- @usage
+	--	function changeDifficultyLevel(__level)
+	--		menu:setItemDisplayName("Difficulty", "Difficulty: " .. __level)
+	--	end
+	function menu:setItemDisplayName(__nameOrKey, __displayNameOrKey, __displayNameIsALocalizationKey)
+		self.displayNames[__nameOrKey] = __displayNameOrKey
+		self.displayNamesAreLocalized[__nameOrKey] = __displayNameIsALocalizationKey or false
+
+		local displayName
+		if (__displayNameIsALocalizationKey == true) then
+			displayName = Graphics.getLocalizedText(__displayNameOrKey)
+		else
+			displayName = __displayNameOrKey
+		end
+
+		-- If we're "resetting" the display name by setting it to nil, then use __nameOrKey instead (checking for localization before calling updateWidths)
+		if (displayName == nil) then
+			if (self.localized) then
+				displayName = Graphics.getLocalizedText(__nameOrKey)
+			else
+				displayName = __nameOrKey
+			end
+		end
+
+		print(__nameOrKey)
+		print(displayName)
+		self:updateWidths(__nameOrKey, displayName)
 	end
 
 	--- Drawing
@@ -395,7 +499,11 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 			xAdjustment = self.width - self.horizontalPadding - self.selectedOutlineThickness
 		end
-		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.alignment, self.localized, self.font)
+		Noble.Text.draw(
+			self:getItemDisplayName(self.itemNames[__itemIndex]),
+			__x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)),
+			self.alignment, self.localized, self.font
+		)
 	end
 
 	--- This method is called for every <strong>selected</strong> item when @{draw|draw} is called. You shouldn't call this directly, but you may re-implement it if you wish.
@@ -436,7 +544,11 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		Graphics.setLineWidth(self.selectedOutlineThickness)
 		Graphics.drawRoundRect(__x + xAdjustmentRect, __y + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.itemWidths[self.itemNames[__itemIndex]]+self.horizontalPadding, self.textHeight+self.padding, self.selectedCornerRadius)
 		Graphics.setImageDrawMode(self.otherFillMode)
-		Noble.Text.draw(self.itemNames[__itemIndex], __x + self.horizontalPadding/2 + xAdjustmentText, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)), self.alignment, self.localized, self.font)
+		Noble.Text.draw(
+			self:getItemDisplayName(self.itemNames[__itemIndex]),
+			__x + self.horizontalPadding/2 + xAdjustmentText, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)),
+			self.alignment, self.localized, self.font
+		)
 	end
 
 	-- Don't call or modify this function.
