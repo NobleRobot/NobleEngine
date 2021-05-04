@@ -502,7 +502,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		Noble.Text.draw(
 			self:getItemDisplayName(self.itemNames[__itemIndex]),
 			__x + self.horizontalPadding/2 + xAdjustment, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)),
-			self.alignment, self.localized, self.font
+			self.alignment, false, self.font
 		)
 	end
 
@@ -547,7 +547,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		Noble.Text.draw(
 			self:getItemDisplayName(self.itemNames[__itemIndex]),
 			__x + self.horizontalPadding/2 + xAdjustmentText, __y + self.padding/2 + self.selectedOutlineThickness + (self.margin * (__itemIndex -1)),
-			self.alignment, self.localized, self.font
+			self.alignment, false, self.font
 		)
 	end
 
