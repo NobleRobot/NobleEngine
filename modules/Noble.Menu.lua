@@ -484,7 +484,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- 	Graphics.setImageDrawMode(self.fillMode)
 	-- 	local xAdjustment = 0
 	-- 	if (self.alignment == Noble.Text.ALIGN_CENTER) then
-	-- 		xAdjustment = self.width/2
+	-- 		xAdjustment = self.width/2 - self.horizontalPadding/2
 	-- 	elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 	-- 		xAdjustment = self.width - self.horizontalPadding
 	-- 	end
@@ -495,7 +495,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		Graphics.setImageDrawMode(self.fillMode)
 		local xAdjustment = self.selectedOutlineThickness
 		if (self.alignment == Noble.Text.ALIGN_CENTER) then
-			xAdjustment = self.width/2
+			xAdjustment = self.width/2 - self.horizontalPadding/2
 		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 			xAdjustment = self.width - self.horizontalPadding - self.selectedOutlineThickness
 		end
@@ -513,8 +513,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- 	local xAdjustmentText = 0
 	-- 	local xAdjustmentRect = 0
 	-- 	if (self.alignment == Noble.Text.ALIGN_CENTER) then
-	-- 		xAdjustmentText = self.width/2
-	-- 		xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2
+	-- 		xAdjustmentText = self.width/2 - self.horizontalPadding/2
+	--		xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2 - self.horizontalPadding/2
 	-- 	elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 	-- 		xAdjustmentText = self.width - self.horizontalPadding
 	-- 		xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding
@@ -532,8 +532,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 		local xAdjustmentText = self.selectedOutlineThickness
 		local xAdjustmentRect = self.selectedOutlineThickness
 		if (self.alignment == Noble.Text.ALIGN_CENTER) then
-			xAdjustmentText = self.width/2
-			xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2
+			xAdjustmentText = self.width/2 - self.horizontalPadding/2
+			xAdjustmentRect = self.width/2 - self.itemWidths[self.itemNames[__itemIndex]]/2 - self.horizontalPadding/2
 		elseif (self.alignment == Noble.Text.ALIGN_RIGHT) then
 			xAdjustmentText = self.width - self.horizontalPadding - self.selectedOutlineThickness
 			xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding - self.selectedOutlineThickness
