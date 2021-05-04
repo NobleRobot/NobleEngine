@@ -10,7 +10,7 @@ If so, you're looking for Noble Engine!
 
 Features
 --------
--   Complete scene lifecycle manager. Manage update loops, sprites, input, and initialization steps on a per scene basis.
+-   Complete scene lifecycle management. Handle update loops, sprites, input, and initialization steps on a per scene basis.
 -   Scene transition API and animation library with over a dozen transition types (cross dissolve, dip-to-black, and more).
 -   Settings/SaveGame API, supporting up to 1000 save slots and automatic updating of on disk files when you inevitably muck around with your data structure in development.
 -   Boilerplate menu object, with simple way to add/remove items and manage “click” handlers.
@@ -61,6 +61,6 @@ In general, Lua best-practices are followed, but in some cases code style and na
 -   “Class” names are **TitleCase**, and Lua “modules” are treated as nested classes, thus `Noble.Text` instead of `noble.text`.
 -   Constants, such as `Noble.TransitionType.DIP_TO_BLACK`, are **ALL_CAPS_SNAKE_CASE**
 -   Argument names are prefixed with a **double-underscore**, as in `__displayName`. This mostly impacts documentation legibility. I’m very sorry but it couldn’t be helped. 😆
--   Names are verbose by default; no abbreviations. This includes alias for Playdate packages, so `playdate.graphics` is aliased as `Graphics`, instead of `gfx`.
+-   Names are verbose by default; no abbreviations. This includes aliases for Playdate packages, so `playdate.graphics` is aliased as `Graphics`, instead of `gfx`.
 
 Some of these conventions run counter to those seen in the Playdate SDK. In places where there’s a potential conflict, either an alias is created for Noble Engine’s version to match the engine’s code style, or the Playdate SDK item is given preference and Noble Engine stays out of its way.
