@@ -53,7 +53,7 @@ These pages are included in the repository at `documentation/index.html` and (so
 
 Notes on Style
 --------------
-Noble Engine was originally developed for \_Widget Satchel II: Return of Sprocket_, by Mark LaCroix, who never wrote a line of Lua in his life before starting this project.
+Noble Engine was originally developed for _Widget Satchel II: Return of Sprocket_, by Mark LaCroix, who never wrote a line of Lua in his life before starting this project.
 
 In general, Lua best-practices are followed, but in some cases code style and naming conventions are more likely to follow those found in “C-like” languages such as Haxe, C\#, Java, ActionScript, etc.
 
