@@ -369,12 +369,12 @@ end
 
 function playdate.gameWillPause()
 	if (currentScene ~= nil) then
-		currentScene:gameWillPause()
+		currentScene:pause()
 	end
 end
 
 function playdate.gameWillResume()
 	if (currentScene ~= nil) then
-		currentScene:gameWillResume()
+		currentScene:resume()
 	end
 end
