@@ -135,7 +135,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 					</dd>
 					<dt>
 						<a name = "animation:addState"></a>
-						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next)<span>
+						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete)<span>
 					</dt>
 					<dd>
 						Add an animation state.  The first state added will be the default set for this animation.
@@ -163,6 +163,16 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 														<br/>
 														 By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 													</li>
+													<li><span class="parameter">__loop</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 If you want a state to "freeze" on its final frame, instead of looping, enter <code>false</code> here.
+													</li>
+													<li><span class="parameter">__onComplete</span>
+														<br/>
+														 This function will run when this animation is complete. Be careful when using this on a looping animation!
+													</li>
 							</ul>
 
 
@@ -175,7 +185,7 @@ animation.idle.endFrame			<span class="comment">-- 30
 </span>animation.walk.endFrame			<span class="comment">-- 65
 </span>animation.[<span class="string">"walk"</span>].endFrame		<span class="comment">-- 65
 </span>animation.jump.name				<span class="comment">-- "jump"
-</span>animation.jump.<span class="global">next</span>				<span class="comment">-- "float"
+</span>animation.[<span class="string">"jump"</span>].<span class="global">next</span>			<span class="comment">-- "float"
 </span>animation.idle.<span class="global">next</span>				<span class="comment">-- nil</span></pre>
 
 					</dd>

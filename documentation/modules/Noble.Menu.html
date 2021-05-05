@@ -30,6 +30,7 @@
 					</ul>
 					<h3>Properties </h3>
 					<ul>
+							<li><a href="#menu.localized">menu.localized</a></li>
 							<li><a href="#menu.currentItemNumber">menu.currentItemNumber</a></li>
 							<li><a href="#menu.currentItemName">menu.currentItemName</a></li>
 							<li><a href="#menu.width">menu.width</a></li>
@@ -43,6 +44,8 @@
 							<li><a href="#menu:selectNext">menu:selectNext</a></li>
 							<li><a href="#menu:select">menu:select</a></li>
 							<li><a href="#menu:click">menu:click</a></li>
+							<li><a href="#menu:getItemDisplayName">menu:getItemDisplayName</a></li>
+							<li><a href="#menu:setItemDisplayName">menu:setItemDisplayName</a></li>
 					</ul>
 					<h3>Tables </h3>
 					<ul>
@@ -200,7 +203,7 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					</dd>
 					<dt>
 						<a name = "menu:addItem"></a>
-						<span class="item-name">menu:addItem(__nameOrKey[, __clickHandler[, __position]])<span>
+						<span class="item-name">menu:addItem(__nameOrKey[, __clickHandler[, __position[, __displayName[, __displayNameIsALocalizationKey=false]]]])<span>
 					</dt>
 					<dd>
 						Adds a item to this menu.
@@ -224,6 +227,18 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 														<br/>
 														 Insert the item at a specific position. If not set, adds to the end of the list.
 													</li>
+													<li><span class="parameter">__displayName</span>
+															<span class="types"><span class="type">string</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 You can create an optional, separate display name for this item. You can add or change this at runtime via <a href="../modules/Noble.Menu.html#menu:setItemDisplayName">setItemDisplayName</a>.
+													</li>
+													<li><span class="parameter">__displayNameIsALocalizationKey</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If true, will treat the <code>__displayName</code> as a localization key. This is separate from this menu's <a href="../modules/Noble.Menu.html#menu.localized">localized</a> value.
+													</li>
 							</ul>
 
 
@@ -232,6 +247,7 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 							<ul>
 									<li><a href="../modules/Noble.Menu.html#Noble.Menu.new">new</a></li>
 									<li><a href="../modules/Noble.Menu.html#menu:removeItem">removeItem</a></li>
+									<li><a href="../modules/Noble.Menu.html#menu:setItemDisplayName">setItemDisplayName</a></li>
 							</ul>
 
 
@@ -266,6 +282,19 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 			<h2 class="section-header "><a name="Properties"></a>Properties </h2>
 			<!--  -->
 			<dl class="function">
+					<dt>
+						<a name = "menu.localized"></a>
+						<span class="item-name">menu.localized<span>
+					</dt>
+					<dd>
+						Indicates whether this menu's item names are treated as localization keys.
+
+
+
+
+
+
+					</dd>
 					<dt>
 						<a name = "menu.currentItemNumber"></a>
 						<span class="item-name">menu.currentItemNumber<span>
@@ -515,6 +544,76 @@ menu:deactivate()</pre>
 <span class="keyword">end</span></pre>
 
 					</dd>
+					<dt>
+						<a name = "menu:getItemDisplayName"></a>
+						<span class="item-name">menu:getItemDisplayName(__itemName)<span>
+					</dt>
+					<dd>
+						Gets the display name of a menu item.
+<p> If a menu item does not have a display name, then the <code>__nameOrKey</code> (or its localized string) will be returned instead. This method is used internally when <a href="../modules/Noble.Menu.html#menu:draw">draw</a> is called.
+<p> If this menu's <a href="../modules/Noble.Menu.html#menu.localized">localized</a> value is true, a returned <code>__nameOrKey</code> will always be localized, but a returned display name is only localized if the <code>__displayNameIsALocalizationKey</code> argument was set to <code>true</code> when the display name was added.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__itemName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The menu item you want the display name of.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">string</span></span>
+
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Menu.html#menu:addItem">addItem</a></li>
+									<li><a href="../modules/Noble.Menu.html#menu:setItemDisplayName">setItemDisplayName</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "menu:setItemDisplayName"></a>
+						<span class="item-name">menu:setItemDisplayName(__itemName, __displayName[, __displayNameIsALocalizationKey=false])<span>
+					</dt>
+					<dd>
+						When you add a menu item, you can give it a display name that's different from it's actual name.  This method adds or changes the display name of a menu item.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__itemName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The menu item name (or key if this menu uses localization keys).
+													</li>
+													<li><span class="parameter">__displayName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The display name.
+													</li>
+													<li><span class="parameter">__displayNameIsALocalizationKey</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set to use to indicate that this display name is a localization key. This setting is separate from <a href="../modules/Noble.Menu.html#menu.localized">localized</a>
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> changeDifficultyLevel(__level)
+	menu:setItemDisplayName(<span class="string">"Difficulty"</span>, <span class="string">"Difficulty: "</span> .. __level)
+<span class="keyword">end</span></pre>
+
+					</dd>
 			</dl>
 			<h2 class="section-header "><a name="Tables"></a>Tables </h2>
 			<!--  -->
@@ -678,7 +777,7 @@ menu.clickHandlers = {
 	Graphics.setImageDrawMode(self.fillMode)
 	<span class="keyword">local</span> xAdjustment = <span class="number">0</span>
 	<span class="keyword">if</span> (self.alignment == Noble.Text.ALIGN_CENTER) <span class="keyword">then</span>
-		xAdjustment = self.width/<span class="number">2</span>
+		xAdjustment = self.width/<span class="number">2</span> - self.horizontalPadding/<span class="number">2</span>
 	<span class="keyword">elseif</span> (self.alignment == Noble.Text.ALIGN_RIGHT) <span class="keyword">then</span>
 		xAdjustment = self.width - self.horizontalPadding
 	<span class="keyword">end</span>
@@ -722,8 +821,8 @@ menu.clickHandlers = {
 	<span class="keyword">local</span> xAdjustmentText = <span class="number">0</span>
 	<span class="keyword">local</span> xAdjustmentRect = <span class="number">0</span>
 	<span class="keyword">if</span> (self.alignment == Noble.Text.ALIGN_CENTER) <span class="keyword">then</span>
-		xAdjustmentText = self.width/<span class="number">2</span>
-		xAdjustmentRect = self.width/<span class="number">2</span> - self.itemWidths[self.itemNames[__itemIndex]]/<span class="number">2</span>
+		xAdjustmentText = self.width/<span class="number">2</span> - self.horizontalPadding/<span class="number">2</span>
+	xAdjustmentRect = self.width/<span class="number">2</span> - self.itemWidths[self.itemNames[__itemIndex]]/<span class="number">2</span> - self.horizontalPadding/<span class="number">2</span>
 	<span class="keyword">elseif</span> (self.alignment == Noble.Text.ALIGN_RIGHT) <span class="keyword">then</span>
 		xAdjustmentText = self.width - self.horizontalPadding
 		xAdjustmentRect = self.width - self.itemWidths[self.itemNames[__itemIndex]] - self.horizontalPadding

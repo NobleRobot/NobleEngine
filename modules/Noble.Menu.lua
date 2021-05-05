@@ -403,59 +403,63 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	end
 
 	--- Gets the display name of a menu item.
-	-- . If a menu item does not have an entry in `displayName`, then @{itemName|itemName} will be returned instead. This method is used internally when @{draw|draw} is called.
-	-- If this menu's `localized` value is true, a returned `itemName` will always be localized, but a returned `displayName` is only localized if it's `__displayNameIsALocalizationKey` is set to `true` when it was added.
-	-- @string __nameOrKey The menu item you want the display name of.
+	--
+	-- If a menu item does not have a display name, then the `__nameOrKey` (or its localized string) will be returned instead. This method is used internally when @{draw|draw} is called.
+	--
+	-- If this menu's `localized` value is true, a returned `__nameOrKey` will always be localized, but a returned display name is only localized if the `__displayNameIsALocalizationKey` argument was set to `true` when the display name was added.
+	-- @string __itemName The menu item you want the display name of.
 	-- @treturn string
-	function menu:getItemDisplayName(__nameOrKey)
-		if (self.displayNames[__nameOrKey] == nil) then
+	-- @see addItem
+	-- @see setItemDisplayName
+	function menu:getItemDisplayName(__itemName)
+		if (self.displayNames[__itemName] == nil) then
 			-- No display name.
 			if (self.localized) then
-				return Graphics.getLocalizedText(__nameOrKey)
+				return Graphics.getLocalizedText(__itemName)
 			else
-				return __nameOrKey
+				return __itemName
 			end
 		else
 			-- Has display name.
-			if (self.displayNamesAreLocalized[__nameOrKey] == true) then
-				return Graphics.getLocalizedText(self.displayNames[__nameOrKey])
+			if (self.displayNamesAreLocalized[__itemName] == true) then
+				return Graphics.getLocalizedText(self.displayNames[__itemName])
 			else
-				return self.displayNames[__nameOrKey]
+				return self.displayNames[__itemName]
 			end
 		end
 	end
 
 	--- When you add a menu item, you can give it a display name that's different from it's actual name. This method adds or changes the display name of a menu item.
-	-- @string __nameOrKey The menu item name (or key if this menu uses localization keys).
-	-- @string __displayNameOrKey The display name.
+	-- @string __itemName The menu item name (or key if this menu uses localization keys).
+	-- @string __displayName The display name.
 	-- @bool[opt=false] __displayNameIsALocalizationKey Set to use to indicate that this display name is a localization key. This setting is separate from @{localized|localized}
 	-- @usage
 	--	function changeDifficultyLevel(__level)
 	--		menu:setItemDisplayName("Difficulty", "Difficulty: " .. __level)
 	--	end
-	function menu:setItemDisplayName(__nameOrKey, __displayNameOrKey, __displayNameIsALocalizationKey)
-		self.displayNames[__nameOrKey] = __displayNameOrKey
-		self.displayNamesAreLocalized[__nameOrKey] = __displayNameIsALocalizationKey or false
+	function menu:setItemDisplayName(__itemName, __displayName, __displayNameIsALocalizationKey)
+		self.displayNames[__itemName] = __displayName
+		self.displayNamesAreLocalized[__itemName] = __displayNameIsALocalizationKey or false
 
 		local displayName
 		if (__displayNameIsALocalizationKey == true) then
-			displayName = Graphics.getLocalizedText(__displayNameOrKey)
+			displayName = Graphics.getLocalizedText(__displayName)
 		else
-			displayName = __displayNameOrKey
+			displayName = __displayName
 		end
 
 		-- If we're "resetting" the display name by setting it to nil, then use __nameOrKey instead (checking for localization before calling updateWidths)
 		if (displayName == nil) then
 			if (self.localized) then
-				displayName = Graphics.getLocalizedText(__nameOrKey)
+				displayName = Graphics.getLocalizedText(__itemName)
 			else
-				displayName = __nameOrKey
+				displayName = __itemName
 			end
 		end
 
-		print(__nameOrKey)
+		print(__itemName)
 		print(displayName)
-		self:updateWidths(__nameOrKey, displayName)
+		self:updateWidths(__itemName, displayName)
 	end
 
 	--- Drawing
