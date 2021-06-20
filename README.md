@@ -17,7 +17,7 @@ Features
 -   Additional input methods, and per-scene \`inputHandler\` logic.
 -   Full state manager for sprite animations.
 -   New fonts! Including full Japanese katakana character set.
--   Fully documented code, explaining methods and architecture, and LDoc-generated documentation pages.
+-   Fully documented code, explaining methods and architecture, and LDoc-generated [documentation pages](https://noblerobot.github.io/NobleEngine).
 -   Full project template, with example scenes and launcher assets, to help beginners get started with Playdate development.
 -   Random goodies, like a unified text drawing method for normal/aligned/localized text, one-line methods for showing/hiding the crank indicator and the FPS counter, and more.
 
@@ -49,7 +49,7 @@ Documentation
 -------------
 Noble Engine is fully documented in code, and has a full set of html pages generated with [LDoc](https://github.com/lunarmodules/LDoc) and styled for legibility, ease-of-use, and playful charm if I do say so myself.
 
-These pages are included in the repository at `documentation/index.html` and (soon) on GitHub Pages.
+These pages are included in the repository at `docs/index.html` and on [GitHub Pages](https://noblerobot.github.io/NobleEngine).
 
 Notes on Style
 --------------
