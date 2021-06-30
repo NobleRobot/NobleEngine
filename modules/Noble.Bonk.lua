@@ -98,12 +98,8 @@ function Noble.Bonk.checkDebugBonks()
 	if (playdate.gameWillResume ~= debugBonks.resume) then
 		error("BONK: Don't manually define playdate.gameWillResume(). Put resume code in your scenes' resume() methods instead.")
 	end
-
 	if (Graphics.sprite.getAlwaysRedraw() == false) then
 		error("BONK: Don't use Graphics.sprite.setAlwaysRedraw(false) unless you know what you're doing...")
-	end
-	if (Noble.Input.currentHandler == nil) then
-		error("BONK: Don't set Noble.Input.currentHandler to nil directly. To disable input, use Noble.Input.setHandler() (without an argument) instead.")
 	end
 	if (Noble.currentScene.baseColor == Graphics.kColorClear) then
 		error("BONK: Don't set a scene's baseColor to Graphics.kColorClear, silly.")

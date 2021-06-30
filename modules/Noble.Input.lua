@@ -1,5 +1,37 @@
---- Input manager.
+--- A complete encapsulation of the Playdate's input system. The Playdate SDK gives developers multiple ways to manage input. Noble Engine's approach revolves around the SDK's "inputHandlers," extending them to include additional input methods, and pull in other hardware functions that the SDK puts elsewhere. See usage below for the full list of supported methods.
+-- <br><br>By default, Noble Engine assumes each scene will have an inputManager assigned to it. So, for example, you can define one inputManager for menu screens and another for gameplay scenes in your `main.lua`, and then in each scene, set which one that scene uses. You can instead define a unique inputHandler in each scene.
+-- <br><br>You may also create and manage inputManagers within and outside of scenes. When a NobleScene is loaded, its inputHandler will become active, thus, inputHandlers do not carry across scenes, and all input is suspended during scene transitions. An advanced use-case is to leave a scene's inputHandler as nil, and manage it separately.
+-- <br><br><strong>NOTE:</strong> While the Playdate SDK allows you to stack as many inputHandlers as you want, Noble Engine assumes only one <em>active</em> inputHandler at a time. You may still manually call `playdate.inputHandlers.push()` and `playdate.inputHandlers.pop()` yourself, but Noble Engine will not know about it and it may cause unexpected behavior.
+-- <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because many of Noble.Input's functionality will not apply.
 -- @module Noble.Input
+-- @usage
+--	local myInputHandler = {
+--		AButtonDown = function() end,	-- Fires once when button is pressed down.
+--		AButtonHold = function() end,	-- Fires each frame while a button is held (Noble Engine implementation).
+--		AButtonHeld = function() end,	-- Fires once after button is held for 1 second (available for A and B).
+--		AButtonUp = function() end,		-- Fires once when button is released.
+--		BButtonDown = function() end,
+--		BButtonHold = function() end,
+--		BButtonHeld = function() end,
+--		BButtonUp = function() end,
+--		downButtonDown = function() end,
+--		downButtonHold = function() end,
+--		downButtonUp = function() end,
+--		leftButtonDown = function() end,
+--		leftButtonHold = function() end,
+--		leftButtonUp = function() end,
+--		rightButtonDown = function() end,
+--		rightButtonHold = function() end,
+--		rightButtonUp = function() end,
+--		upButtonDown = function() end,
+--		upButtonHold = function() end
+--		upButtonUp = function() end,
+--
+--		cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
+--		crankDocked = function() end,						-- Noble Engine implementation.
+--		crankUndocked = function() end,						-- Noble Engine implementation.
+--	}
+-- @see NobleScene.inputHandler
 --
 Noble.Input = {}
 
@@ -7,16 +39,18 @@ local currentHandler = {}
 
 --- Get the currently active input handler. Returns nil if none are active.
 -- @treturn table A table of callbacks which handle input events.
+-- @see NobleScene.inputHandler
 function Noble.Input.getHandler()
 	return currentHandler
 end
 
---- Use this to change the active inputHandler. Enter nil to disable input.
+--- Use this to change the active inputHandler.
+-- <br><br>Enter `nil` to disable input. Use @{setEnabled} to disable/enable input without losing track of the current inputHandler.
 -- @tparam[opt=nil] table __inputHandler A table of callbacks which handle input events.
 -- @see NobleScene.inputHandler
+-- @see clearHandler
+-- @see setEnabled
 function Noble.Input.setHandler(__inputHandler)
-	--if (__inputHandler ~= nil) then printTable(__inputHandler) end
-
 	if (currentHandler ~= nil) then
 		playdate.inputHandlers.pop()
 	end
@@ -31,8 +65,33 @@ end
 
 --- A helper function that calls Noble.Input.setHandler() with no argument.
 -- @see setHandler
-function Noble.Input.disable()
+function Noble.Input.clearHandler()
 	Noble.Input.setHandler()
+end
+
+local cachedInputHandler = nil
+
+--- Enable and disable user input without dealing with inputHanders.
+-- The Playdate SDK requires removing all inputHanders to halt user input, so while the currentHandler is cleared when `false` is passed to this method,
+-- it is cached so it can be later re-enabled by passing `true` it.
+-- @bool __value Set to false to halt input. Set to true to resume accepting input.
+-- @see getHandler
+-- @see clearHandler
+function Noble.Input.setEnabled(__value)
+	local value = __value or true
+	if (value == true) then
+		Noble.Input.setHandler(cachedInputHandler or currentHandler)
+		cachedInputHandler = nil
+	else
+		cachedInputHandler = currentHandler
+		Noble.Input.clearHandler()
+	end
+end
+
+--- Checks to see that there is an active inputHandler
+-- @treturn bool Returns true if the input system is enabled. Returns false if `setEnabled(false)` was used, or if currentHandler is `nil`.
+function Noble.Input.getEnabled()
+	return cachedInputHandler == nil
 end
 
 local crankIndicatorActive = false
@@ -62,6 +121,7 @@ end
 
 -- Noble Engine defines extra "buttonHold" methods that run every frame that a button is held down, but to implement them, we need to do some magic.
 local buttonHoldBufferAmount = 3 -- This is how many frames to wait before the engine determines that a button is being held down. Using !buttonJustPressed() provides only 1 frame, which isn't enough.
+
 local AButtonHoldBufferCount = 0
 local BButtonHoldBufferCount = 0
 local upButtonHoldBufferCount = 0
@@ -71,7 +131,9 @@ local rightButtonHoldBufferCount = 0
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function Noble.Input.update()
+
 	if (currentHandler == nil) then return end
+
 	if (currentHandler.AButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonA)) then
 			if (AButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.AButtonHold()		-- Execute!
@@ -118,14 +180,14 @@ end
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankDocked()
-	if (currentHandler.crankDocked ~= nil) then
+	if (currentHandler.crankDocked ~= nil and Noble.Input.getEnabled() == true) then
 		currentHandler.crankDocked()
 	end
 end
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankUndocked()
-	if (currentHandler.crankUndocked ~= nil) then
+	if (currentHandler.crankUndocked ~= nil and Noble.Input.getEnabled() == true) then
 		currentHandler.crankDocked()
 	end
 end
