@@ -23,7 +23,7 @@ NobleScene.name = ""
 
 --- This is the background color of this scene.
 --
-NobleScene.backgroundColor = Graphics.kColorWhite
+NobleScene.baseColor = Graphics.kColorWhite
 
 --- Tables
 -- @section tables
@@ -153,7 +153,7 @@ function NobleScene:update() end
 --	end
 --
 function NobleScene:drawBackground()
-	Graphics.clear(self.backgroundColor)
+	Graphics.clear(self.baseColor)
 end
 
 -- This is an internal read-only value used by Noble Engine. It's not useful to you. ;-)
