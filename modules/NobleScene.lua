@@ -77,23 +77,44 @@ NobleScene.sprites = {}
 --- Methods
 -- @section Methods
 
---- Use this to add sprites to your scene instead of `playdate.graphics.sprite:add()`
+--- Use this to add sprites to your scene instead of `playdate.graphics.sprite:add()`.
 --
--- Sprites not manually removed before transitioning to another scene are automatically removed in @{finish|finish}.
+-- If your sprite is a `NobleSprite`, using `NobleSprite:add()` will also call this method.
+--
+-- Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in @{finish|finish}.
 -- @tparam playdate.graphics.sprite __sprite The sprite to add to the scene.
+-- @see NobleSprite:add
+-- @see removeSprite
 function NobleScene:addSprite(__sprite)
-	__sprite:add()
-	table.insert(self.sprites, __sprite)
-	--print(#self.sprites)
+	if (__sprite.isNobleSprite == true) then
+		__sprite:superAdd()
+	else
+		__sprite:add()
+	end
+
+	if (table.indexOfElement(self.sprites, __sprite) == nil) then
+		table.insert(self.sprites, __sprite)
+	end
 end
 
---- Use this to remove sprites from your scene instead of `playdate.graphics.sprite:remove()`
+--- Use this to remove sprites from your scene instead of `playdate.graphics.sprite:remove()`.
+--
+-- If your sprite is a `NobleSprite`, using `NobleSprite:remove()` will also call this method.
 --
 -- Sprites not manually removed before transitioning to another scene are automatically removed in @{finish|finish}.
 -- @tparam playdate.graphics.sprite __sprite The sprite to add to the scene.
+-- @see NobleSprite:remove
+-- @see addSprite
 function NobleScene:removeSprite(__sprite)
-	__sprite:remove()
-	table.remove(self.sprites, table.indexOfElement(self.sprites, __sprite))
+	if (__sprite.isNobleSprite == true) then
+		__sprite:superRemove()
+	else
+		__sprite:remove()
+	end
+
+	if (table.indexOfElement(self.sprites, __sprite) ~= nil) then
+		table.remove(self.sprites, table.indexOfElement(self.sprites, __sprite))
+	end
 end
 
 --- Callbacks

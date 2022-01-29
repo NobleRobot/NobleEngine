@@ -49,6 +49,7 @@ import 'libraries/noble/modules/Noble.Text.lua'
 import 'libraries/noble/modules/Noble.TransitionType.lua'
 import 'libraries/noble/modules/Noble.Menu.lua'
 import 'libraries/noble/modules/NobleScene'
+import 'libraries/noble/modules/NobleSprite'
 
 --- Check to see if the game is transitioning between scenes.
 -- Useful to control game logic that lives outside of a scene's `update()` method.
@@ -84,7 +85,7 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __enab
 	end
 
 	-- Screen drawing: see the Playdate SDK for details on these methods.
-	Graphics.sprite.setAlwaysRedraw(false)
+	Graphics.sprite.setAlwaysRedraw(true)
 	Graphics.sprite.setBackgroundDrawingCallback(
 		function ()
 			if (currentScene ~= nil) then

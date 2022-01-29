@@ -70,6 +70,7 @@
 					<h3>Classes</h3>
 					<ul>
 								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
 					</ul>
 			</div>
 			<div class="nav-kind">
@@ -86,7 +87,7 @@
 
 		<h1>Noble.Animation</h1>
 		<p>Animation states using a spritesheet/imagetable.</p>
-		<p> Ideal for use with <code>playdate.graphics.sprite</code> objects, but suitable for other uses as well.</p>
+		<p> Ideal for use with <a href="../classes/NobleSprite.html#">NobleSprite</a> objects. Suitable for other uses as well.</p>
 
 		<hr/>
 
@@ -98,7 +99,7 @@
 						<span class="item-name">Noble.Animation.new(__spritesheet)<span>
 					</dt>
 					<dd>
-						Create a new animation "state machine".
+						Create a new animation "state machine".  This function is called automatically when creating a new <a href="../classes/NobleSprite.html#">NobleSprite</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -116,9 +117,31 @@
 								</ol>
 
 
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleSprite.html#NobleSprite:init">NobleSprite:init</a>
+							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">MyHero = {}
+								<pre class="example"><span class="keyword">local</span> myAnimation = Noble.Animation.new(<span class="string">"path/to/spritesheet"</span>)</pre>
+								<pre class="example"><span class="comment">-- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
+</span><span class="comment">-- but you do feed its __spritesheet argument into MySprite.super.init()...
+</span>MyHero = {}
+class(<span class="string">"MyHero"</span>).extends(NobleSprite)
+
+<span class="keyword">function</span> MyHero:init()
+	MyHero.super.init(self, <span class="string">"assets/images/Hero"</span>)
+	<span class="comment">-- ...
+</span>	<span class="comment">-- A new NobleSprite creates a Noble.Animation object named "self.animation"
+</span>	self.animation:addState(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:addState(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:addState(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:addState(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:addState(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span></pre>
+								<pre class="example"><span class="comment">-- When extending playdate.graphics.Sprite, Noble.Animation.new() must be called manually...
+</span>MyHero = {}
 class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 
 <span class="keyword">function</span> MyHero:init()
@@ -349,7 +372,7 @@ animation.idle.endFrame			<span class="comment">-- 30
 					</dt>
 					<dd>
 						Draw the current frame.
-<p> The ideal place for this is in a <code>playdate.graphics.sprite:draw()</code> for characters and items, or <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a> for basic graphical scene objects.
+<p> When attached to a NobleSprite, this is called by <code>NobleScene:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -369,7 +392,7 @@ animation.idle.endFrame			<span class="comment">-- 30
 															<span class="types"><span class="type">bool</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
-														 Advances to the next frame after drawing this one.
+														 Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
 													</li>
 							</ul>
 

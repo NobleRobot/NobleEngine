@@ -1,4 +1,4 @@
---- Animation states using a spritesheet/imagetable. Ideal for use with `playdate.graphics.sprite` objects, but suitable for other uses as well.
+--- Animation states using a spritesheet/imagetable. Ideal for use with `NobleSprite` objects. Suitable for other uses as well.
 -- @module Noble.Animation
 --
 
@@ -7,24 +7,45 @@ Noble.Animation = {}
 --- Setup
 -- @section setup
 
---- Create a new animation "state machine".
+--- Create a new animation "state machine". This function is called automatically when creating a new `NobleSprite`.
 -- @string __spritesheet The path to the bitmap spritesheet/imagetable asset. See Playdate SDK docs for imagetable file naming conventions.
 -- @return `animation`, a new animation object.
 -- @usage
--- MyHero = {}
--- class("MyHero").extends(Graphics.sprite)
+--	local myAnimation = Noble.Animation.new("path/to/spritesheet")
+-- @usage
+-- -- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
+-- -- but you do feed its __spritesheet argument into MySprite.super.init()...
+--	MyHero = {}
+--	class("MyHero").extends(NobleSprite)
 --
--- function MyHero:init()
--- 	MyHero.super.init(self)
--- 	-- ...
--- 	self.animation = Noble.Animation.new("assets/images/Hero")
--- 	self.animation:addState("idle", 1, 30)
--- 	self.animation:addState("jump", 31, 34, "float")
--- 	self.animation:addState("float", 35, 45)
--- 	self.animation:addState("turn", 46, 55, "idle")
--- 	self.animation:addState("walk", 56, 65)
--- 	-- ...
--- end
+--	function MyHero:init()
+--		MyHero.super.init(self, "assets/images/Hero")
+--		-- ...
+--		-- A new NobleSprite creates a Noble.Animation object named "self.animation"
+--		self.animation:addState("idle", 1, 30)
+--		self.animation:addState("jump", 31, 34, "float")
+--		self.animation:addState("float", 35, 45)
+--		self.animation:addState("turn", 46, 55, "idle")
+--		self.animation:addState("walk", 56, 65)
+--		-- ...
+--	end
+-- @usage
+--	-- When extending playdate.graphics.Sprite, Noble.Animation.new() must be called manually...
+--	MyHero = {}
+--	class("MyHero").extends(Graphics.sprite)
+--
+--	function MyHero:init()
+--		MyHero.super.init(self)
+--		-- ...
+--		self.animation = Noble.Animation.new("assets/images/Hero")
+--		self.animation:addState("idle", 1, 30)
+--		self.animation:addState("jump", 31, 34, "float")
+--		self.animation:addState("float", 35, 45)
+--		self.animation:addState("turn", 46, 55, "idle")
+--		self.animation:addState("walk", 56, 65)
+--		-- ...
+--	end
+--	@see NobleSprite:init
 function Noble.Animation.new(__spritesheet)
 
 	local animation = {}
@@ -179,10 +200,10 @@ function Noble.Animation.new(__spritesheet)
 
 	--- Draw the current frame.
 	--
-	-- The ideal place for this is in a `playdate.graphics.sprite:draw()` for characters and items, or @{NobleScene:update|NobleScene:update} for basic graphical scene objects.
+	-- When attached to a NobleSprite, this is called by `NobleScene:draw()` when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's `draw()` method, or inside @{NobleScene:update|NobleScene:update}.
 	-- @number[opt=0] __x
 	-- @number[opt=0] __y
-	-- @bool[opt=true] __advance Advances to the next frame after drawing this one.
+	-- @bool[opt=true] __advance Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
 	-- @usage
 	--	function MySprite:draw()
 	--		animation:draw()

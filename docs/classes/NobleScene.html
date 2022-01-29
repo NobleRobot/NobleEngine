@@ -59,6 +59,7 @@
 					<h3>Classes</h3>
 					<ul>
 								<li><span class="selected">NobleScene</span></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
 					</ul>
 			</div>
 			<div class="nav-kind">
@@ -214,7 +215,9 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene:addSprite(__sprite)<span>
 					</dt>
 					<dd>
-						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>  Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>.
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:add()</code> will also call this method.
+<p> Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -227,6 +230,11 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 
 
 
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleSprite.html#NobleSprite:add">NobleSprite:add</a></li>
+									<li><a href="../classes/NobleScene.html#NobleScene:removeSprite">removeSprite</a></li>
+							</ul>
 
 
 					</dd>
@@ -235,7 +243,9 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene:removeSprite(__sprite)<span>
 					</dt>
 					<dd>
-						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>  Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>.
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:remove()</code> will also call this method.
+<p> Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -248,6 +258,11 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 
 
 
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleSprite.html#NobleSprite:remove">NobleSprite:remove</a></li>
+									<li><a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a></li>
+							</ul>
 
 
 					</dd>
