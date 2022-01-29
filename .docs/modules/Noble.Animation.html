@@ -175,12 +175,12 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 													<li><span class="parameter">__startFrame</span>
 															<span class="types"><span class="type">int</span></span>
 														<br/>
-														 This is the first frame for this animation in the imagetable/spritesheet
+														 This is the first frame of this animation in the imagetable/spritesheet
 													</li>
 													<li><span class="parameter">__endFrame</span>
 															<span class="types"><span class="type">int</span></span>
 														<br/>
-														 This is the first frame for this animation in the imagetable/spritesheet
+														 This is the final frame of this animation in the imagetable/spritesheet
 													</li>
 													<li><span class="parameter">__next</span>
 															<span class="types"><span class="type">string</span></span>
@@ -205,7 +205,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 							<h3>Usage</h3>
 								<pre class="example"><span class="comment">-- You can reference an animation's state's properties using bog-standard lua syntax:
 </span>
-animation.idle.endFrame			<span class="comment">-- 30
+animation.idle.startFrame		<span class="comment">-- 30
 </span>animation.walk.endFrame			<span class="comment">-- 65
 </span>animation.[<span class="string">"walk"</span>].endFrame		<span class="comment">-- 65
 </span>animation.jump.name				<span class="comment">-- "jump"
