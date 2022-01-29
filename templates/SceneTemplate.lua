@@ -15,7 +15,7 @@ class("SceneTemplate").extends(NobleScene)
 -- ...
 --
 
-SceneTemplate.baseColor = Graphics.kColorWhite		-- This is the background color of this scene.
+SceneTemplate.backgroundColor = Graphics.kColorWhite		-- This is the background color of this scene.
 
 -- This runs when your scene's object is created, which is the first thing that happens when transitining away from another scene.
 function SceneTemplate:init()

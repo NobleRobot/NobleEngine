@@ -101,8 +101,8 @@ function Noble.Bonk.checkDebugBonks()
 	if (Graphics.sprite.getAlwaysRedraw() == false) then
 		error("BONK: Don't use Graphics.sprite.setAlwaysRedraw(false) unless you know what you're doing...")
 	end
-	if (Noble.currentScene.baseColor == Graphics.kColorClear) then
-		error("BONK: Don't set a scene's baseColor to Graphics.kColorClear, silly.")
+	if (Noble.currentScene.backgroundColor == Graphics.kColorClear) then
+		error("BONK: Don't set a scene's backgroundColor to Graphics.kColorClear, silly.")
 	end
 
 end
