@@ -43,4 +43,4 @@ luac.out
 
 # LDoc config files
 config.ld
-documentation templates/
+.docs_templates/
