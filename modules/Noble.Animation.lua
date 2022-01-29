@@ -91,15 +91,15 @@ function Noble.Animation.new(__spritesheet)
 	--
 	-- NOTE: Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
 	-- @string __name The name of the animation, this is also used as the key for the animation.
-	-- @int __startFrame This is the first frame for this animation in the imagetable/spritesheet
-	-- @int __endFrame This is the first frame for this animation in the imagetable/spritesheet
+	-- @int __startFrame This is the first frame of this animation in the imagetable/spritesheet
+	-- @int __endFrame This is the final frame of this animation in the imagetable/spritesheet
 	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
 	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
 	-- @usage
 	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
 	--
-	--	animation.idle.endFrame			-- 30
+	--	animation.idle.startFrame		-- 30
 	--	animation.walk.endFrame			-- 65
 	--	animation.["walk"].endFrame		-- 65
 	--	animation.jump.name				-- "jump"
