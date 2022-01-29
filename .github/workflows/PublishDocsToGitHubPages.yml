@@ -3,7 +3,6 @@ name: Publish ".docs" to GitHub Pages
 on:
   push:
     branches:
-      # NOTE: You may want to limit the trigger branch to be "main" or "master" etc.
       - 'main'
 
 jobs:
@@ -12,9 +11,6 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
-
-      - name: Generate your content
-        run: echo "Optional placeholder. Put your project's static website generator command here."
 
       - name: Publish current workdir (which contains generated content) to GitHub Pages
         uses: rayluo/github-pages-overwriter@v1.2
