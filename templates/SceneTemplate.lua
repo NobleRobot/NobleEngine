@@ -162,7 +162,7 @@ SceneTemplate.inputHandler = {
 	crankDocked = function()						-- Runs once when when crank is docked.
 		-- Your code here
 	end,
-	crankUndocked = function()						-- Runs once when when crank is docked.
+	crankUndocked = function()						-- Runs once when when crank is undocked.
 		-- Your code here
 	end
 }

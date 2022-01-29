@@ -188,7 +188,7 @@ end
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankUndocked()
 	if (currentHandler.crankUndocked ~= nil and Noble.Input.getEnabled() == true) then
-		currentHandler.crankDocked()
+		currentHandler.crankUndocked()
 	end
 end
 
