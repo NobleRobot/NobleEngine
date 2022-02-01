@@ -160,7 +160,7 @@ function Sequence:again( repeatCount, mirror )
 
 	local previousEasing = self.easings[self.easingCount]
 
-	for i = 1, number do
+	for i = 1, repeatCount do
 		local newEasing = self:newEasing()
 
 		-- setup first empty easing at the beginning of the sequence
