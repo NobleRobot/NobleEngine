@@ -46,7 +46,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--@section properties
 
 	menu.alignment = __alignment or Noble.Text.ALIGN_LEFT
-	--- Indicates whether this menu's item names are treated as localization keys.
+
+	--- @bool[opt=false] _ Indicates whether this menu's item names are treated as localization keys.
 	menu.localized = __localized or false
 	menu.textHeight = textHeightLocal
 	menu.padding = paddingLocal
@@ -136,20 +137,23 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--- Properties
 	-- @section properties
 
-	--- @int The current menu item's index.
+	--- @int _
+	-- The current menu item's index.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	-- @see select
 	menu.currentItemNumber = 1
 
-	--- @string The current menu item's name.
+	--- @string _
+	-- The current menu item's name.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	-- @see select
 	menu.currentItemName = menu.itemNames[1]
 
 
-	--- The width of the widest menu item plus the menu's horizontal padding.
+	--- @int _
+	-- The width of the widest menu item plus the menu's horizontal padding.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	menu.width = 0

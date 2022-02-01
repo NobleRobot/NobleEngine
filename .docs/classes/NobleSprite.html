@@ -106,7 +106,7 @@
 			<dl class="function">
 					<dt>
 						<a name = "NobleSprite:init"></a>
-						<span class="item-name">NobleSprite:init([__imageOrSpritesheet[, __animated=false]])<span>
+						<span class="item-name">NobleSprite:init([__imageOrSpritesheet[, __animated=false[, __singleState=false[, __singleStateLoop=true]]]])<span>
 					</dt>
 					<dd>
 						Do not call an "init" method directly.  Use <code>NobleSprite()</code> (see usage examples).
@@ -125,10 +125,26 @@
 														<br/>
 														 Set this to <code>true</code> in order to use Noble.Animation.
 													</li>
+													<li><span class="parameter">__singleState</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If this sprite has just one animation, set this to true. It saves you from having to use Noble.Anmiation.addState()
+													</li>
+													<li><span class="parameter">__singleStateLoop</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 If using a single state animation, should it loop?
+													</li>
 							</ul>
 
 
 
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Animation.html#animation:addState">Noble.Animation:addState</a>
+							</ul>
 
 							<h3>Usage</h3>
 								<pre class="example"><span class="comment">-- Create a new NobleSprite, using a static image for its view.
