@@ -136,13 +136,13 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--- Properties
 	-- @section properties
 
-	--- The current menu item's index.
+	--- @int The current menu item's index.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	-- @see select
 	menu.currentItemNumber = 1
 
-	--- The current menu item's index.
+	--- @string The current menu item's name.
 	--
 	-- This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 	-- @see select

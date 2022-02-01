@@ -11,7 +11,7 @@ Noble.Animation = {}
 -- @string __spritesheet The path to the bitmap spritesheet/imagetable asset. See Playdate SDK docs for imagetable file naming conventions.
 -- @return `animation`, a new animation object.
 -- @usage
---	local myAnimation = Noble.Animation.new("path/to/spritesheet")
+--	local myHero = MyHero("path/to/spritesheet")
 -- @usage
 -- -- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
 -- -- but you do feed its __spritesheet argument into MySprite.super.init()...
@@ -29,6 +29,8 @@ Noble.Animation = {}
 --		self.animation:addState("walk", 56, 65)
 --		-- ...
 --	end
+-- @usage
+--	local myAnimation = Noble.Animation.new("path/to/spritesheet")
 -- @usage
 --	-- When extending playdate.graphics.Sprite, Noble.Animation.new() must be called manually...
 --	MyHero = {}
@@ -107,7 +109,8 @@ function Noble.Animation.new(__spritesheet)
 	--	animation.idle.next				-- nil
 	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete)
 
-		local loop = __loop or true
+		local loop = true
+		if (__loop ~= nil) then loop = __loop end
 
 		self[__name] = {
 			name = __name,
@@ -213,6 +216,8 @@ function Noble.Animation.new(__spritesheet)
 	--		animation:draw(100,100)
 	--	end
 	function animation:draw(__x, __y, __advance)
+
+		print(self.currentName .. " > " .. self.currentFrame .. " >> " .. tostring(self.current.loop))
 
 		if (__advance == nil) then __advance = true end
 

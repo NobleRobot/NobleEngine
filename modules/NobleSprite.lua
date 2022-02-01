@@ -13,6 +13,8 @@ class("NobleSprite").extends(Graphics.sprite)
 --- Do not call an "init" method directly. Use `NobleSprite()` (see usage examples).
 -- @string[opt] __imageOrSpritesheet The path to the image or spritesheet asset that this NobleSprite will use for its view.
 -- @bool[opt=false] __animated Set this to `true` in order to use Noble.Animation.
+-- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Anmiation.addState()
+-- @bool[opt=true] __singleStateLoop If using a single state animation, should it loop?
 --
 -- @usage
 --	-- Create a new NobleSprite, using a static image for its view.
@@ -37,7 +39,9 @@ class("NobleSprite").extends(Graphics.sprite)
 --	-- MyNobleScene.lua
 --	mySprite = MyCustomSprite(100, 100, "Fun!")
 --
-function NobleSprite:init(__imageOrSpritesheet, __animated)
+-- @see Noble.Animation:addState
+--
+function NobleSprite:init(__imageOrSpritesheet, __animated, __singleState, __singleStateLoop)
 	NobleSprite.super.init(self)
 	self.isNobleSprite = true -- This is important so other methods don't confuse this for a playdate.graphics.sprite. DO NOT modify this value at runtime.
 
