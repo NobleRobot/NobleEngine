@@ -130,6 +130,7 @@ end
 --
 function NobleScene:init()
 	self.name = self.className
+	self.sprites = {}
 end
 
 --- Implement if you want to run code as the transition to this scene begins, such as UI animation, triggers, etc.
@@ -177,12 +178,6 @@ function NobleScene:drawBackground()
 	Graphics.clear(self.backgroundColor)
 end
 
--- This is an internal read-only value used by Noble Engine. It's not useful to you. ;-)
-NobleScene.activeSprites = {}
-
--- This is an internal read-only value used by Noble Engine. It's not useful to you. ;-)
-NobleScene.previousSceneSprites = {}
-
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
 -- begins, such as UI animation, saving to disk, etc.
 --
@@ -193,10 +188,9 @@ NobleScene.previousSceneSprites = {}
 --	end
 --
 function NobleScene:exit()
-	for i = 1, #self.sprites do
-		NobleScene.previousSceneSprites[i] = self.sprites[i]
-		self.sprites[i]:setUpdatesEnabled(false)
-		self.sprites[i]:setCollisionsEnabled(false)
+	for _, sprite in ipairs(self.sprites) do
+		sprite:setUpdatesEnabled(false)
+		sprite:setCollisionsEnabled(false)
 	end
 end
 
@@ -210,11 +204,13 @@ end
 --	end
 --
 function NobleScene:finish()
-	for i = 1, #NobleScene.previousSceneSprites do
-		NobleScene.previousSceneSprites[i]:remove()
-		table.remove(self.sprites, table.indexOfElement(NobleScene.previousSceneSprites[i]))
+	for _, sprite in ipairs(self.sprites) do
+		if (sprite.isNobleSprite) then
+			sprite:superRemove()
+		else
+			sprite:remove()
+		end
 	end
-	NobleScene.previousSceneSprites = {}
 end
 
 --- `pause()` / `resume()`
