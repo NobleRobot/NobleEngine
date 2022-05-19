@@ -29,6 +29,22 @@ end
 local _runningSequences = table.create(32,0)
 local _previousUpdateTime = playdate.getCurrentTimeMilliseconds()
 
+-- This can be useful when you want your Sequence to continue in realtime
+-- when using playdate.stop() / .wait(milliseconds) / .start().
+--
+-- If you don't set __currentTime, it defaults to playdate.getCurrentTimeMilliseconds()
+-- Examples:
+-- Use Sequence.setPreviousUpdateTime() before you call playdate.start().
+-- Use Sequence.setPreviousUpdateTime(playdate.getCurrentTimeMilliseconds() + milliseconds)
+-- before using playdate.wait(milliseconds).
+function Sequence.setPreviousUpdateTime(currentTime)
+	if (currentTime == nil) then
+		currentTime = playdate.getCurrentTimeMilliseconds()
+	end
+
+	_previousUpdateTime = currentTime
+end
+
 -- create a new sequence
 
 function Sequence.new()
