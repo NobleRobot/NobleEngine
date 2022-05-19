@@ -90,10 +90,10 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __enab
 	-- Screen drawing: see the Playdate SDK for details on these methods.
 	Graphics.sprite.setAlwaysRedraw(true)
 	Graphics.sprite.setBackgroundDrawingCallback(
-		function ()
+		function (x, y, width, height)
 			if (currentScene ~= nil) then
 				 -- Each scene has its own method for this. We only want to run one at a time.
-				currentScene:drawBackground()
+				currentScene:drawBackground(x, y, width, height)
 			end
 		end
 	)

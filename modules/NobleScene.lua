@@ -166,16 +166,37 @@ end
 --
 function NobleScene:update() end
 
---- Implement this function to draw background visual elements in your scene. This runs every frame.
+--- Implement this function to draw background visual elements in your scene.
+--- This runs when the engine need to redraw a background area.
+--- By default it runs every frame and fills the background with self.backgroundColor. All arguments are optional.
+--- Use `Graphics.sprite.setAlwaysRedraw(false)` after `Noble.new()` to optimize partial redraw.
 --
 -- @usage
---	function YourSceneName:drawBackground()
---		YourSceneName.super.drawBackground(self)
+--	function YourSceneName:drawBackground(__x, __y, __width, __height)
+--		YourSceneName.super.drawBackground(self) -- optional, invokes default behavior.
 --		--[Your code here]--
 --	end
 --
-function NobleScene:drawBackground()
-	Graphics.clear(self.backgroundColor)
+function NobleScene:drawBackground(__x, __y, __width, __height)
+	__x = __x or 0
+	__y = __y or 0
+	__width = __width or Display.getWidth()
+	__height = __height or Display.getHeight()
+
+	 -- Cache the currently set color/pattern.
+	local color <const> = Graphics.getColor()
+	local color_type <const> = type(color)
+
+	-- Draw background.
+	Graphics.setColor(self.backgroundColor)
+	Graphics.fillRect(__x, __y, __width, __height)
+
+	-- Reset color/pattern from cache.
+	if color_type == 'number' then
+		Graphics.setColor(color)
+	elseif color_type == 'table' then
+		Graphics.setPattern(color)
+	end
 end
 
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
