@@ -166,25 +166,31 @@ end
 function NobleScene:update() end
 
 --- Implement this function to draw background visual elements in your scene.
---- This runs everytime the engine need to redraw a background area.
---- Default behavior : fillRect area with self.backgroundColor defined.
---- Put after NobleEngine initialisation Graphics.sprite.setAlwaysRedraw(false) to benefit optimised partial redraw.
+--- This runs when the engine need to redraw a background area.
+--- By default it runs every frame and fills the background with self.backgroundColor. All arguments are optional.
+--- Use `Graphics.sprite.setAlwaysRedraw(false)` after `Noble.new()` to optimize partial redraw.
 --
 -- @usage
---	function YourSceneName:drawBackground(x, y, width, height)
---		YourSceneName.super.drawBackground(self) -- optional, if you need the default behavior and redraw above backgroundColor
+--	function YourSceneName:drawBackground(__x, __y, __width, __height)
+--		YourSceneName.super.drawBackground(self) -- optional, invokes default behavior.
 --		--[Your code here]--
 --	end
 --
-function NobleScene:drawBackground(x, y, width, height)
+function NobleScene:drawBackground(__x, __y, __width, __height)
+	__x = __x or 0
+	__y = __y or 0
+	__width = __width or Display.getWidth()
+	__height = __height or Display.getHeight()
+
+	 -- Cache the currently set color/pattern.
 	local color <const> = Graphics.getColor()
 	local color_type <const> = type(color)
 
+	-- Draw background.
 	Graphics.setColor(self.backgroundColor)
-	Graphics.fillRect(x, y, width, height)
+	Graphics.fillRect(__x, __y, __width, __height)
 
-	-- avoid side effects by reset the color used before function call
-	-- take care of setPattern usage
+	-- Reset color/pattern from cache.
 	if color_type == 'number' then
 		Graphics.setColor(color)
 	elseif color_type == 'table' then
