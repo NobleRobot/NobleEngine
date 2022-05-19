@@ -25,6 +25,7 @@ Ease = playdate.easingFunctions
 UI = playdate.ui
 File = playdate.file
 Datastore = playdate.datastore
+Timer = playdate.timer
 
 -- In lua, variables are global by default, but having a "Global" object to put
 -- variables into is useful for maintaining sanity if you're coming from an OOP language.
@@ -72,6 +73,8 @@ local engineInitialized = false
 -- @see Noble.TransitionType
 -- @see Noble.Bonk.startCheckingDebugBonks
 function Noble.new(StartingScene, __transitionDuration, __transitionType, __enableDebugBonkChecking)
+
+	math.randomseed(playdate.getSecondsSinceEpoch()) -- Set a new random seed at runtime.
 
 	if (engineInitialized) then
 		error("BONK: You can only run Noble.new() once.")
