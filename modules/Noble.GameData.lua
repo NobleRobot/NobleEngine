@@ -54,7 +54,7 @@ local gameDataHasBeenSetup = false
 
 --- Sets up the GameDatas (save slots) for your game, and/or loads any existing GameDatas from disk.
 -- You can only run this once, ideally in your main.lua before you load your first scene.
--- @tparam table __keyValuePairs All the data items for a saved game, and their default values, as key/value pairs. NOTE: Do not use "nil" as a value.
+-- @tparam table __keyValuePairs All the data items for a saved game, and their default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 -- @int[opt=1] __numberOfSlots If you want multiple save slots, enter an integer here. You can add additional slots later.
 -- @bool[opt=true] __saveToDisk Saves your default values immediately to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.

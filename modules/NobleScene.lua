@@ -1,7 +1,7 @@
 ---
 -- An abstract scene class.
 -- Do not copy this file as a template for your scenes. Instead, your scenes will extend this class.
--- See <a href="../examples/scenetemplate.lua.html">templates/SceneTemplate.lua</a> for a blank scene that you can copy and modify for your own scenes.
+-- See <a href="../examples/SceneTemplate.lua.html">templates/SceneTemplate.lua</a> for a blank scene that you can copy and modify for your own scenes.
 -- If you are using <a href="http://github.com/NobleRobot/NobleEngine-ProjectTemplate">NobleEngine-ProjectTemplate</a>,
 -- see `scenes/ExampleScene.lua` for an implementation example.
 -- @usage
@@ -155,7 +155,7 @@ function NobleScene:start()
 end
 
 --- Implement to run scene-specific code on every frame while this scene is active.
--- NOTE: you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
+-- <strong>NOTE:</strong> you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
 --
 -- @usage
 --	function YourSceneName:update()

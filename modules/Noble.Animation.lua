@@ -91,7 +91,7 @@ function Noble.Animation.new(__spritesheet)
 
 	--- Add an animation state. The first state added will be the default set for this animation.
 	--
-	-- NOTE: Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
+	-- <strong>NOTE:</strong> Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
 	-- @string __name The name of the animation, this is also used as the key for the animation.
 	-- @int __startFrame This is the first frame of this animation in the imagetable/spritesheet
 	-- @int __endFrame This is the final frame of this animation in the imagetable/spritesheet
