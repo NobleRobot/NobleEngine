@@ -180,14 +180,14 @@ end
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankDocked()
-	if (currentHandler.crankDocked ~= nil and Noble.Input.getEnabled() == true) then
+	if (currentHandler ~= nil and currentHandler.crankDocked ~= nil and Noble.Input.getEnabled() == true) then
 		currentHandler.crankDocked()
 	end
 end
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankUndocked()
-	if (currentHandler.crankUndocked ~= nil and Noble.Input.getEnabled() == true) then
+	if (currentHandler ~= nil and currentHandler.crankUndocked ~= nil and Noble.Input.getEnabled() == true) then
 		currentHandler.crankUndocked()
 	end
 end
