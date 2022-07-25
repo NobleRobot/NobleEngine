@@ -360,6 +360,7 @@ function playdate.update()
 	end
 
 	playdate.timer.updateTimers()		-- Finally, update all SDK timers.
+	playdate.frameTimer.updateTimers() 	-- Update all frame timers
 
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
