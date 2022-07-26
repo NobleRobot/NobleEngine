@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#new">.new</a></li>
+							<li><a href="#engineInitialized">.engineInitialized</a></li>
+							<li><a href="#transition">.transition</a></li>
+							<li><a href="#currentScene">.currentScene</a></li>
+							<li><a href="#currentSceneName">.currentSceneName</a></li>
+					</ul>
+					<h3>Fields</h3>
+					<ul>
+							<li><a href="#isTransitioning">.isTransitioning</a></li>
+							<li><a href="#showFPS">.showFPS</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><span class="selected">Noble</span></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble</h1>
+		<p>A li'l game engine for Playdate.</p>
+		<p></p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "new"></a>
+						<span class="item-name">new(StartingScene[, __transitionDuration[, __transitionType=Noble.Transition.CROSS_DISSOLVE[, __enableDebugBonkChecking=false]]])<span>
+					</dt>
+					<dd>
+						Engine initialization.  Run this once in your main.lua file to begin your game.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">StartingScene</span>
+															<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
+														<br/>
+														 This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class, not an instance of the scene.
+													</li>
+													<li><span class="parameter">__transitionDuration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
+													</li>
+													<li><span class="parameter">__transitionType</span>
+															<span class="types"><span class="type">Noble.TransitionType</span></span>
+															<span class="default">= <span class="value">Noble.Transition.CROSS_DISSOLVE</span> (default)</span>
+														<br/>
+														 If a transition duration is set, use this transition type.
+													</li>
+													<li><span class="parameter">__enableDebugBonkChecking</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
+									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
+									<li><a href="../modules/Noble.Bonk.html#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "engineInitialized"></a>
+						<span class="item-name">engineInitialized()<span>
+					</dt>
+					<dd>
+						This checks to see if <a href="../modules/Noble.html#new">Noble.new</a> has been run.  It is used internally to ward off bonks.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Bonk.html#">Noble.Bonk</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "transition"></a>
+						<span class="item-name">transition(NewScene[, __duration=1[, __transitionType=Noble.TransitionType.DIP_TO_BLACK[, __holdDuration=0.2]]])<span>
+					</dt>
+					<dd>
+						Transition to a new scene.  This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">NewScene</span>
+															<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
+														<br/>
+														 The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from <a href="../modules/Noble.html#currentScene">Noble.currentScene</a>
+													</li>
+													<li><span class="parameter">__duration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 The length of the transition, in seconds.
+													</li>
+													<li><span class="parameter">__transitionType</span>
+															<span class="types"><span class="type">Noble.TransitionType</span></span>
+															<span class="default">= <span class="value">Noble.TransitionType.DIP_TO_BLACK</span> (default)</span>
+														<br/>
+														 If a transition duration is set, use this transition type.
+													</li>
+													<li><span class="parameter">__holdDuration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0.2</span> (default)</span>
+														<br/>
+														 For <code>DIP</code> transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
+									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "currentScene"></a>
+						<span class="item-name">currentScene()<span>
+					</dt>
+					<dd>
+						Get the current scene object
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
+
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "currentSceneName"></a>
+						<span class="item-name">currentSceneName()<span>
+					</dt>
+					<dd>
+						Get the name of the current scene
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">string</span></span>
+
+								</ol>
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "isTransitioning"></a>
+						<span class="item-name">isTransitioning<span>
+					</dt>
+					<dd>
+						Check to see if the game is transitioning between scenes.
+ Useful to control game logic that lives outside of a scene's <code>update()</code> method.
+
+							<ul class="parameters">
+													<li><span class="parameter">bool</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "showFPS"></a>
+						<span class="item-name">showFPS<span>
+					</dt>
+					<dd>
+						Show/hide the Playdate SDK's FPS counter.
+
+							<ul class="parameters">
+													<li><span class="parameter">bool</span>
+														<br/>
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

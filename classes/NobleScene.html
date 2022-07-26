@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>NobleScene</h2>
+			<ul>
+					<h3>Properties </h3>
+					<ul>
+							<li><a href="#NobleScene.name">.name</a></li>
+							<li><a href="#NobleScene.backgroundColor">.backgroundColor</a></li>
+					</ul>
+					<h3>Tables </h3>
+					<ul>
+							<li><a href="#NobleScene.inputHandler">.inputHandler</a></li>
+							<li><a href="#NobleScene.sprites">.sprites</a></li>
+					</ul>
+					<h3>Methods</h3>
+					<ul>
+							<li><a href="#NobleScene:addSprite">:addSprite</a></li>
+							<li><a href="#NobleScene:removeSprite">:removeSprite</a></li>
+					</ul>
+					<h3>Callbacks </h3>
+					<ul>
+							<li><a href="#NobleScene:init">:init</a></li>
+							<li><a href="#NobleScene:enter">:enter</a></li>
+							<li><a href="#NobleScene:start">:start</a></li>
+							<li><a href="#NobleScene:update">:update</a></li>
+							<li><a href="#NobleScene:drawBackground">:drawBackground</a></li>
+							<li><a href="#NobleScene:exit">:exit</a></li>
+							<li><a href="#NobleScene:finish">:finish</a></li>
+							<li><a href="#NobleScene:pause">:pause</a></li>
+							<li><a href="#NobleScene:resume">:resume</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><span class="selected">NobleScene</span></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>NobleScene</h1>
+		<p>An abstract scene class.</p>
+		<p>
+ Do not copy this file as a template for your scenes. Instead, your scenes will extend this class.
+ See <a href="../examples/scenetemplate.lua.html">templates/SceneTemplate.lua</a> for a blank scene that you can copy and modify for your own scenes.
+ If you are using <a href="http://github.com/NobleRobot/NobleEngine-ProjectTemplate">NobleEngine-ProjectTemplate</a>,
+ see <code>scenes/ExampleScene.lua</code> for an implementation example.</p>
+			<h3>Usage</h3>
+				<pre class="example">YourSceneName = {}
+class(&quot;YourSceneName&quot;).extends(NobleScene)
+</pre>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Properties"></a>Properties </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "NobleScene.name"></a>
+						<span class="item-name">NobleScene.name<span>
+					</dt>
+					<dd>
+						The name of this scene.  Optional.
+ If you do not set this value, it will take on the scene's <code>className</code>.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "NobleScene.backgroundColor"></a>
+						<span class="item-name">NobleScene.backgroundColor<span>
+					</dt>
+					<dd>
+						This is the background color of this scene.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "NobleScene.inputHandler"></a>
+						<span class="item-name">NobleScene.inputHandler<span>
+					</dt>
+					<dd>
+						All scenes have a default inputHandler which is made active when the scene starts.
+ If you do not define your scene's <a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a>, it is <code>nil</code> and input is disabled when this scene
+ starts.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Input.html#Noble.Input.setHandler">Noble.Input.setHandler</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">YourSceneName.inputHandler = {
+	AButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires once when button is pressed down.
+</span>	AButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires each frame while a button is held (Noble Engine implementation).
+</span>	AButtonHeld = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires once after button is held for 1 second (available for A and B).
+</span>	AButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,		<span class="comment">-- Fires once when button is released.
+</span>	BButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	BButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	BButtonHeld = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	BButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	downButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	downButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	downButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	leftButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	leftButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	leftButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	rightButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	rightButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	rightButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	upButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
+	upButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>
+	upButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
+
+	cranked = <span class="keyword">function</span>(change, acceleratedChange) <span class="keyword">end</span>,	<span class="comment">-- See Playdate SDK.
+</span>	crankDocked = <span class="keyword">function</span>() <span class="keyword">end</span>,						<span class="comment">-- Noble Engine implementation.
+</span>	crankUndocked = <span class="keyword">function</span>() <span class="keyword">end</span>,						<span class="comment">-- Noble Engine implementation.
+</span>}
+<span class="comment">-- OR...
+</span><span class="comment">-- Use a non-scene-specific inputHandler, defined elsewhere.
+</span>YourSceneName.inputHandler = somePreviouslyDefinedInputHandler
+<span class="comment">-- OR...
+</span><span class="comment">-- Reuse another scene's inputHandler.
+</span>YourSceneName.inputHandler = SomeOtherSceneName.inputHandler</pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene.sprites"></a>
+						<span class="item-name">NobleScene.sprites<span>
+					</dt>
+					<dd>
+						When you add a sprite to your scene, it is put in this table so the scene can keep track of it.
+<p> This is intended as <code>read-only</code>. You should not modify this table directly.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Methods"></a>Methods</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "NobleScene:addSprite"></a>
+						<span class="item-name">NobleScene:addSprite(__sprite)<span>
+					</dt>
+					<dd>
+						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>.
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:add()</code> will also call this method.
+<p> Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__sprite</span>
+															<span class="types"><span class="type">playdate.graphics.sprite</span></span>
+														<br/>
+														 The sprite to add to the scene.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleSprite.html#NobleSprite:add">NobleSprite:add</a></li>
+									<li><a href="../classes/NobleScene.html#NobleScene:removeSprite">removeSprite</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:removeSprite"></a>
+						<span class="item-name">NobleScene:removeSprite(__sprite)<span>
+					</dt>
+					<dd>
+						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>.
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:remove()</code> will also call this method.
+<p> Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__sprite</span>
+															<span class="types"><span class="type">playdate.graphics.sprite</span></span>
+														<br/>
+														 The sprite to add to the scene.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleSprite.html#NobleSprite:remove">NobleSprite:remove</a></li>
+									<li><a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Callbacks"></a>Callbacks </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "NobleScene:init"></a>
+						<span class="item-name">NobleScene:init()<span>
+					</dt>
+					<dd>
+						Implement this in your scene if you have code to run when your scene's object is created.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:init()
+	YourSceneName.super.init(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:enter"></a>
+						<span class="item-name">NobleScene:enter()<span>
+					</dt>
+					<dd>
+						Implement if you want to run code as the transition to this scene begins, such as UI animation, triggers, etc.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:enter()
+	YourSceneName.super.enter(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:start"></a>
+						<span class="item-name">NobleScene:start()<span>
+					</dt>
+					<dd>
+						Implement if you have code to run once the transition to this scene is complete.  This method signifies the full activation of a scene. If this scene's <a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a> is defined, it is enabled now.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:start()
+	YourSceneName.super.start(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:update"></a>
+						<span class="item-name">NobleScene:update()<span>
+					</dt>
+					<dd>
+						Implement to run scene-specific code on every frame while this scene is active.
+ NOTE: you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
+
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:update()
+	YourSceneName.super.update(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:drawBackground"></a>
+						<span class="item-name">NobleScene:drawBackground()<span>
+					</dt>
+					<dd>
+						Implement this function to draw background visual elements in your scene.  This runs every frame.
+
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:drawBackground()
+	YourSceneName.super.drawBackground(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:exit"></a>
+						<span class="item-name">NobleScene:exit()<span>
+					</dt>
+					<dd>
+						Implement this in your scene if you have "goodbye" code to run when a transition to another scene
+ begins, such as UI animation, saving to disk, etc.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:exit()
+	YourSceneName.super.exit(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:finish"></a>
+						<span class="item-name">NobleScene:finish()<span>
+					</dt>
+					<dd>
+						Implement this in your scene if you have code to run when a transition to another scene
+ is complete, such as resetting variables.
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:finish()
+	YourSceneName.super.finish(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:pause"></a>
+						<span class="item-name">NobleScene:pause()<span>
+					</dt>
+					<dd>
+						<code>pause()</code> / <code>resume()</code>
+<p> Implement one or both of these in your scene if you want something to happen when the game is paused/unpaused
+ by the system.  The Playdate SDK does not require you to write pause logic, but these are useful if you want a
+ custom menu image (see Playdate SDK for more details), want to obscure game elements to prevent players from
+ cheating in a time-sensitive game, want to count the number of times the player pauses the game, etc.
+
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:pause()
+	YourSceneName.super.pause(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "NobleScene:resume"></a>
+						<span class="item-name">NobleScene:resume()<span>
+					</dt>
+					<dd>
+						<span></span>
+
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">function</span> YourSceneName:resume()
+	YourSceneName.super.resume(self)
+	<span class="comment">--[Your code here]--
+</span><span class="keyword">end</span></pre>
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+
