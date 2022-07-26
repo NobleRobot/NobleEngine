@@ -14,8 +14,8 @@ import "CoreLibs/object"
 import "CoreLibs/ui"
 import "CoreLibs/math"
 import "CoreLibs/timer"
-import "CoreLibs/crank"
 import "CoreLibs/frameTimer"
+import "CoreLibs/crank"
 
 -- We create aliases for both fun and performance reasons.
 Graphics = playdate.graphics
@@ -360,6 +360,7 @@ function playdate.update()
 	end
 
 	playdate.timer.updateTimers()		-- Finally, update all SDK timers.
+	playdate.frameTimer.updateTimers() 	-- Update all frame timers
 
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
