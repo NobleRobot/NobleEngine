@@ -14,8 +14,8 @@ import "CoreLibs/object"
 import "CoreLibs/ui"
 import "CoreLibs/math"
 import "CoreLibs/timer"
-import "CoreLibs/crank"
 import "CoreLibs/frameTimer"
+import "CoreLibs/crank"
 
 -- We create aliases for both fun and performance reasons.
 Graphics = playdate.graphics
