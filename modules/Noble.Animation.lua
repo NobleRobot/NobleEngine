@@ -84,9 +84,9 @@ function Noble.Animation.new(__spritesheet)
 	-- @see new
 	animation.imageTable = Graphics.imagetable.new(__spritesheet)
 	-- The current number of frame ticks in the animation
-	animation.ticks = 1
+	animation.frameDurationCount = 1
 	-- The previous number of frame ticks in the animation
-	animation.previousTicks = 1
+	animation.previousFrameDurationCount = 1
 
 	local empty = true
 
@@ -112,12 +112,12 @@ function Noble.Animation.new(__spritesheet)
 	--	animation.jump.name				-- "jump"
 	--	animation.["jump"].next			-- "float"
 	--	animation.idle.next				-- nil
-	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete, __tickStep)
+	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete, __frameDuration)
 
 		local loop = true
-		local tickStep = 1
+		local frameDuration = 1
 		if (__loop ~= nil) then loop = __loop end
-		if(__tickStep ~= nil) then tickStep = __tickStep end
+		if(__frameDuration ~= nil) then frameDuration = __frameDuration end
 		self[__name] = {
 			name = __name,
 			startFrame = __startFrame,
@@ -125,7 +125,7 @@ function Noble.Animation.new(__spritesheet)
 			next = __next,
 			loop = loop,
 			onComplete = __onComplete,
-			tickStep = tickStep,
+			frameDuration = frameDuration,
 		}
 
 		-- Set this animation state as default if it is the first one added.
@@ -134,7 +134,7 @@ function Noble.Animation.new(__spritesheet)
 			self.currentFrame = __startFrame
 			self.current = self[__name]
 			self.currentName = __name
-			self.tickStep = tickStep
+			self.frameDuration = frameDuration
 		end
 
 	end
@@ -234,13 +234,13 @@ function Noble.Animation.new(__spritesheet)
 		elseif(self.currentFrame == self.current.endFrame + 1) then	-- End frame behavior.
 			if (self.current.next ~= nil) then
 				self.currentFrame = self.current.next.startFrame	-- Set to first frame of next animation.
-				self._ticks = 1										-- Reset ticks.
-				self._previousTicks = self._ticks
+				self.frameDurationCount = 1										-- Reset ticks.
+				self.previousFrameDurationCount = self.frameDuration
 				self:setState(self.current.next)					-- Set next animation state.
 			elseif (self.current.loop == true) then
 				self.currentFrame = self.current.startFrame 		-- Loop animation state. (TO-DO: account for continuous somehow?)
-				self._ticks = 1										-- Reset ticks.
-				self._previousTicks = self._ticks
+				self.frameDurationCount = 1										-- Reset ticks.
+				self.previousFrameDurationCount = self.frameDuration
 			elseif(__advance) then
 				self.currentFrame = self.currentFrame - 1			-- Undo advance frame because we want to draw the same frame again.
 			end
@@ -255,10 +255,10 @@ function Noble.Animation.new(__spritesheet)
 		self.imageTable:drawImage(self.currentFrame, x, y, self.direction)
 
 		if (__advance == true) then
-			self.ticks += 1
-			if((self.ticks - self.previousTicks) >= self.current.tickStep) then
+			self.frameDurationCount += 1
+			if((self.frameDurationCount - self.previousFrameDurationCount) >= self.current.frameDuration) then
 				self.currentFrame = self.currentFrame + 1
-				self.previousTicks += self.current.tickStep
+				self.previousFrameDurationCount += self.current.frameDuration
 			end
 		end
 		--previousAnimationName = self.currentName
