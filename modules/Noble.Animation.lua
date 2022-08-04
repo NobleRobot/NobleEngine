@@ -83,9 +83,9 @@ function Noble.Animation.new(__spritesheet)
 	--- This animation's spritesheet. You can replace this with another `playdate.graphics.imagetable` object, but generally you would not want to.
 	-- @see new
 	animation.imageTable = Graphics.imagetable.new(__spritesheet)
-	-- The current number of frame ticks in the animation
+	-- The current count of frame durations. This is used to determine when to advance to the next frame.
 	animation.frameDurationCount = 1
-	-- The previous number of frame ticks in the animation
+	-- The previous number of frame durations in the animation
 	animation.previousFrameDurationCount = 1
 
 	local empty = true
