@@ -83,6 +83,10 @@ function Noble.Animation.new(__spritesheet)
 	--- This animation's spritesheet. You can replace this with another `playdate.graphics.imagetable` object, but generally you would not want to.
 	-- @see new
 	animation.imageTable = Graphics.imagetable.new(__spritesheet)
+	-- The current count of frame durations. This is used to determine when to advance to the next frame.
+	animation.frameDurationCount = 1
+	-- The previous number of frame durations in the animation
+	animation.previousFrameDurationCount = 1
 
 	local empty = true
 
@@ -98,6 +102,7 @@ function Noble.Animation.new(__spritesheet)
 	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
 	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
+	-- @int __tickStep[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
 	-- @usage
 	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
 	--
@@ -107,18 +112,20 @@ function Noble.Animation.new(__spritesheet)
 	--	animation.jump.name				-- "jump"
 	--	animation.["jump"].next			-- "float"
 	--	animation.idle.next				-- nil
-	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete)
+	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete, __frameDuration)
 
 		local loop = true
+		local frameDuration = 1
 		if (__loop ~= nil) then loop = __loop end
-
+		if(__frameDuration ~= nil) then frameDuration = __frameDuration end
 		self[__name] = {
 			name = __name,
 			startFrame = __startFrame,
 			endFrame = __endFrame,
 			next = __next,
 			loop = loop,
-			onComplete = __onComplete
+			onComplete = __onComplete,
+			frameDuration = frameDuration,
 		}
 
 		-- Set this animation state as default if it is the first one added.
@@ -127,6 +134,7 @@ function Noble.Animation.new(__spritesheet)
 			self.currentFrame = __startFrame
 			self.current = self[__name]
 			self.currentName = __name
+			self.frameDuration = frameDuration
 		end
 
 	end
@@ -217,7 +225,7 @@ function Noble.Animation.new(__spritesheet)
 	--	end
 	function animation:draw(__x, __y, __advance)
 
-		print(self.currentName .. " > " .. self.currentFrame .. " >> " .. tostring(self.current.loop))
+		--print(self.currentName .. " > " .. self.currentFrame .. " >> " .. tostring(self.current.loop))
 
 		if (__advance == nil) then __advance = true end
 
@@ -226,9 +234,13 @@ function Noble.Animation.new(__spritesheet)
 		elseif(self.currentFrame == self.current.endFrame + 1) then	-- End frame behavior.
 			if (self.current.next ~= nil) then
 				self.currentFrame = self.current.next.startFrame	-- Set to first frame of next animation.
+				self.frameDurationCount = 1										-- Reset ticks.
+				self.previousFrameDurationCount = self.frameDuration
 				self:setState(self.current.next)					-- Set next animation state.
 			elseif (self.current.loop == true) then
 				self.currentFrame = self.current.startFrame 		-- Loop animation state. (TO-DO: account for continuous somehow?)
+				self.frameDurationCount = 1										-- Reset ticks.
+				self.previousFrameDurationCount = self.frameDuration
 			elseif(__advance) then
 				self.currentFrame = self.currentFrame - 1			-- Undo advance frame because we want to draw the same frame again.
 			end
@@ -243,9 +255,12 @@ function Noble.Animation.new(__spritesheet)
 		self.imageTable:drawImage(self.currentFrame, x, y, self.direction)
 
 		if (__advance == true) then
-			self.currentFrame = self.currentFrame + 1
+			self.frameDurationCount += 1
+			if((self.frameDurationCount - self.previousFrameDurationCount) >= self.current.frameDuration) then
+				self.currentFrame = self.currentFrame + 1
+				self.previousFrameDurationCount += self.current.frameDuration
+			end
 		end
-
 		--previousAnimationName = self.currentName
 	end
 
