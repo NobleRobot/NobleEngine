@@ -69,9 +69,11 @@ function NobleSprite:init(__imageOrSpritesheet, __animated, __singleState, __sin
 	end
 end
 
-function NobleSprite:draw()
+function NobleSprite:draw(__x, __y)
 	if (self.animation ~= nil) then
-		self.animation:draw(0,0)
+		local x = __x or 0
+		local y = __y or 0
+		self.animation:draw(x, y)
 		self:markDirty()
 	end
 end
