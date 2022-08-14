@@ -13,11 +13,11 @@ Noble.Text = {}
 --- The Playdate system font.
 Noble.Text.FONT_SYSTEM = Graphics.getSystemFont()
 --- <strong>Noble Sans</strong>: A sans-serif 8×9 font, with English and Japanese-Kana character sets.
-Noble.Text.FONT_SMALL = Graphics.font.new("libraries/noble/assets/fonts/NobleSans")
+Noble.Text.FONT_SMALL = Graphics.font.new "libraries/noble/assets/fonts/NobleSans"
 --- <strong>Noble Slab</strong>: (This font is not ready yet!)
-Noble.Text.FONT_MEDIUM = Graphics.font.new("libraries/noble/assets/fonts/NobleSlab")
+Noble.Text.FONT_MEDIUM = Graphics.font.new "libraries/noble/assets/fonts/NobleSlab"
 --- <strong>Satchel Roughed</strong>: A sans-serif 17×14 rounded font, with an English character set.
-Noble.Text.FONT_LARGE = Graphics.font.new("libraries/noble/assets/fonts/SatchelRoughed")
+Noble.Text.FONT_LARGE = Graphics.font.new "libraries/noble/assets/fonts/SatchelRoughed"
 
 --- Constants
 --@section constants
@@ -31,23 +31,20 @@ Noble.Text.ALIGN_CENTER = kTextAlignment.center
 
 local currentFont = Noble.Text.FONT_SYSTEM
 
-
 --- Functions
 --@section functions
 
 ---
 -- @return The currently set font.
-function Noble.Text.getCurrentFont()
-	return currentFont
-end
+function Noble.Text.getCurrentFont() return currentFont end
 
 --- Set the current font
 -- @param __font any
 -- @param __variant any
 function Noble.Text.setFont(__font, __variant)
-	currentFont = __font
-	local variant = __variant or Graphics.font.kVariantNormal
-	Graphics.setFont(__font, variant)
+  currentFont = __font
+  local variant = __variant or Graphics.font.kVariantNormal
+  Graphics.setFont(__font, variant)
 end
 
 --- Abstracts multiple `playdate.text` drawing functions into one.
@@ -58,16 +55,16 @@ end
 -- @bool[opt=false] __localized If true, `__string` is a localization key rather than display text.
 -- @param[opt=Noble.Text.getCurrentFont()] __font A font to use. If not set, the `currentFont` is used. If set, the `currentFont` is not updated.
 function Noble.Text.draw(__string, __x, __y, __alignment, __localized, __font)
-	local alignment = __alignment or Noble.Text.ALIGN_LEFT
-	local localized = __localized or false
+  local alignment = __alignment or Noble.Text.ALIGN_LEFT
+  local localized = __localized or false
 
-	if (__font ~= nil) then Graphics.setFont(__font) end -- Temporary font
+  if __font ~= nil then Graphics.setFont(__font) end -- Temporary font
 
-	if (localized) then
-		Graphics.drawLocalizedTextAligned(__string, __x, __y, alignment)
-	else
-		Graphics.drawTextAligned(__string, __x, __y, alignment)
-	end
+  if localized then
+    Graphics.drawLocalizedTextAligned(__string, __x, __y, alignment)
+  else
+    Graphics.drawTextAligned(__string, __x, __y, alignment)
+  end
 
-	if (__font ~= nil) then Graphics.setFont(currentFont) end	-- Reset
+  if __font ~= nil then Graphics.setFont(currentFont) end -- Reset
 end

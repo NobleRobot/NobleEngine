@@ -49,238 +49,231 @@ Noble.Animation = {}
 --	end
 --	@see NobleSprite:init
 function Noble.Animation.new(__spritesheet)
+  local animation = {}
 
-	local animation = {}
+  --- Properties
+  -- @section properties
 
-	--- Properties
-	-- @section properties
+  --- The currently set animation state.
+  --
+  -- This is intended as `read-only`. You should not modify this property directly.
+  -- @see setState
+  animation.current = nil
 
-	--- The currently set animation state.
-	--
-	-- This is intended as `read-only`. You should not modify this property directly.
-	-- @see setState
-	animation.current = nil
+  --- The name of the current animation state. Calling this instead of `animation.current.name` is <em>just</em> a little faster.
+  --
+  -- This is intended as `read-only`. You should not modify this property directly.
+  animation.currentName = nil
 
-	--- The name of the current animation state. Calling this instead of `animation.current.name` is <em>just</em> a little faster.
-	--
-	-- This is intended as `read-only`. You should not modify this property directly.
-	animation.currentName = nil
+  --- The current frame of the animation. This is the index of the imagetable, not the frame of the current state.
+  --
+  -- Most of the time, you should not modify this directly, although you can if you're feeling saucy and are prepared for unpredictable results.
+  -- @see draw
+  animation.currentFrame = 1
 
-	--- The current frame of the animation. This is the index of the imagetable, not the frame of the current state.
-	--
-	-- Most of the time, you should not modify this directly, although you can if you're feeling saucy and are prepared for unpredictable results.
-	-- @see draw
-	animation.currentFrame = 1
+  --- This controls the flipping of the image when drawing. DIRECTION_RIGHT is unflipped, DIRECTION_LEFT is flipped on the X axis.
+  -- @usage
+  -- function MyHero:goLeft()
+  -- 	self.animation.direction = Noble.Animation.DIRECTION_LEFT
+  -- 	-- ...
+  -- end
+  animation.direction = Noble.Animation.DIRECTION_RIGHT
 
-	--- This controls the flipping of the image when drawing. DIRECTION_RIGHT is unflipped, DIRECTION_LEFT is flipped on the X axis.
-	-- @usage
-	-- function MyHero:goLeft()
-	-- 	self.animation.direction = Noble.Animation.DIRECTION_LEFT
-	-- 	-- ...
-	-- end
-	animation.direction = Noble.Animation.DIRECTION_RIGHT
+  --- This animation's spritesheet. You can replace this with another `playdate.graphics.imagetable` object, but generally you would not want to.
+  -- @see new
+  animation.imageTable = Graphics.imagetable.new(__spritesheet)
+  -- The current count of frame durations. This is used to determine when to advance to the next frame.
+  animation.frameDurationCount = 1
+  -- The previous number of frame durations in the animation
+  animation.previousFrameDurationCount = 1
 
-	--- This animation's spritesheet. You can replace this with another `playdate.graphics.imagetable` object, but generally you would not want to.
-	-- @see new
-	animation.imageTable = Graphics.imagetable.new(__spritesheet)
-	-- The current count of frame durations. This is used to determine when to advance to the next frame.
-	animation.frameDurationCount = 1
-	-- The previous number of frame durations in the animation
-	animation.previousFrameDurationCount = 1
+  local empty = true
 
-	local empty = true
+  --- Setup
+  -- @section setup
 
-	--- Setup
-	-- @section setup
+  --- Add an animation state. The first state added will be the default set for this animation.
+  --
+  -- <strong>NOTE:</strong> Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
+  -- @string __name The name of the animation, this is also used as the key for the animation.
+  -- @int __startFrame This is the first frame of this animation in the imagetable/spritesheet
+  -- @int __endFrame This is the final frame of this animation in the imagetable/spritesheet
+  -- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
+  -- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
+  -- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
+  -- @int __tickStep[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
+  -- @usage
+  --	-- You can reference an animation's state's properties using bog-standard lua syntax:
+  --
+  --	animation.idle.startFrame		-- 30
+  --	animation.walk.endFrame			-- 65
+  --	animation.["walk"].endFrame		-- 65
+  --	animation.jump.name				-- "jump"
+  --	animation.["jump"].next			-- "float"
+  --	animation.idle.next				-- nil
+  function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete, __frameDuration)
+    local loop = true
+    local frameDuration = 1
+    if __loop ~= nil then loop = __loop end
+    if __frameDuration ~= nil then frameDuration = __frameDuration end
+    self[__name] = {
+      name = __name,
+      startFrame = __startFrame,
+      endFrame = __endFrame,
+      next = __next,
+      loop = loop,
+      onComplete = __onComplete,
+      frameDuration = frameDuration,
+    }
 
-	--- Add an animation state. The first state added will be the default set for this animation.
-	--
-	-- <strong>NOTE:</strong> Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
-	-- @string __name The name of the animation, this is also used as the key for the animation.
-	-- @int __startFrame This is the first frame of this animation in the imagetable/spritesheet
-	-- @int __endFrame This is the final frame of this animation in the imagetable/spritesheet
-	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
-	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
-	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
-	-- @int __tickStep[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
-	-- @usage
-	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
-	--
-	--	animation.idle.startFrame		-- 30
-	--	animation.walk.endFrame			-- 65
-	--	animation.["walk"].endFrame		-- 65
-	--	animation.jump.name				-- "jump"
-	--	animation.["jump"].next			-- "float"
-	--	animation.idle.next				-- nil
-	function animation:addState(__name, __startFrame, __endFrame, __next, __loop, __onComplete, __frameDuration)
+    -- Set this animation state as default if it is the first one added.
+    if empty == true then
+      empty = false
+      self.currentFrame = __startFrame
+      self.current = self[__name]
+      self.currentName = __name
+      self.frameDuration = frameDuration
+    end
+  end
 
-		local loop = true
-		local frameDuration = 1
-		if (__loop ~= nil) then loop = __loop end
-		if(__frameDuration ~= nil) then frameDuration = __frameDuration end
-		self[__name] = {
-			name = __name,
-			startFrame = __startFrame,
-			endFrame = __endFrame,
-			next = __next,
-			loop = loop,
-			onComplete = __onComplete,
-			frameDuration = frameDuration,
-		}
+  --- Methods
+  -- @section methods
 
-		-- Set this animation state as default if it is the first one added.
-		if (empty == true) then
-			empty = false
-			self.currentFrame = __startFrame
-			self.current = self[__name]
-			self.currentName = __name
-			self.frameDuration = frameDuration
-		end
+  --- Sets the current animation state. This can be run in a object's `update` method because it only changes the animation state if the new state is different from the current one.
+  -- @tparam string|Noble.Animation __animationState The name of the animation to set. You can pass the name of the state, or the object itself.
+  -- @bool[opt=false] __continuous Set to true if your new state's frames line up with the previous one's, i.e.: two walk cycles but one is wearing a cute hat!
+  -- @tparam string|Noble.Animation __unlessThisState If this state is the current state, do not set the new one.
+  -- @usage animation:setState("walk")
+  -- @usage animation:setState(animation.walk)
+  -- @usage
+  --	animation:setState(animation.walkNoHat)
+  --	--
+  --	animation:setState(animation.walkYesHat, true)
+  -- @usage
+  --	function MyHero:update()
+  --		-- Input
+  --		-- ...
+  --
+  --		-- Physics/collisions
+  --		-- ...
+  --
+  --		-- Animation states
+  --		if (grounded) then
+  --			if (turning) then
+  --				self.animation:setState(self.animation.turn)
+  --			elseif (math.abs(self.velocity.x) > 15) then
+  --				self.animation:setState(self.animation.walk, false, self.animation.turn)
+  --			else
+  --				self.animation:setState(self.animation.idle, false, self.animation.turn)
+  --			end
+  --		else
+  --			self.animation:setState(self.animation.jump, false, self.animation.float)
+  --		end
+  --
+  --		groundedLastFrame = grounded
+  --	end
+  function animation:setState(__animationState, __continuous, __unlessThisState)
+    if __unlessThisState ~= nil then
+      if type(__unlessThisState) == "string" then
+        if self.currentName == __unlessThisState then return end
+      elseif type(__unlessThisState) == "table" then
+        if self.current == __unlessThisState then return end
+      end
+    end
 
-	end
+    local newState = nil
 
-	--- Methods
-	-- @section methods
+    if type(__animationState) == "string" then
+      if self.currentName == __animationState then return end
+      newState = self[__animationState]
+      self.currentName = __animationState
+    elseif type(__animationState) == "table" then
+      if self.current == __animationState then return end
+      newState = __animationState
+      self.currentName = __animationState.name
+    end
 
-	--- Sets the current animation state. This can be run in a object's `update` method because it only changes the animation state if the new state is different from the current one.
-	-- @tparam string|Noble.Animation __animationState The name of the animation to set. You can pass the name of the state, or the object itself.
-	-- @bool[opt=false] __continuous Set to true if your new state's frames line up with the previous one's, i.e.: two walk cycles but one is wearing a cute hat!
-	-- @tparam string|Noble.Animation __unlessThisState If this state is the current state, do not set the new one.
-	-- @usage animation:setState("walk")
-	-- @usage animation:setState(animation.walk)
-	-- @usage
-	--	animation:setState(animation.walkNoHat)
-	--	--
-	--	animation:setState(animation.walkYesHat, true)
-	-- @usage
-	--	function MyHero:update()
-	--		-- Input
-	--		-- ...
-	--
-	--		-- Physics/collisions
-	--		-- ...
-	--
-	--		-- Animation states
-	--		if (grounded) then
-	--			if (turning) then
-	--				self.animation:setState(self.animation.turn)
-	--			elseif (math.abs(self.velocity.x) > 15) then
-	--				self.animation:setState(self.animation.walk, false, self.animation.turn)
-	--			else
-	--				self.animation:setState(self.animation.idle, false, self.animation.turn)
-	--			end
-	--		else
-	--			self.animation:setState(self.animation.jump, false, self.animation.float)
-	--		end
-	--
-	--		groundedLastFrame = grounded
-	--	end
-	function animation:setState(__animationState, __continuous, __unlessThisState)
+    local continuous = __continuous or false
 
-		if (__unlessThisState ~= nil) then
-			if (type(__unlessThisState) == "string") then
-				if (self.currentName == __unlessThisState) then return end
-			elseif (type(__unlessThisState) == "table") then
-				if (self.current == __unlessThisState) then return end
-			end
-		end
+    if continuous then
+      local localFrame = self.currentFrame - self.current.startFrame
+      self.currentFrame = newState.startFrame + localFrame
+    else
+      self.currentFrame = newState.startFrame
+    end
 
-		local newState = nil
+    self.current = newState
+  end
 
-		if (type(__animationState) == "string") then
-			if (self.currentName == __animationState) then return end
-			newState = self[__animationState]
-			self.currentName = __animationState
-		elseif (type(__animationState) == "table") then
-			if (self.current == __animationState) then return end
-			newState = __animationState
-			self.currentName = __animationState.name
-		end
+  --- Draw the current frame.
+  --
+  -- When attached to a NobleSprite, this is called by `NobleScene:draw()` when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's `draw()` method, or inside @{NobleScene:update|NobleScene:update}.
+  -- @number[opt=0] __x
+  -- @number[opt=0] __y
+  -- @bool[opt=true] __advance Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
+  -- @usage
+  --	function MySprite:draw()
+  --		animation:draw()
+  --	end
+  -- @usage
+  --	function MyScene:update()
+  --		animation:draw(100,100)
+  --	end
+  function animation:draw(__x, __y, __advance)
+    --print(self.currentName .. " > " .. self.currentFrame .. " >> " .. tostring(self.current.loop))
 
-		local continuous = __continuous or false
+    if __advance == nil then __advance = true end
 
-		if (continuous) then
-			local localFrame = self.currentFrame - self.current.startFrame
-			self.currentFrame = newState.startFrame + localFrame
-		else
-			self.currentFrame = newState.startFrame
-		end
+    if self.currentFrame < self.current.startFrame or self.currentFrame > self.current.endFrame + 1 then
+      self.currentFrame = self.current.startFrame -- Error correction.
+    elseif self.currentFrame == self.current.endFrame + 1 then -- End frame behavior.
+      if self.current.next ~= nil then
+        self.currentFrame = self.current.next.startFrame -- Set to first frame of next animation.
+        self.frameDurationCount = 1 -- Reset ticks.
+        self.previousFrameDurationCount = self.frameDuration
+        self:setState(self.current.next) -- Set next animation state.
+      elseif self.current.loop == true then
+        self.currentFrame = self.current.startFrame -- Loop animation state. (TO-DO: account for continuous somehow?)
+        self.frameDurationCount = 1 -- Reset ticks.
+        self.previousFrameDurationCount = self.frameDuration
+      elseif __advance then
+        self.currentFrame = self.currentFrame - 1 -- Undo advance frame because we want to draw the same frame again.
+      end
 
-		self.current = newState
-	end
+      if self.current.onComplete ~= nil then self.current.onComplete() end
+    end
 
-	--- Draw the current frame.
-	--
-	-- When attached to a NobleSprite, this is called by `NobleScene:draw()` when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's `draw()` method, or inside @{NobleScene:update|NobleScene:update}.
-	-- @number[opt=0] __x
-	-- @number[opt=0] __y
-	-- @bool[opt=true] __advance Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
-	-- @usage
-	--	function MySprite:draw()
-	--		animation:draw()
-	--	end
-	-- @usage
-	--	function MyScene:update()
-	--		animation:draw(100,100)
-	--	end
-	function animation:draw(__x, __y, __advance)
+    local x = __x or 0
+    local y = __y or 0
+    self.imageTable:drawImage(self.currentFrame, x, y, self.direction)
 
-		--print(self.currentName .. " > " .. self.currentFrame .. " >> " .. tostring(self.current.loop))
+    if __advance == true then
+      self.frameDurationCount += 1
+      if (self.frameDurationCount - self.previousFrameDurationCount) >= self.current.frameDuration then
+        self.currentFrame = self.currentFrame + 1
+        self.previousFrameDurationCount += self.current.frameDuration
+      end
+    end
+    --previousAnimationName = self.currentName
+  end
 
-		if (__advance == nil) then __advance = true end
+  --- Sometimes, you just want to draw a specific frame.
+  -- Use this for objects or sprites that you want to control outside of update loops, such as score counters, flipbook-style objects that respond to player input, etc.
+  -- @int __frameNumber The frame to draw from the current state. This is not an imagetable index. Entering `1` will draw the selected state's `startFrame`.
+  -- @string[opt=self.currentName] __stateName The specific state to pull the __frameNumber from.
+  -- @number[opt=0] __x
+  -- @number[opt=0] __y
+  -- @param[opt=self.direction] __direction Override the current direction.
+  function animation:drawFrame(__frameNumber, __stateName, __x, __y, __direction)
+    local x = __x or 0
+    local y = __y or 0
+    local stateName = __stateName or self.currentName
+    local direction = __direction or self.direction
+    local frameNumber = self[stateName].startFrame - 1 + __frameNumber
+    self.imageTable:drawImage(frameNumber, x, y, direction)
+  end
 
-		if(self.currentFrame < self.current.startFrame or self.currentFrame > self.current.endFrame + 1) then
-			self.currentFrame = self.current.startFrame				-- Error correction.
-		elseif(self.currentFrame == self.current.endFrame + 1) then	-- End frame behavior.
-			if (self.current.next ~= nil) then
-				self.currentFrame = self.current.next.startFrame	-- Set to first frame of next animation.
-				self.frameDurationCount = 1										-- Reset ticks.
-				self.previousFrameDurationCount = self.frameDuration
-				self:setState(self.current.next)					-- Set next animation state.
-			elseif (self.current.loop == true) then
-				self.currentFrame = self.current.startFrame 		-- Loop animation state. (TO-DO: account for continuous somehow?)
-				self.frameDurationCount = 1										-- Reset ticks.
-				self.previousFrameDurationCount = self.frameDuration
-			elseif(__advance) then
-				self.currentFrame = self.currentFrame - 1			-- Undo advance frame because we want to draw the same frame again.
-			end
-
-			if (self.current.onComplete ~= nil) then
-				self.current.onComplete()
-			end
-		end
-
-		local x = __x or 0
-		local y = __y or 0
-		self.imageTable:drawImage(self.currentFrame, x, y, self.direction)
-
-		if (__advance == true) then
-			self.frameDurationCount += 1
-			if((self.frameDurationCount - self.previousFrameDurationCount) >= self.current.frameDuration) then
-				self.currentFrame = self.currentFrame + 1
-				self.previousFrameDurationCount += self.current.frameDuration
-			end
-		end
-		--previousAnimationName = self.currentName
-	end
-
-	--- Sometimes, you just want to draw a specific frame.
-	-- Use this for objects or sprites that you want to control outside of update loops, such as score counters, flipbook-style objects that respond to player input, etc.
-	-- @int __frameNumber The frame to draw from the current state. This is not an imagetable index. Entering `1` will draw the selected state's `startFrame`.
-	-- @string[opt=self.currentName] __stateName The specific state to pull the __frameNumber from.
-	-- @number[opt=0] __x
-	-- @number[opt=0] __y
-	-- @param[opt=self.direction] __direction Override the current direction.
-	function animation:drawFrame(__frameNumber, __stateName, __x, __y, __direction)
-		local x = __x or 0
-		local y = __y or 0
-		local stateName = __stateName or self.currentName
-		local direction = __direction or self.direction
-		local frameNumber = self[stateName].startFrame - 1 + __frameNumber
-		self.imageTable:drawImage(frameNumber, x, y, direction)
-	end
-
-	return animation
+  return animation
 end
 
 --- Constants

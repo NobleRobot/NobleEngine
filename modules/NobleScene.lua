@@ -86,15 +86,13 @@ NobleScene.sprites = {}
 -- @see NobleSprite:add
 -- @see removeSprite
 function NobleScene:addSprite(__sprite)
-	if (__sprite.isNobleSprite == true) then
-		__sprite:superAdd()
-	else
-		__sprite:add()
-	end
+  if __sprite.isNobleSprite == true then
+    __sprite:superAdd()
+  else
+    __sprite:add()
+  end
 
-	if (table.indexOfElement(self.sprites, __sprite) == nil) then
-		table.insert(self.sprites, __sprite)
-	end
+  if table.indexOfElement(self.sprites, __sprite) == nil then table.insert(self.sprites, __sprite) end
 end
 
 --- Use this to remove sprites from your scene instead of `playdate.graphics.sprite:remove()`.
@@ -106,15 +104,15 @@ end
 -- @see NobleSprite:remove
 -- @see addSprite
 function NobleScene:removeSprite(__sprite)
-	if (__sprite.isNobleSprite == true) then
-		__sprite:superRemove()
-	else
-		__sprite:remove()
-	end
+  if __sprite.isNobleSprite == true then
+    __sprite:superRemove()
+  else
+    __sprite:remove()
+  end
 
-	if (table.indexOfElement(self.sprites, __sprite) ~= nil) then
-		table.remove(self.sprites, table.indexOfElement(self.sprites, __sprite))
-	end
+  if table.indexOfElement(self.sprites, __sprite) ~= nil then
+    table.remove(self.sprites, table.indexOfElement(self.sprites, __sprite))
+  end
 end
 
 --- Callbacks
@@ -129,8 +127,8 @@ end
 --	end
 --
 function NobleScene:init()
-	self.name = self.className
-	self.sprites = {}
+  self.name = self.className
+  self.sprites = {}
 end
 
 --- Implement if you want to run code as the transition to this scene begins, such as UI animation, triggers, etc.
@@ -151,9 +149,7 @@ function NobleScene:enter() end
 --		--[Your code here]--
 --	end
 --
-function NobleScene:start()
-	Noble.Input.setHandler(self.inputHandler)
-end
+function NobleScene:start() Noble.Input.setHandler(self.inputHandler) end
 
 --- Implement to run scene-specific code on every frame while this scene is active.
 -- <strong>NOTE:</strong> you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
@@ -178,25 +174,26 @@ function NobleScene:update() end
 --	end
 --
 function NobleScene:drawBackground(__x, __y, __width, __height)
-	__x = __x or 0
-	__y = __y or 0
-	__width = __width or Display.getWidth()
-	__height = __height or Display.getHeight()
+  __x = __x or 0
+  __y = __y or 0
+  __width = __width or Display.getWidth()
+  __height = __height or Display.getHeight()
 
-	 -- Cache the currently set color/pattern.
-	local color <const> = Graphics.getColor()
-	local color_type <const> = type(color)
+  -- Cache the currently set color/pattern.
+  -- TODO: re-add <const> to these pending stylua support
+  local color = Graphics.getColor()
+  local color_type = type(color)
 
-	-- Draw background.
-	Graphics.setColor(self.backgroundColor)
-	Graphics.fillRect(__x, __y, __width, __height)
+  -- Draw background.
+  Graphics.setColor(self.backgroundColor)
+  Graphics.fillRect(__x, __y, __width, __height)
 
-	-- Reset color/pattern from cache.
-	if color_type == 'number' then
-		Graphics.setColor(color)
-	elseif color_type == 'table' then
-		Graphics.setPattern(color)
-	end
+  -- Reset color/pattern from cache.
+  if color_type == "number" then
+    Graphics.setColor(color)
+  elseif color_type == "table" then
+    Graphics.setPattern(color)
+  end
 end
 
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
@@ -209,10 +206,10 @@ end
 --	end
 --
 function NobleScene:exit()
-	for _, sprite in ipairs(self.sprites) do
-		sprite:setUpdatesEnabled(false)
-		sprite:setCollisionsEnabled(false)
-	end
+  for _, sprite in ipairs(self.sprites) do
+    sprite:setUpdatesEnabled(false)
+    sprite:setCollisionsEnabled(false)
+  end
 end
 
 --- Implement this in your scene if you have code to run when a transition to another scene
@@ -225,13 +222,13 @@ end
 --	end
 --
 function NobleScene:finish()
-	for _, sprite in ipairs(self.sprites) do
-		if (sprite.isNobleSprite) then
-			sprite:superRemove()
-		else
-			sprite:remove()
-		end
-	end
+  for _, sprite in ipairs(self.sprites) do
+    if sprite.isNobleSprite then
+      sprite:superRemove()
+    else
+      sprite:remove()
+    end
+  end
 end
 
 --- `pause()` / `resume()`
