@@ -161,7 +161,10 @@ Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
---- Transition to a new scene. This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+local nextTransition = nil
+--- Transition to a new scene on the next call to update.
+--- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+--- Multiple calls to this will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1] __duration The length of the transition, in seconds.
 -- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
@@ -169,6 +172,25 @@ Graphics.unlockFocus()
 -- @see NobleScene
 -- @see Noble.TransitionType
 function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
+  if nextTransition then return end -- there is already a transition enqueued
+
+  nextTransition = {
+    called = false,
+    holdDuration = __holdDuration,
+    NewScene = NewScene,
+    duration = __duration,
+    transitionType = __transitionType,
+  }
+end
+
+local function transitionNow(tx)
+  if tx.called then
+    return
+  else
+    tx.called = true
+  end
+
+  -- TODO: This should mabye never happen with the defered transition? If so, this can be removed
 	if (Noble.isTransitioning) then
 		error("BONK: You can't start a transition in the middle of another transition, silly!")
 	end
@@ -180,11 +202,11 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	local newScene = NewScene()			-- Creates new scene object. Its init() function runs.
+	local newScene = tx.NewScene()			-- Creates new scene object. Its init() function runs.
 
-	local duration = __duration or 1
-	local holdDuration = __holdDuration or 0.2
-	currentTransitionType = __transitionType or Noble.TransitionType.DIP_TO_BLACK
+	local duration = tx.duration or 1
+	local holdDuration = tx.holdDuration or 0.2
+	currentTransitionType = tx.transitionType or Noble.TransitionType.DIP_TO_BLACK
 
 	local onMidpoint = function()
 		if (currentScene ~= nil) then
@@ -196,8 +218,9 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	end
 
 	local onComplete = function()
-		previousSceneScreenCapture = nil-- Reset (if necessary).
+		previousSceneScreenCapture = nil -- Reset (if necessary).
 		Noble.isTransitioning = false	-- Reset
+    nextTransition = false -- Reset
 		newScene:start()				-- The new scene is now active.
 	end
 
@@ -370,6 +393,9 @@ function playdate.update()
 		Noble.Bonk.checkDebugBonks()
 	end
 
+  if nextTransition then
+    transitionNow(nextTransition)
+  end
 end
 
 function playdate.gameWillPause()
