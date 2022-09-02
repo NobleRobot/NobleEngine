@@ -176,7 +176,69 @@ function Noble.Input.update()
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonRight)) then rightButtonHoldBufferCount = 0 end
 	end
+	if (currentHandler.orientationChanged ~= nil) then
+		if (playdate.accelerometerIsRunning()) then
+			local orientation, values = Noble.Input.getOrientation()
+			if (orientation ~= previousOrientation) then
+				currentHandler.orientationChanged(orientation, values)
+				previousOrientation = orientation
+			end
+		end
+	end
 end
+
+-- Store the previous orientation in order to know when to run the orientationChanged callback
+local previousOrientation = Noble.Input.ORIENTATION_UP
+
+--- Checks the current orientation of the device. Returns a tuple.
+-- @tparam[opt=nil] bool __turnOnAccelerometer Indicates whether this function should automatically turn ON the accelerometer and OFF after executing.
+-- This parameter will only be considered if the accelerometer was not already running.
+--
+-- @treturn str The orientation of the device (can be compared with the pseudo enum Noble.Input.ORIENTATION_XX)
+-- @treturn list The accelerometer values where list[1] is x, list[2] is y and list[3] is z
+function Noble.Input.getOrientation(__turnOnAccelerometer)
+
+	local turnOnAccelerometer = __turnOnAccelerometer or false
+	local turnOffAfterUse = false
+
+	if (not playdate.accelerometerIsRunning() and turnOnAccelerometer) then
+		playdate.startAccelerometer()
+		turnOffAfterUse = true
+	end
+
+	if (playdate.accelerometerIsRunning()) then
+
+		local x, y, z = playdate.readAccelerometer()
+		if (turnOffAfterUse) then
+			playdate.stopAccelerometer()
+		end
+
+		if (x <= -0.7) then
+			return Noble.Input.ORIENTATION_LEFT, {x, y, z}
+		end
+		if (x >= 0.7) then
+			return Noble.Input.ORIENTATION_RIGHT, {x, y, z}
+		end
+		if (y <= -0.3) then
+			return Noble.Input.ORIENTATION_DOWN, {x, y, z}
+		end
+		return Noble.Input.ORIENTATION_UP, {x, y, z}
+	else
+		return Noble.Input.ORIENTATION_UP, {6, 6, 6}
+	end
+	
+end
+
+--- Referencing the different orientations possible for the console
+--
+-- `"upstraight"`
+Noble.Input.ORIENTATION_UP = "upstraight"
+-- `"upsideDown"`
+Noble.Input.ORIENTATION_DOWN = "upsideDown"
+-- `"tiltedLeft"`
+Noble.Input.ORIENTATION_LEFT = "tiltedLeft"
+-- `"tiltedRight"`
+Noble.Input.ORIENTATION_RIGHT = "tiltedRight"
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function playdate.crankDocked()
