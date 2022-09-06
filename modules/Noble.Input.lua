@@ -195,43 +195,43 @@ function Noble.Input.update()
 
 	if (currentHandler.AButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonA)) then
-			if (AButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.AButtonHold()		-- Execute!
-			else AButtonHoldBufferCount = AButtonHoldBufferCount + 1 end								-- Wait another frame!
+			if (AButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.AButtonHold(AButtonHoldBufferCount) end		-- Execute!
+			AButtonHoldBufferCount = AButtonHoldBufferCount + 1																		-- Wait another frame!
 		end
-		if (playdate.buttonJustReleased(playdate.kButtonA)) then AButtonHoldBufferCount = 0 end			-- Reset!
+		if (playdate.buttonJustReleased(playdate.kButtonA)) then AButtonHoldBufferCount = 0 end										-- Reset!
 	end
 	if (currentHandler.BButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonB)) then
-			if (BButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.BButtonHold()
-			else BButtonHoldBufferCount = BButtonHoldBufferCount + 1 end
+			if (BButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.BButtonHold(BButtonHoldBufferCount) end
+			BButtonHoldBufferCount = BButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonB)) then BButtonHoldBufferCount = 0 end
 	end
 	if (currentHandler.upButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonUp)) then
-			if (upButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.upButtonHold()
-			else upButtonHoldBufferCount = upButtonHoldBufferCount + 1 end
+			if (upButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.upButtonHold(upButtonHoldBufferCount) end
+			upButtonHoldBufferCount = upButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonUp)) then upButtonHoldBufferCount = 0 end
 	end
 	if (currentHandler.downButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonDown)) then
-			if (downButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.downButtonHold()
-			else downButtonHoldBufferCount = downButtonHoldBufferCount + 1 end
+			if (downButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.downButtonHold(downButtonHoldBufferCount) end
+			downButtonHoldBufferCount = downButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonDown)) then downButtonHoldBufferCount = 0 end
 	end
 	if (currentHandler.leftButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonLeft)) then
-			if (leftButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.leftButtonHold()
-			else leftButtonHoldBufferCount = leftButtonHoldBufferCount + 1 end
+			if (leftButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.leftButtonHold(leftButtonHoldBufferCount) end
+			leftButtonHoldBufferCount = leftButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonLeft)) then leftButtonHoldBufferCount = 0 end
 	end
 	if (currentHandler.rightButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonRight)) then
-			if (rightButtonHoldBufferCount == buttonHoldBufferAmount) then currentHandler.rightButtonHold()
-			else rightButtonHoldBufferCount = rightButtonHoldBufferCount + 1 end
+			if (rightButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.rightButtonHold(rightButtonHoldBufferCount) end
+			rightButtonHoldBufferCount = rightButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonRight)) then rightButtonHoldBufferCount = 0 end
 	end
