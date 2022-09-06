@@ -191,7 +191,7 @@ end
 local previousOrientation = Noble.Input.ORIENTATION_UP
 
 --- Checks the current orientation of the device. Returns a tuple.
--- @tparam[opt=nil] bool __turnOnAccelerometer Indicates whether this function should automatically turn ON the accelerometer and OFF after executing.
+-- @tparam[opt=false] bool __turnOnAccelerometer Indicates whether this function should automatically turn ON the accelerometer and OFF after executing.
 -- This parameter will only be considered if the accelerometer was not already running.
 --
 -- @treturn str The orientation of the device (can be compared with the pseudo enum Noble.Input.ORIENTATION_XX)
