@@ -11,8 +11,8 @@ NobleSprite = {}
 class("NobleSprite").extends(Graphics.sprite)
 
 --- Do not call an "init" method directly. Use `NobleSprite()` (see usage examples).
--- @string[opt] __imageOrSpritesheet The path to the image or spritesheet asset that this NobleSprite will use for its view.
--- @bool[opt=false] __animated Set this to `true` in order to use Noble.Animation.
+-- @string[opt] __view This can be either : the path to the image or spritesheet asset that this NobleSprite will use for its view, an image object (`Graphics.image`) or an animation object (`Noble.Animation`)
+-- @bool[opt=false] __animated Set this to `true` in order to use Noble.Animation, will only be considered if `__view` is the path to an image or spritesheet
 -- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Anmiation.addState()
 -- @bool[opt=true] __singleStateLoop If using a single state animation, should it loop?
 --
@@ -21,8 +21,19 @@ class("NobleSprite").extends(Graphics.sprite)
 --	mySprite = NobleSprite("path/to/image")
 --
 -- @usage
---	-- Create a new NobleSprite, using a Noble.Animation for its view.
+--	-- Create a new NobleSprite, creating a new Noble.Animation for its view.
 --	mySprite = NobleSprite("path/to/spritesheet", true)
+--
+-- @usage
+--	-- Create a new NobleSprite, using an image (Graphics.image) for its view.
+--  local myImage = Graphics.image.new("path/to/image")
+--	mySprite = NobleSprite(myImage)
+--
+-- @usage
+--	-- Create a new NobleSprite, using an existing Noble.Animation for its view.
+-- 	local myAnimation = Noble.Animation.new("path/to/spritesheet")
+--  myAnimation:addState("default", 1, animation.imageTable:getLength(), nil, true)
+--	mySprite = NobleSprite(myAnimation)
 --
 -- @usage
 --	-- Extending NobleSprite.
@@ -41,32 +52,48 @@ class("NobleSprite").extends(Graphics.sprite)
 --
 -- @see Noble.Animation:addState
 --
-function NobleSprite:init(__imageOrSpritesheet, __animated, __singleState, __singleStateLoop)
+function NobleSprite:init(__view, __animated, __singleState, __singleStateLoop)
 	NobleSprite.super.init(self)
 	self.isNobleSprite = true -- This is important so other methods don't confuse this for a playdate.graphics.sprite. DO NOT modify this value at runtime.
 
-	self.animated = __animated	-- NO NOT modify this value at runtime.
+	if (__view ~= nil) then
 
-	if (__imageOrSpritesheet ~= nil) then
-		if (__animated == true) then
-			-- This sprite uses Noble.Animation for its "view."
+		-- __view is the path to an image or spritesheet
+		if (type(__view) == "string") then
+			self.animated = __animated -- NO NOT modify this value at runtime.
 
-			--- The animation for this NobleSprite.
-			-- @see Noble.Animation.new
-			self.animation = Noble.Animation.new(__imageOrSpritesheet)
-
-			local singleStateLoop = true
-			if (__singleStateLoop ~= nil) then singleStateLoop = __singleStateLoop end
-
-			if (__singleState == true) then
-				self.animation:addState("default", 1, self.animation.imageTable:getLength(), nil, singleStateLoop)
+			if (__animated == true) then
+				-- This sprite uses Noble.Animation for its "view."
+	
+				--- The animation for this NobleSprite.
+				-- @see Noble.Animation.new
+				self.animation = Noble.Animation.new(__view)
+	
+				local singleStateLoop = true
+				if (__singleStateLoop ~= nil) then singleStateLoop = __singleStateLoop end
+	
+				if (__singleState == true) then
+					self.animation:addState("default", 1, self.animation.imageTable:getLength(), nil, singleStateLoop)
+				end
+	
+			else
+				-- This sprite uses playdate.graphics.image for its "view."
+				self:setImage(Graphics.image.new(__view))
 			end
 
-		else
-			-- This sprite uses playdate.graphics.image for its "view."
-			self:setImage(Graphics.image.new(__imageOrSpritesheet))
+		-- __view is an image (Graphics.image)
+		elseif (type(__view) == "userdata") then
+			self.animated = false
+			self:setImage(__view)
+
+		-- __view is an animation object
+		elseif (type(__view) == "table") then
+			self.animated = true
+			self.animation = __view
 		end
+
 	end
+
 end
 
 function NobleSprite:draw(__x, __y)
