@@ -1,81 +1,97 @@
 --
 -- SceneTemplate.lua
 --
--- Use this as a starting point for your game's scenes. Copy this file to your root "scenes" directory,
--- rename it as you like.
+-- Use this as a starting point for your game's scenes.
+-- Copy this file to your root "scenes" directory,
+-- and rename it.
 --
+
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- !!! Rename "SceneTemplate" to your scene's name in these first three lines. !!!
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 SceneTemplate = {}
 class("SceneTemplate").extends(NobleScene)
-local S = SceneTemplate
+local scene = SceneTemplate
 
--- It is recommended that you declare, but don't yet define, your scene-specific varibles and methods here. Use "local" where possible.
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+-- It is recommended that you declare, but don't yet define,
+-- your scene-specific varibles and methods here. Use "local" where possible.
 --
--- local variable1 = nil
--- S.variable2 = nil
+-- local variable1 = nil	-- local variable
+-- scene.variable2 = nil	-- Scene variable.
+--							   When accessed outside this file use `SceneTemplate.variable2`.
 -- ...
 --
 
-S.backgroundColor = Graphics.kColorWhite		-- This is the background color of this scene.
+-- This is the background color of this scene.
+scene.backgroundColor = Graphics.kColorWhite
 
--- This runs when your scene's object is created, which is the first thing that happens when transitining away from another scene.
-function S:init()
-	S.super.init(self)
+-- This runs when your scene's object is created, which is the
+-- first thing that happens when transitining away from another scene.
+function scene:init()
+	scene.super.init(self)
 
 	-- variable1 = 100
-	-- S.variable2 = "string"
+	-- SceneTemplate.variable2 = "string"
 	-- ...
 
 	-- Your code here
 end
 
--- When transitioning from another scene, this runs as soon as this scene needs to be visible (this moment depends on which transition type is used).
-function S:enter()
-	S.super.enter(self)
+-- When transitioning from another scene, this runs as soon as this
+-- scene needs to be visible (this moment depends on which transition type is used).
+function scene:enter()
+	scene.super.enter(self)
 	-- Your code here
 end
 
 -- This runs once a transition from another scene is complete.
-function S:start()
-	S.super.start(self)
+function scene:start()
+	scene.super.start(self)
 	-- Your code here
 end
 
 -- This runs once per frame.
-function S:update()
-	S.super.update(self)
+function scene:update()
+	scene.super.update(self)
 	-- Your code here
 end
 
 -- This runs once per frame, and is meant for drawing code.
-function S:drawBackground()
-	S.super.drawBackground(self)
+function scene:drawBackground()
+	scene.super.drawBackground(self)
 	-- Your code here
 end
 
 -- This runs as as soon as a transition to another scene begins.
-function S:exit()
-	S.super.exit(self)
+function scene:exit()
+	scene.super.exit(self)
 	-- Your code here
 end
 
 -- This runs once a transition to another scene completes.
-function S:finish()
-	S.super.finish(self)
+function scene:finish()
+	scene.super.finish(self)
 	-- Your code here
 end
 
-function S:pause()
-	S.super.pause(self)
+function scene:pause()
+	scene.super.pause(self)
 	-- Your code here
 end
-function S:resume()
-	S.super.resume(self)
+function scene:resume()
+	scene.super.resume(self)
 	-- Your code here
 end
 
--- You can define this here, or within your scene's init() function.
-S.inputHandler = {
+-- Define the inputHander for this scene here, or use a previously defined inputHandler.
+
+-- scene.inputHandler = someOtherInputHandler
+-- OR
+scene.inputHandler = {
 
 	-- A button
 	--
