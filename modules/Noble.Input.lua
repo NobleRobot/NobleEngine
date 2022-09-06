@@ -137,9 +137,9 @@ function Noble.Input.update()
 	if (currentHandler.AButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonA)) then
 			if (AButtonHoldBufferCount >= buttonHoldBufferAmount) then currentHandler.AButtonHold(AButtonHoldBufferCount) end		-- Execute!
-			AButtonHoldBufferCount = AButtonHoldBufferCount + 1																																	-- Wait another frame!
+			AButtonHoldBufferCount = AButtonHoldBufferCount + 1																		-- Wait another frame!
 		end
-		if (playdate.buttonJustReleased(playdate.kButtonA)) then AButtonHoldBufferCount = 0 end																-- Reset!
+		if (playdate.buttonJustReleased(playdate.kButtonA)) then AButtonHoldBufferCount = 0 end										-- Reset!
 	end
 	if (currentHandler.BButtonHold ~= nil) then
 		if (playdate.buttonIsPressed(playdate.kButtonB)) then
