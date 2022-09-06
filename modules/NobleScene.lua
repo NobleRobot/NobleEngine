@@ -7,6 +7,7 @@
 -- @usage
 --	YourSceneName = {}
 --	class("YourSceneName").extends(NobleScene)
+--	local scene = YourSceneName
 --
 -- @classmod NobleScene
 --
@@ -35,30 +36,14 @@ NobleScene.backgroundColor = Graphics.kColorWhite
 --
 -- @usage
 --	YourSceneName.inputHandler = {
---		AButtonDown = function() end,	-- Fires once when button is pressed down.
---		AButtonHold = function() end,	-- Fires each frame while a button is held (Noble Engine implementation).
---		AButtonHeld = function() end,	-- Fires once after button is held for 1 second (available for A and B).
---		AButtonUp = function() end,		-- Fires once when button is released.
---		BButtonDown = function() end,
---		BButtonHold = function() end,
---		BButtonHeld = function() end,
---		BButtonUp = function() end,
---		downButtonDown = function() end,
---		downButtonHold = function() end,
---		downButtonUp = function() end,
---		leftButtonDown = function() end,
---		leftButtonHold = function() end,
---		leftButtonUp = function() end,
---		rightButtonDown = function() end,
---		rightButtonHold = function() end,
---		rightButtonUp = function() end,
---		upButtonDown = function() end,
---		upButtonHold = function() end
---		upButtonUp = function() end,
---
---		cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
---		crankDocked = function() end,						-- Noble Engine implementation.
---		crankUndocked = function() end,						-- Noble Engine implementation.
+--		AButtonDown = function()
+--			// Your code here
+--		end,
+--		AButtonHold = function()
+--			// Your code here
+--		end,
+--		-- ...
+--		-- ...
 --	}
 --	-- OR...
 --	-- Use a non-scene-specific inputHandler, defined elsewhere.
