@@ -144,4 +144,10 @@ function table.filter(t, filterIter)
 	end
 
 	return out
-  end
+end
+
+function table.truesize(t)
+	local count = 0
+	for _, _ in pairs(t) do count += 1 end
+	return count
+end

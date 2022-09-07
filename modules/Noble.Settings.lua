@@ -49,9 +49,9 @@ function Noble.Settings.setup(__keyValuePairs, __saveToDisk, __modifyExistingOnK
 		settingsHaveBeenSetup = true
 	end
 
-	-- Prevent using the setup() method if there are no settings to register.
-	if (__keyValuePairs == nil or #__keyValuePairs == 0) then
-		error("BONK: Do not use Noble.Settings.setup if you do not have any settings to register. New settings CANNOT be added via Noble.Settings.set, they MUST be all declared up front in the Noble.Settings.setup method.")
+	-- Prevent using the setup() method if there are no settings to register
+	if (__keyValuePairs == nil or table.truesize(__keyValuePairs) == 0) then
+		error("BONK: Do not use Noble.Settings.setup if you do not have any settings to register. New settings cannot be added via Noble.Settings.set and must be all declared upfront in the Noble.Settings.setup method.")
 		return
 	end
 
