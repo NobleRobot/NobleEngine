@@ -84,8 +84,13 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 
 	numberOfSlots = __numberOfSlots or numberOfSlots
 	numberOfGameDataSlotsAtSetup = numberOfSlots
-	local saveToDisk = __saveToDisk or true
-	local modifyExistingOnKeyChange = __modifyExistingOnKeyChange or true
+
+	local saveToDisk = true
+	if __saveToDisk == false then saveToDisk = false end
+	
+	local modifyExistingOnKeyChange = true
+	if __modifyExistingOnKeyChange == false then modifyExistingOnKeyChange = false end
+	
 	gameDataDefault = {
 		data = __keyValuePairs,
 		timestamp = playdate.getGMTTime()
