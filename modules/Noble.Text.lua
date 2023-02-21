@@ -59,7 +59,7 @@ end
 -- @param[opt=Noble.Text.getCurrentFont()] __font A font to use. If not set, the `currentFont` is used. If set, the `currentFont` is not updated.
 function Noble.Text.draw(__string, __x, __y, __alignment, __localized, __font)
 	local alignment = __alignment or Noble.Text.ALIGN_LEFT
-	local localized = __localized or false
+	local localized = Utilities.handleOptionalBoolean(__localized, false)
 
 	if (__font ~= nil) then Graphics.setFont(__font) end -- Temporary font
 

@@ -197,7 +197,7 @@ function Noble.Animation.new(__spritesheet)
 			self.currentName = __animationState.name
 		end
 
-		local continuous = __continuous or false
+		local continuous = Utilities.handleOptionalBoolean(__continuous, false)
 
 		if (continuous) then
 			local localFrame = self.currentFrame - self.current.startFrame
