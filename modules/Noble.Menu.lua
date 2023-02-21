@@ -290,7 +290,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 	--
 
-	local active = __activate or true
+	local active = Utilities.handleOptionalBoolean(__activate, true)
 	if (active) then
 		menu.currentItemNumber = 1
 		menu.currentItemName = menu.itemNames[1]
@@ -336,7 +336,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:selectPrevious(__force, __wrapSelection)
 		if (self:isActive() or __force) then
-			local wrapSelection = __wrapSelection or true
+			local wrapSelection = Utilities.handleOptionalBoolean(__wrapSelection, true)
 			self:selectPreviousRow(wrapSelection, false, false)
 			local _, row, _ = self:getSelection()
 			self.currentItemNumber = row
@@ -353,7 +353,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:selectNext(__force, __wrapSelection)
 		if (self:isActive() or __force) then
-			local wrapSelection = __wrapSelection or true
+			local wrapSelection = Utilities.handleOptionalBoolean(__wrapSelection, true)
 			self:selectNextRow(wrapSelection, false, false)
 			local _, row, _ = self:getSelection()
 			self.currentItemNumber = row

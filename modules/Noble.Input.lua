@@ -80,7 +80,7 @@ local cachedInputHandler = nil
 -- @see getHandler
 -- @see clearHandler
 function Noble.Input.setEnabled(__value)
-	local value = __value or true
+	local value = Utilities.handleOptionalBoolean(__value, true)
 	if (value == true) then
 		Noble.Input.setHandler(cachedInputHandler or currentHandler)
 		cachedInputHandler = nil
