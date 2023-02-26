@@ -160,7 +160,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 					</dd>
 					<dt>
 						<a name = "animation:addState"></a>
-						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete)<span>
+						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete, __frameDuration)<span>
 					</dt>
 					<dd>
 						Add an animation state.  The first state added will be the default set for this animation.
@@ -197,6 +197,12 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 													<li><span class="parameter">__onComplete</span>
 														<br/>
 														 This function will run when this animation is complete. Be careful when using this on a looping animation!
+													</li>
+													<li><span class="parameter">__frameDuration</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
 													</li>
 							</ul>
 
