@@ -161,30 +161,52 @@ Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
---- Transition to a new scene. This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+local queuedTransition = nil
+
+--- Transition to a new scene (at the end of this frame).
+--- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+--- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transtion begins will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1] __duration The length of the transition, in seconds.
 -- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
 -- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
+-- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
 function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
 	if (Noble.isTransitioning) then
-		error("BONK: You can't start a transition in the middle of another transition, silly!")
+		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
+		warn("BONK: You can't start a transition in the middle of another transition, silly!")
+		return -- Let's get otta here!
+	elseif (queuedTransition ~= nil) then
+		-- Calling this mothod multiple times between Noble.update() calls is probably not intentional behavior.
+		warn("BONK: You are calling Noble.transition() multiple times within the same frame. Did you mean to do that?")
+		-- We don't return here because maybe the developer *did* intened to override a previous call to Noble.transition().
 	end
 
-	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
+	-- Okay, let's pass this method's arguments into a table which we hold onto until the next Noble.update() call.
+	queuedTransition = {
+		NewScene = NewScene,
+		duration = __duration,
+		holdDuration = __holdDuration,
+		transitionType = __transitionType,
+	}
+end
+
+local function executeTransition(__transition)
 	Noble.isTransitioning = true
+
+	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
 
 	if (currentScene ~= nil) then
 		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	local newScene = NewScene()			-- Creates new scene object. Its init() function runs.
+	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
 
-	local duration = __duration or 1
-	local holdDuration = __holdDuration or 0.2
-	currentTransitionType = __transitionType or Noble.TransitionType.DIP_TO_BLACK
+	local duration = __transition.duration or 1
+	local holdDuration = __transition.holdDuration or 0.2
+	currentTransitionType = __transition.transitionType or Noble.TransitionType.DIP_TO_BLACK
 
 	local onMidpoint = function()
 		if (currentScene ~= nil) then
@@ -196,7 +218,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	end
 
 	local onComplete = function()
-		previousSceneScreenCapture = nil-- Reset (if necessary).
+		previousSceneScreenCapture = nil -- Reset (if necessary).
 		Noble.isTransitioning = false	-- Reset
 		newScene:start()				-- The new scene is now active.
 	end
@@ -370,6 +392,10 @@ function playdate.update()
 		Noble.Bonk.checkDebugBonks()
 	end
 
+	if (queuedTransition ~= nil) then
+		executeTransition(queuedTransition)
+		queuedTransition = nil;
+	end
 end
 
 function playdate.gameWillPause()
