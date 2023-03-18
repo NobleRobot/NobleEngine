@@ -30,6 +30,9 @@ end
 local settingsHaveBeenSetup = false
 
 --- Sets up the settings for your game. You can only run this once, and you must run it before using other `Noble.Settings` functions. It is recommended to place it in your main.lua, before `Noble.new()`.
+--
+-- <strong>NOTE:</strong> You will *not* be able to add new keys via the `Noble.Settings.set` method. This means you need to specify the keys and default values of all of the settings in your game at setup.
+-- If you need to add keys that are not known during setup, it is probably not a setting and you should consider using `Noble.GameData` instead.
 -- @tparam table __keyValuePairs table. Your game's settings, and thier default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 -- @bool[opt=true] __saveToDisk Saves your default values immediatly to disk.
 -- @bool[opt=true] __modifyExistingOnKeyChange Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
@@ -88,9 +91,12 @@ function Noble.Settings.get(__settingName)
 end
 
 --- Set the value of a setting.
+--
+-- <strong>NOTE:</strong> If __settingName is not a key in the __keyValuePairs dictionary given to the `setup` method it will not be added to the Settings.
 -- @string __settingName The name of the setting.
 -- @tparam any __value The setting's new value
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+-- @see setup
 -- @see get
 -- @see save
 function Noble.Settings.set(__settingName, __value, __saveToDisk)
