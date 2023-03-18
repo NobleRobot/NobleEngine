@@ -48,7 +48,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	menu.alignment = __alignment or Noble.Text.ALIGN_LEFT
 
 	--- @bool[opt=false] _ Indicates whether this menu's item names are treated as localization keys.
-	menu.localized = __localized or false
+	menu.localized = Utilities.handleOptionalBoolean(__localized, false)
 	menu.textHeight = textHeightLocal
 	menu.padding = paddingLocal
 	menu.horizontalPadding = __horizontalPadding or menu.padding
@@ -290,7 +290,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 	--
 
-	local active = __activate or true
+	local active = Utilities.handleOptionalBoolean(__activate, true)
 	if (active) then
 		menu.currentItemNumber = 1
 		menu.currentItemName = menu.itemNames[1]
@@ -336,7 +336,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:selectPrevious(__force, __wrapSelection)
 		if (self:isActive() or __force) then
-			local wrapSelection = __wrapSelection or true
+			local wrapSelection = Utilities.handleOptionalBoolean(__wrapSelection, true)
 			self:selectPreviousRow(wrapSelection, false, false)
 			local _, row, _ = self:getSelection()
 			self.currentItemNumber = row
@@ -353,7 +353,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:selectNext(__force, __wrapSelection)
 		if (self:isActive() or __force) then
-			local wrapSelection = __wrapSelection or true
+			local wrapSelection = Utilities.handleOptionalBoolean(__wrapSelection, true)
 			self:selectNextRow(wrapSelection, false, false)
 			local _, row, _ = self:getSelection()
 			self.currentItemNumber = row
@@ -443,7 +443,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	end
 	function menu:setItemDisplayName(__itemName, __displayName, __displayNameIsALocalizationKey)
 		self.displayNames[__itemName] = __displayName
-		self.displayNamesAreLocalized[__itemName] = __displayNameIsALocalizationKey or false
+		self.displayNamesAreLocalized[__itemName] = Utilities.handleOptionalBoolean(__displayNameIsALocalizationKey, false)
 
 		local displayName
 		if (__displayNameIsALocalizationKey == true) then

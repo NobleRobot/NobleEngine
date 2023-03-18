@@ -80,7 +80,7 @@ local cachedInputHandler = nil
 -- @see getHandler
 -- @see clearHandler
 function Noble.Input.setEnabled(__value)
-	local value = __value or true
+	local value = Utilities.handleOptionalBoolean(__value, true)
 	if (value == true) then
 		Noble.Input.setHandler(cachedInputHandler or currentHandler)
 		cachedInputHandler = nil
@@ -109,7 +109,7 @@ function Noble.Input.setCrankIndicatorStatus(__active, __evenWhenUndocked)
 		UI.crankIndicator:start()
 	end
 	crankIndicatorActive = __active
-	crankIndicatorForced = __evenWhenUndocked or false
+	crankIndicatorForced = Utilities.handleOptionalBoolean(__evenWhenUndocked, false)
 end
 
 --- Checks whether the system crank indicator status. Returns a tuple.
@@ -147,7 +147,7 @@ local accelerometerValues = nil
 -- @see Noble.Input.ORIENTATION_RIGHT
 function Noble.Input.getOrientation(__getStoredValues)
 
-	local getStoredValues = __getStoredValues or false
+	local getStoredValues = Utilities.handleOptionalBoolean(__getStoredValues, false)
 	if (not getStoredValues) then
 
 		local turnOffAfterUse = false

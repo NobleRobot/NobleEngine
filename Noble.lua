@@ -81,7 +81,7 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __enab
 		return
 	else
 		-- Noble Engine refers to an engine-specific error as a "bonk." We check this before engineInitialized is set to true because we need it to be false.
-		local enableDebugBonkChecking = __enableDebugBonkChecking or false
+		local enableDebugBonkChecking = Utilities.handleOptionalBoolean(__enableDebugBonkChecking, false)
 		if (enableDebugBonkChecking) then Noble.Bonk.enableDebugBonkChecking() end
 
 		engineInitialized = true
