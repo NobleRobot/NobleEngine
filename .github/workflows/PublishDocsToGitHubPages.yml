@@ -12,8 +12,8 @@ jobs:
       - name: Check out
         uses: actions/checkout@v2
 
-      - name: Publish current workdir (which contains generated content) to GitHub Pages
-        uses: rayluo/github-pages-overwriter@v1.2
+      - name: GitHub Pages Overwriter
+        uses: rayluo/github-pages-overwriter@v1.3
 
         with:
 
