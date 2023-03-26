@@ -138,7 +138,7 @@ local accelerometerValues = nil
 --- Checks the current display orientation of the device. Returns a tuple.
 -- If the accelerometer is not currently enabled, this method will turn it on, return current values, and then turn it off.
 -- If you are trying to get raw accelerometer values rather than the display orientation, you may want to use `playdate.readAccelerometer()` instead.
--- @bool[opt=false] bool __getStoredValue If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
+-- @bool[opt=false] __getStoredValues If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
 -- @treturn str The named orientation of the device (a pseudo enum Noble.Input.ORIENTATION_XX)
 -- @treturn list Accelerometer values, where list[1] is x, list[2] is y and list[3] is z
 -- @see Noble.Input.ORIENTATION_UP

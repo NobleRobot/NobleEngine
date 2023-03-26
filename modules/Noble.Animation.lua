@@ -102,7 +102,7 @@ function Noble.Animation.new(__spritesheet)
 	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
 	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
-	-- @int __tickStep[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
+	-- @int __frameDuration[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
 	-- @usage
 	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
 	--
