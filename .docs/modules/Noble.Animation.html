@@ -160,7 +160,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 					</dd>
 					<dt>
 						<a name = "animation:addState"></a>
-						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete, __frameDuration)<span>
+						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete[, __frameDuration=1])<span>
 					</dt>
 					<dd>
 						Add an animation state.  The first state added will be the default set for this animation.</p>
@@ -201,8 +201,9 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 													</li>
 													<li><span class="parameter">__frameDuration</span>
 															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
 														<br/>
-														[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
+														 This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
 													</li>
 							</ul>
 
@@ -383,7 +384,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 					<dd>
 						Draw the current frame. </p>
 
-<p> When attached to a NobleSprite, this is called by <code>NobleScene:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a>.
+<p> When attached to a NobleSprite, this is called by <code>NobleSprite:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
