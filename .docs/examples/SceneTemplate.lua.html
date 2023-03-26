@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><span class="selected">SceneTemplate.lua</span></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h2>SceneTemplate.lua</h2>
+<pre>
+<span class="comment">--
+</span><span class="comment">-- SceneTemplate.lua
+</span><span class="comment">--
+</span><span class="comment">-- Use this as a starting point for your game's scenes.
+</span><span class="comment">-- Copy this file to your root "scenes" directory,
+</span><span class="comment">-- and rename it.
+</span><span class="comment">--
+</span>
+<span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span><span class="comment">-- !!! Rename "SceneTemplate" to your scene's name in these first three lines. !!!
+</span><span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span>
+SceneTemplate = {}
+class(<span class="string">"SceneTemplate"</span>).extends(NobleScene)
+<span class="keyword">local</span> scene = SceneTemplate
+
+<span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span><span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span>
+<span class="comment">-- It is recommended that you declare, but don't yet define,
+</span><span class="comment">-- your scene-specific varibles and methods here. Use "local" where possible.
+</span><span class="comment">--
+</span><span class="comment">-- local variable1 = nil	-- local variable
+</span><span class="comment">-- scene.variable2 = nil	-- Scene variable.
+</span><span class="comment">--							   When accessed outside this file use <code>SceneTemplate.variable2</code>.
+</span><span class="comment">-- ...
+</span><span class="comment">--
+</span>
+<span class="comment">-- This is the background color of this scene.
+</span>scene.backgroundColor = Graphics.kColorWhite
+
+<span class="comment">-- This runs when your scene's object is created, which is the
+</span><span class="comment">-- first thing that happens when transitining away from another scene.
+</span><span class="keyword">function</span> scene:init()
+	scene.super.init(self)
+
+	<span class="comment">-- variable1 = 100
+</span>	<span class="comment">-- SceneTemplate.variable2 = "string"
+</span>	<span class="comment">-- ...
+</span>
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- When transitioning from another scene, this runs as soon as this
+</span><span class="comment">-- scene needs to be visible (this moment depends on which transition type is used).
+</span><span class="keyword">function</span> scene:enter()
+	scene.super.enter(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- This runs once a transition from another scene is complete.
+</span><span class="keyword">function</span> scene:start()
+	scene.super.start(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- This runs once per frame.
+</span><span class="keyword">function</span> scene:update()
+	scene.super.update(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- This runs once per frame, and is meant for drawing code.
+</span><span class="keyword">function</span> scene:drawBackground()
+	scene.super.drawBackground(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- This runs as as soon as a transition to another scene begins.
+</span><span class="keyword">function</span> scene:exit()
+	scene.super.exit(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- This runs once a transition to another scene completes.
+</span><span class="keyword">function</span> scene:finish()
+	scene.super.finish(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="keyword">function</span> scene:pause()
+	scene.super.pause(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+<span class="keyword">function</span> scene:resume()
+	scene.super.resume(self)
+	<span class="comment">-- Your code here
+</span><span class="keyword">end</span>
+
+<span class="comment">-- Define the inputHander for this scene here, or use a previously defined inputHandler.
+</span>
+<span class="comment">-- scene.inputHandler = someOtherInputHandler
+</span><span class="comment">-- OR
+</span>scene.inputHandler = {
+
+	<span class="comment">-- A button
+</span>	<span class="comment">--
+</span>	AButtonDown = <span class="keyword">function</span>()			<span class="comment">-- Runs once when button is pressed.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	AButtonHold = <span class="keyword">function</span>()			<span class="comment">-- Runs every frame while the player is holding button down.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	AButtonHeld = <span class="keyword">function</span>()			<span class="comment">-- Runs after button is held for 1 second.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	AButtonUp = <span class="keyword">function</span>()				<span class="comment">-- Runs once when button is released.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- B button
+</span>	<span class="comment">--
+</span>	BButtonDown = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	BButtonHeld = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	BButtonHold = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	BButtonUp = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- D-pad left
+</span>	<span class="comment">--
+</span>	leftButtonDown = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	leftButtonHold = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	leftButtonUp = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- D-pad right
+</span>	<span class="comment">--
+</span>	rightButtonDown = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	rightButtonHold = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	rightButtonUp = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- D-pad up
+</span>	<span class="comment">--
+</span>	upButtonDown = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	upButtonHold = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	upButtonUp = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- D-pad down
+</span>	<span class="comment">--
+</span>	downButtonDown = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	downButtonHold = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	downButtonUp = <span class="keyword">function</span>()
+		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+
+	<span class="comment">-- Crank
+</span>	<span class="comment">--
+</span>	cranked = <span class="keyword">function</span>(change, acceleratedChange)	<span class="comment">-- Runs when the crank is rotated. See Playdate SDK documentation for details.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	crankDocked = <span class="keyword">function</span>()						<span class="comment">-- Runs once when when crank is docked.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>,
+	crankUndocked = <span class="keyword">function</span>()						<span class="comment">-- Runs once when when crank is undocked.
+</span>		<span class="comment">-- Your code here
+</span>	<span class="keyword">end</span>
+}</pre>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

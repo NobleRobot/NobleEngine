@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -65,7 +65,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -76,7 +76,9 @@
 
 		<h1>Noble</h1>
 		<p>A li'l game engine for Playdate.</p>
-		<p></p>
+		<p>
+
+</p>
 
 		<hr/>
 
@@ -141,6 +143,8 @@
 
 											<span class="types"><span class="type">bool</span></span>
 
+
+
 								</ol>
 
 
@@ -156,7 +160,9 @@
 						<span class="item-name">transition(NewScene[, __duration=1[, __transitionType=Noble.TransitionType.DIP_TO_BLACK[, __holdDuration=0.2]]])<span>
 					</dt>
 					<dd>
-						Transition to a new scene.  This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+						Transition to a new scene (at the end of this frame).
+ This method will create a new scene, mark the previous one for garbage collection, and animate between them.
+ Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transtion begins will be ignored until the transition completes.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -189,6 +195,7 @@
 
 							<h3>See</h3>
 							<ul>
+									<li><a href="../modules/Noble.html#isTransitioning">Noble.isTransitioning</a></li>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
 							</ul>
@@ -208,6 +215,8 @@
 
 											<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
 
+
+
 								</ol>
 
 
@@ -226,6 +235,8 @@
 								<ol>
 
 											<span class="types"><span class="type">string</span></span>
+
+
 
 								</ol>
 
@@ -249,6 +260,8 @@
 													<li><span class="parameter">bool</span>
 														<br/>
 
+
+
 													</li>
 							</ul>
 
@@ -267,6 +280,8 @@
 							<ul class="parameters">
 													<li><span class="parameter">bool</span>
 														<br/>
+
+
 
 													</li>
 							</ul>
