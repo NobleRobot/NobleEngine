@@ -1,0 +1,60 @@
+name: Update documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out main branch
+        uses: actions/checkout@v3
+
+      - name: Install Lua
+        uses: leafo/gh-actions-lua@v10.0.0
+        with:
+          luaVersion: "5.4"
+
+      - name: Install Luarocks package manager
+        uses: leafo/gh-actions-luarocks@v4.3.0
+
+      - name: Install LDoc (with dependencies)
+        run: |
+          luarocks install ldoc
+
+      - name: Generate HTML documentation using LDoc
+        run: |
+          ldoc -c .docs/.ldoc/config.ldoc .
+
+      - name: Commit any changes made inside the .docs folder
+        uses: EndBug/add-and-commit@v9.1.1
+        with:
+          add: '.docs'
+          remove: '.lua'
+          default_author: github_actions
+          author_name: Noble Robot
+          author_email: contact@noblerobot.com
+          message: '(Documentation updates)'
+          push: true
+
+      - name: Remove .lua
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: .lua
+
+      - name: Remove .luarocks
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: .luarocks
+
+      - uses: numtide/clean-git-action@v1
+
+      - name: GitHub Pages Overwriter
+        uses: rayluo/github-pages-overwriter@v1.3
+
+        with:
+          source-directory: .docs
+          target-branch: gh_pages

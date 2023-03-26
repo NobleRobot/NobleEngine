@@ -1,0 +1,26 @@
+title = 'Noble Engine API reference'
+
+project = 'Noble Engine'
+description = 'A li\'l game engine for Playdate.'
+
+format = 'markdown'
+
+no_lua_ref = true
+wrap = true
+no_space_before_args = true
+backtick_references = true
+
+dir = '../../.docs'
+file = {
+	'../../',
+	exclude = {
+		'../../.lua',
+		'../../.luarocks',
+		'../../.docs'
+	}
+}
+
+style = "."
+template = "."
+
+examples = "../../templates"

@@ -22,6 +22,17 @@ function Utilities.endsWith(__string, __ending)
 	return __ending == "" or __string:sub(-#__ending) == __ending
 end
 
+function Utilities.handleOptionalBoolean(__argument, __default)
+	if __argument == nil then
+		return __default
+	elseif __argument == true or __argument == false then
+		return __argument
+	else
+		error("BONK: You shouldn’t pass non-boolean value as a boolean parameter.")
+		return __argument
+	end
+end
+
 Utilities.varName = {}
 setmetatable(
 	Utilities.varName,

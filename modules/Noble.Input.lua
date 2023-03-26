@@ -2,7 +2,7 @@
 -- <br><br>By default, Noble Engine assumes each scene will have an inputManager assigned to it. So, for example, you can define one inputManager for menu screens and another for gameplay scenes in your `main.lua`, and then in each scene, set which one that scene uses. You can instead define a unique inputHandler in each scene.
 -- <br><br>You may also create and manage inputManagers within and outside of scenes. When a NobleScene is loaded, its inputHandler will become active, thus, inputHandlers do not carry across scenes, and all input is suspended during scene transitions. An advanced use-case is to leave a scene's inputHandler as nil, and manage it separately.
 -- <br><br><strong>NOTE:</strong> While the Playdate SDK allows you to stack as many inputHandlers as you want, Noble Engine assumes only one <em>active</em> inputHandler at a time. You may still manually call `playdate.inputHandlers.push()` and `playdate.inputHandlers.pop()` yourself, but Noble Engine will not know about it and it may cause unexpected behavior.
--- <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because many of Noble.Input's functionality will not apply.
+-- <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because much of Noble.Input's functionality will not apply.
 -- @module Noble.Input
 -- @usage
 --	local myInputHandler = {
@@ -30,6 +30,8 @@
 --		cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
 --		crankDocked = function() end,						-- Noble Engine implementation.
 --		crankUndocked = function() end,						-- Noble Engine implementation.
+--
+--		orientationChanged = function() end					-- Noble Engine implementation.
 --	}
 -- @see NobleScene.inputHandler
 --
@@ -78,7 +80,7 @@ local cachedInputHandler = nil
 -- @see getHandler
 -- @see clearHandler
 function Noble.Input.setEnabled(__value)
-	local value = __value or true
+	local value = Utilities.handleOptionalBoolean(__value, true)
 	if (value == true) then
 		Noble.Input.setHandler(cachedInputHandler or currentHandler)
 		cachedInputHandler = nil
@@ -107,7 +109,7 @@ function Noble.Input.setCrankIndicatorStatus(__active, __evenWhenUndocked)
 		UI.crankIndicator:start()
 	end
 	crankIndicatorActive = __active
-	crankIndicatorForced = __evenWhenUndocked or false
+	crankIndicatorForced = Utilities.handleOptionalBoolean(__evenWhenUndocked, false)
 end
 
 --- Checks whether the system crank indicator status. Returns a tuple.
@@ -128,6 +130,63 @@ local upButtonHoldBufferCount = 0
 local downButtonHoldBufferCount = 0
 local leftButtonHoldBufferCount = 0
 local rightButtonHoldBufferCount = 0
+
+-- Store the latest orientation in order to know when to run the orientationChanged callback
+local orientation = nil
+local accelerometerValues = nil
+
+--- Checks the current display orientation of the device. Returns a tuple.
+-- If the accelerometer is not currently enabled, this method will turn it on, return current values, and then turn it off.
+-- If you are trying to get raw accelerometer values rather than the display orientation, you may want to use `playdate.readAccelerometer()` instead.
+-- @bool[opt=false] __getStoredValues If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
+-- @treturn str The named orientation of the device (a pseudo enum Noble.Input.ORIENTATION_XX)
+-- @treturn list Accelerometer values, where list[1] is x, list[2] is y and list[3] is z
+-- @see Noble.Input.ORIENTATION_UP
+-- @see Noble.Input.ORIENTATION_DOWN
+-- @see Noble.Input.ORIENTATION_LEFT
+-- @see Noble.Input.ORIENTATION_RIGHT
+function Noble.Input.getOrientation(__getStoredValues)
+
+	local getStoredValues = Utilities.handleOptionalBoolean(__getStoredValues, false)
+	if (not getStoredValues) then
+
+		local turnOffAfterUse = false
+		if (not playdate.accelerometerIsRunning()) then
+			playdate.startAccelerometer()
+			turnOffAfterUse = true
+		end
+
+		local x, y, z = playdate.readAccelerometer()
+
+		if (turnOffAfterUse) then
+			playdate.stopAccelerometer()
+		end
+
+		local newOrientation = nil
+
+		if (x <= -0.7) then
+			newOrientation = Noble.Input.ORIENTATION_LEFT
+		elseif (x >= 0.7) then
+			newOrientation = Noble.Input.ORIENTATION_RIGHT
+		elseif (y <= -0.3) then
+			newOrientation = Noble.Input.ORIENTATION_DOWN
+		else
+			newOrientation = Noble.Input.ORIENTATION_UP
+		end
+
+		accelerometerValues = {x, y, z}
+
+		if (newOrientation ~= orientation) then
+			if (currentHandler.orientationChanged ~= nil) then
+				currentHandler.orientationChanged(orientation, accelerometerValues)
+			end
+			orientation = newOrientation
+		end
+	end
+
+	return orientation, accelerometerValues
+
+end
 
 -- Do not call this method directly, or modify it, thanks. :-)
 function Noble.Input.update()
@@ -175,6 +234,9 @@ function Noble.Input.update()
 			rightButtonHoldBufferCount = rightButtonHoldBufferCount + 1
 		end
 		if (playdate.buttonJustReleased(playdate.kButtonRight)) then rightButtonHoldBufferCount = 0 end
+	end
+	if (playdate.accelerometerIsRunning()) then
+		Noble.Input.getOrientation()
 	end
 end
 
@@ -258,3 +320,14 @@ Noble.Input.CRANK_DOCK = "crankDock"
 --
 -- `"crankUndock"`
 Noble.Input.CRANK_UNDOCK = "crankUndock"
+
+--- Referencing the display orientations.
+--
+-- `"orientationUp"`
+Noble.Input.ORIENTATION_UP = "orientationUp"
+-- `"orientationDown"`
+Noble.Input.ORIENTATION_DOWN = "orientationDown"
+-- `"orientationLeft"`
+Noble.Input.ORIENTATION_LEFT = "orientationLeft"
+-- `"orientationRight"`
+Noble.Input.ORIENTATION_RIGHT = "orientationRight"

@@ -11,18 +11,29 @@ NobleSprite = {}
 class("NobleSprite").extends(Graphics.sprite)
 
 --- Do not call an "init" method directly. Use `NobleSprite()` (see usage examples).
--- @string[opt] __imageOrSpritesheet The path to the image or spritesheet asset that this NobleSprite will use for its view.
--- @bool[opt=false] __animated Set this to `true` in order to use Noble.Animation.
+-- @string[opt] __view This can be: the path to an image or spritesheet image file, an image object (`Graphics.image`) or an animation object (`Noble.Animation`)
+-- @bool[opt=false] __viewIsSpritesheet Set this to `true` to indicate that `__view` is a spritesheet. Will only be considered if `__view` is a string path to an image.
 -- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Anmiation.addState()
 -- @bool[opt=true] __singleStateLoop If using a single state animation, should it loop?
 --
 -- @usage
---	-- Create a new NobleSprite, using a static image for its view.
---	mySprite = NobleSprite("path/to/image")
+--	-- Provide a spritesheet image file to create a new `Noble.Animation` for a NobleSprite's view.
+--	myNobleSprite = NobleSprite("path/to/spritesheet", true)
 --
 -- @usage
---	-- Create a new NobleSprite, using a Noble.Animation for its view.
---	mySprite = NobleSprite("path/to/spritesheet", true)
+--	-- Provide an image file to create a new `Graphics.image` for a NobleSprite's view.
+--	myNobleSprite = NobleSprite("path/to/image")
+--
+-- @usage
+--	-- Use an existing `Noble.Animation` for a NobleSprite's view.
+-- 	local myAnimation = Noble.Animation.new("path/to/spritesheet")
+--  myAnimation:addState("default", 1, animation.imageTable:getLength(), nil, true)
+--	myNobleSprite = NobleSprite(myAnimation)
+--
+-- @usage
+--	-- Use an existing `Graphics.image` object for a NobleSprite's view.
+--  local myImage = Graphics.image.new("path/to/image")
+--	myNobleSprite = NobleSprite(myImage)
 --
 -- @usage
 --	-- Extending NobleSprite.
@@ -37,36 +48,53 @@ class("NobleSprite").extends(Graphics.sprite)
 --	end
 --
 --	-- MyNobleScene.lua
---	mySprite = MyCustomSprite(100, 100, "Fun!")
+--	myNobleSprite = MyCustomSprite(100, 100, "Fun!")
 --
 -- @see Noble.Animation:addState
+-- @see Noble.Animation.new
 --
-function NobleSprite:init(__imageOrSpritesheet, __animated, __singleState, __singleStateLoop)
+function NobleSprite:init(__view, __viewIsSpritesheet, __singleState, __singleStateLoop)
 	NobleSprite.super.init(self)
 	self.isNobleSprite = true -- This is important so other methods don't confuse this for a playdate.graphics.sprite. DO NOT modify this value at runtime.
 
-	self.animated = __animated	-- NO NOT modify this value at runtime.
+	if (__view ~= nil) then
 
-	if (__imageOrSpritesheet ~= nil) then
-		if (__animated == true) then
-			-- This sprite uses Noble.Animation for its "view."
+		-- __view is the path to an image or spritesheet file.
+		if (type(__view) == "string") then
+			self.animated = __viewIsSpritesheet -- NO NOT modify self.animated at runtime.
 
-			--- The animation for this NobleSprite.
-			-- @see Noble.Animation.new
-			self.animation = Noble.Animation.new(__imageOrSpritesheet)
+			if (__viewIsSpritesheet == true) then
+				-- Create a new Noble.Animation object.
 
-			local singleStateLoop = true
-			if (__singleStateLoop ~= nil) then singleStateLoop = __singleStateLoop end
+				--- The animation for this NobleSprite.
+				-- @see Noble.Animation.new
+				self.animation = Noble.Animation.new(__view)
 
-			if (__singleState == true) then
-				self.animation:addState("default", 1, self.animation.imageTable:getLength(), nil, singleStateLoop)
+				local singleStateLoop = true
+				if (__singleStateLoop ~= nil) then singleStateLoop = __singleStateLoop end
+
+				if (__singleState == true) then
+					self.animation:addState("default", 1, self.animation.imageTable:getLength(), nil, singleStateLoop)
+				end
+
+			else
+				-- Create a new Graphics.image object.
+				self:setImage(Graphics.image.new(__view))
 			end
 
-		else
-			-- This sprite uses playdate.graphics.image for its "view."
-			self:setImage(Graphics.image.new(__imageOrSpritesheet))
+		-- __view is an existing Graphics.image object.
+		elseif (type(__view) == "userdata") then
+			self.animated = false
+			self:setImage(__view)
+
+		-- __view is an existing Noble.Animation object.
+		elseif (type(__view) == "table") then
+			self.animated = true
+			self.animation = __view
 		end
+
 	end
+
 end
 
 function NobleSprite:draw(__x, __y)
