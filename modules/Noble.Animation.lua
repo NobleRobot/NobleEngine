@@ -102,7 +102,7 @@ function Noble.Animation.new(__spritesheet)
 	-- @string[optional] __next By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 	-- @bool[opt=true] __loop If you want a state to "freeze" on its final frame, instead of looping, enter `false` here.
 	-- @param[optional] __onComplete This function will run when this animation is complete. Be careful when using this on a looping animation!
-	-- @int __frameDuration[optional] This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
+	-- @int[opt=1] __frameDuration This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
 	-- @usage
 	--	-- You can reference an animation's state's properties using bog-standard lua syntax:
 	--
@@ -211,7 +211,7 @@ function Noble.Animation.new(__spritesheet)
 
 	--- Draw the current frame.
 	--
-	-- When attached to a NobleSprite, this is called by `NobleScene:draw()` when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's `draw()` method, or inside @{NobleScene:update|NobleScene:update}.
+	-- When attached to a NobleSprite, this is called by `NobleSprite:draw()` when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's `draw()` method, or inside @{NobleScene:update|NobleScene:update}.
 	-- @number[opt=0] __x
 	-- @number[opt=0] __y
 	-- @bool[opt=true] __advance Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
