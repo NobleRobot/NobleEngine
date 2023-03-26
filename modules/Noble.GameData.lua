@@ -85,11 +85,8 @@ function Noble.GameData.setup(__keyValuePairs, __numberOfSlots, __saveToDisk, __
 	numberOfSlots = __numberOfSlots or numberOfSlots
 	numberOfGameDataSlotsAtSetup = numberOfSlots
 
-	local saveToDisk = true
-	if __saveToDisk == false then saveToDisk = false end
-	
-	local modifyExistingOnKeyChange = true
-	if __modifyExistingOnKeyChange == false then modifyExistingOnKeyChange = false end
+	local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
+	local modifyExistingOnKeyChange = Utilities.handleOptionalBoolean(__modifyExistingOnKeyChange, true)
 	
 	gameDataDefault = {
 		data = __keyValuePairs,
@@ -170,9 +167,9 @@ function Noble.GameData.set(__dataItemName, __value, __gameDataSlot, __saveToDis
 	currentSlot = __gameDataSlot or currentSlot
 	if (exists(currentSlot, __dataItemName)) then
 		gameDatas[currentSlot].data[__dataItemName] = __value
-		local setTimestamp = __updateTimestamp or true
+		local setTimestamp = Utilities.handleOptionalBoolean(__updateTimestamp, true)
 		if (setTimestamp) then updateTimestamp(gameDatas[currentSlot]) end
-		local saveToDisk = __saveToDisk or true
+		local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
 		if (saveToDisk) then Noble.GameData.save() end
 	end
 end
@@ -187,9 +184,9 @@ function Noble.GameData.reset(__dataItemName, __gameDataSlot, __saveToDisk, __up
 	currentSlot = __gameDataSlot or currentSlot
 	if (exists(currentSlot, __dataItemName)) then
 		gameDatas[currentSlot].data[__dataItemName] = gameDataDefault.data[__dataItemName]
-		local setTimestamp = __updateTimestamp or true
+		local setTimestamp = Utilities.handleOptionalBoolean(__updateTimestamp, true)
 		if (setTimestamp) then updateTimestamp(gameDatas[currentSlot]) end
-		local saveToDisk = __saveToDisk or true
+		local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
 		if (saveToDisk) then Noble.GameData.save(currentSlot) end
 	end
 end
@@ -204,9 +201,9 @@ function Noble.GameData.resetAll(__gameDataSlot, __saveToDisk, __updateTimestamp
 	for key, _ in pairs(gameDatas[currentSlot].data) do
 		gameDatas[currentSlot].data[key] = gameDataDefault.data[key]
 	end
-	local setTimestamp = __updateTimestamp or true
+	local setTimestamp = Utilities.handleOptionalBoolean(__updateTimestamp, true)
 	if (setTimestamp) then updateTimestamp(gameDatas[currentSlot]) end
-	local saveToDisk = __saveToDisk or true
+	local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
 	if (saveToDisk) then Noble.GameData.save(currentSlot) end
 end
 
@@ -217,7 +214,7 @@ end
 -- @usage Noble.GameData.addSlot(10)
 function Noble.GameData.addSlot(__numberToAdd, __saveToDisk)
 	local numberToAdd = __numberToAdd or 1
-	local saveToDisk = __saveToDisk or true
+	local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
 	if (__numberToAdd < 1) then error ("BONK: Don't use a number smaller than 1, silly.", 2) return end
 	for i = 1, numberToAdd, 1 do
 		local newGameData = table.deepcopy(gameDataDefault)
@@ -244,7 +241,7 @@ function Noble.GameData.deleteSlot(__gameDataSlot, __collapseGameDatas)
 	if (__gameDataSlot == nil) then
 		error("BONK: You must specify a GameData slot to delete.")
 	end
-	local collapseGameDatas = __collapseGameDatas or true
+	local collapseGameDatas = Utilities.handleOptionalBoolean(__collapseGameDatas, true)
 	if (exists(__gameDataSlot)) then
 		if (__gameDataSlot > numberOfGameDataSlotsAtSetup) then
 			-- If this GameData is not one of the default ones from setup(), it is removed from disk.

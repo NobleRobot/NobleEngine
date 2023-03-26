@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -62,7 +62,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -73,7 +73,9 @@
 
 		<h1>Noble.Settings</h1>
 		<p>Operations for game settings / stats.</p>
-		<p></p>
+		<p>
+
+</p>
 
 		<hr/>
 
@@ -85,14 +87,17 @@
 						<span class="item-name">Noble.Settings.setup(__keyValuePairs[, __saveToDisk=true[, __modifyExistingOnKeyChange=true]])<span>
 					</dt>
 					<dd>
-						Sets up the settings for your game.  You can only run this once, and you must run it before using other <a href="../modules/Noble.Settings.html#">Noble.Settings</a> functions. It is recommended to place it in your main.lua, before <code>Noble.new()</code>.
+						Sets up the settings for your game.  You can only run this once, and you must run it before using other <a href="../modules/Noble.Settings.html#">Noble.Settings</a> functions. It is recommended to place it in your main.lua, before <code>Noble.new()</code>.</p>
+
+<p> <strong>NOTE:</strong> You will <em>not</em> be able to add new keys via the <a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a> method. This means you need to specify the keys and default values of all of the settings in your game at setup.
+ If you need to add keys that are not known during setup, it is probably not a setting and you should consider using <a href="../modules/Noble.GameData.html#">Noble.GameData</a> instead.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__keyValuePairs</span>
 															<span class="types"><span class="type">table</span></span>
 														<br/>
-														 table. Your game's settings, and thier default values, as key/value pairs. NOTE: Do not use "nil" as a value.
+														 table. Your game's settings, and thier default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
 															<span class="types"><span class="type">bool</span></span>
@@ -157,7 +162,9 @@
 						<span class="item-name">Noble.Settings.set(__settingName, __value[, __saveToDisk=true])<span>
 					</dt>
 					<dd>
-						Set the value of a setting.
+						Set the value of a setting. </p>
+
+<p> <strong>NOTE:</strong> If __settingName is not a key in the __keyValuePairs dictionary given to the <a href="../modules/Noble.Settings.html#Noble.Settings.setup">setup</a> method it will not be added to the Settings.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -183,6 +190,7 @@
 
 							<h3>See</h3>
 							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.setup">setup</a></li>
 									<li><a href="../modules/Noble.Settings.html#Noble.Settings.get">get</a></li>
 									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">save</a></li>
 							</ul>

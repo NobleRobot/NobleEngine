@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -68,7 +68,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -79,7 +79,9 @@
 
 		<h1>Noble.GameData</h1>
 		<p>Operations for game data / save slots.</p>
-		<p></p>
+		<p>
+
+</p>
 
 		<hr/>
 
@@ -99,7 +101,7 @@
 													<li><span class="parameter">__keyValuePairs</span>
 															<span class="types"><span class="type">table</span></span>
 														<br/>
-														 All the data items for a saved game, and their default values, as key/value pairs. NOTE: Do not use "nil" as a value.
+														 All the data items for a saved game, and their default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 													</li>
 													<li><span class="parameter">__numberOfSlots</span>
 															<span class="types"><span class="type">int</span></span>
@@ -171,6 +173,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<ol>
 
 											<span class="types"><span class="type">any</span></span>
+
+
 
 								</ol>
 
@@ -350,7 +354,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 					</dt>
 					<dd>
 						Deletes a GameData from disk if its save slot is greater than the default number established in <a href="../modules/Noble.GameData.html#Noble.GameData.setup">setup</a>.
- Otherwise, resets all data items to default values using <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a>.
+ Otherwise, resets all data items to default values using <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a>.</p>
+
 <p> Generally, you won't need this unless you've added save slots using <a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a>. In other cases, use <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a>.
 
 								<h3>Parameters</h3>
@@ -448,6 +453,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 											<span class="types"><span class="type">int</span></span>
 
+
+
 								</ol>
 
 
@@ -466,6 +473,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<ol>
 
 											<span class="types"><span class="type">int</span></span>
+
+
 
 								</ol>
 

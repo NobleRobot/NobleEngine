@@ -80,7 +80,7 @@ local cachedInputHandler = nil
 -- @see getHandler
 -- @see clearHandler
 function Noble.Input.setEnabled(__value)
-	local value = __value or true
+	local value = Utilities.handleOptionalBoolean(__value, true)
 	if (value == true) then
 		Noble.Input.setHandler(cachedInputHandler or currentHandler)
 		cachedInputHandler = nil
@@ -109,7 +109,7 @@ function Noble.Input.setCrankIndicatorStatus(__active, __evenWhenUndocked)
 		UI.crankIndicator:start()
 	end
 	crankIndicatorActive = __active
-	crankIndicatorForced = __evenWhenUndocked or false
+	crankIndicatorForced = Utilities.handleOptionalBoolean(__evenWhenUndocked, false)
 end
 
 --- Checks whether the system crank indicator status. Returns a tuple.
@@ -138,7 +138,7 @@ local accelerometerValues = nil
 --- Checks the current display orientation of the device. Returns a tuple.
 -- If the accelerometer is not currently enabled, this method will turn it on, return current values, and then turn it off.
 -- If you are trying to get raw accelerometer values rather than the display orientation, you may want to use `playdate.readAccelerometer()` instead.
--- @bool[opt=false] bool __getStoredValue If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
+-- @bool[opt=false] __getStoredValues If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
 -- @treturn str The named orientation of the device (a pseudo enum Noble.Input.ORIENTATION_XX)
 -- @treturn list Accelerometer values, where list[1] is x, list[2] is y and list[3] is z
 -- @see Noble.Input.ORIENTATION_UP
@@ -147,7 +147,7 @@ local accelerometerValues = nil
 -- @see Noble.Input.ORIENTATION_RIGHT
 function Noble.Input.getOrientation(__getStoredValues)
 
-	local getStoredValues = __getStoredValues or false
+	local getStoredValues = Utilities.handleOptionalBoolean(__getStoredValues, false)
 	if (not getStoredValues) then
 
 		local turnOffAfterUse = false

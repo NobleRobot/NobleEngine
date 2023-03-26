@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -90,7 +90,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -101,7 +101,9 @@
 
 		<h1>Noble.Menu</h1>
 		<p>An extended implementation of <code>playdate.ui.gridview</code>, meant for 1-dimensional, single-screen text menus.</p>
-		<p></p>
+		<p>
+
+</p>
 
 		<hr/>
 
@@ -291,6 +293,8 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					<dd>
 
 
+
+
 							<ul class="parameters">
 													<li><span class="parameter">_</span>
 															<span class="types"><span class="type">bool</span></span>
@@ -312,12 +316,14 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					<dd>
 
 
+
+
 							<ul class="parameters">
 													<li><span class="parameter">_</span>
 															<span class="types"><span class="type">int</span></span>
 														<br/>
+														 The current menu item's index.</p>
 
- The current menu item's index.
 <p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 													</li>
 							</ul>
@@ -338,12 +344,14 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					<dd>
 
 
+
+
 							<ul class="parameters">
 													<li><span class="parameter">_</span>
 															<span class="types"><span class="type">string</span></span>
 														<br/>
+														 The current menu item's name.</p>
 
- The current menu item's name.
 <p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 													</li>
 							</ul>
@@ -364,12 +372,14 @@ menu:addItem(<span class="string">"Credits"</span>, <span class="keyword">functi
 					<dd>
 
 
+
+
 							<ul class="parameters">
 													<li><span class="parameter">_</span>
 															<span class="types"><span class="type">int</span></span>
 														<br/>
+														 The width of the widest menu item plus the menu's horizontal padding.</p>
 
- The width of the widest menu item plus the menu's horizontal padding.
 <p> This is meant as a <strong>read-only</strong> value. Do not modify it directly.
 													</li>
 							</ul>
@@ -429,6 +439,8 @@ menu:deactivate()</pre>
 								<ol>
 
 											<span class="types"><span class="type">bool</span></span>
+
+
 
 								</ol>
 
@@ -583,8 +595,10 @@ menu:deactivate()</pre>
 						<span class="item-name">menu:getItemDisplayName(__itemName)<span>
 					</dt>
 					<dd>
-						Gets the display name of a menu item.
-<p> If a menu item does not have a display name, then the <code>__nameOrKey</code> (or its localized string) will be returned instead. This method is used internally when <a href="../modules/Noble.Menu.html#menu:draw">draw</a> is called.
+						Gets the display name of a menu item. </p>
+
+<p> If a menu item does not have a display name, then the <code>__nameOrKey</code> (or its localized string) will be returned instead. This method is used internally when <a href="../modules/Noble.Menu.html#menu:draw">draw</a> is called.</p>
+
 <p> If this menu's <a href="../modules/Noble.Menu.html#menu.localized">localized</a> value is true, a returned <code>__nameOrKey</code> will always be localized, but a returned display name is only localized if the <code>__displayNameIsALocalizationKey</code> argument was set to <code>true</code> when the display name was added.
 
 								<h3>Parameters</h3>
@@ -600,6 +614,8 @@ menu:deactivate()</pre>
 								<ol>
 
 											<span class="types"><span class="type">string</span></span>
+
+
 
 								</ol>
 
@@ -680,7 +696,8 @@ menu:deactivate()</pre>
 						<span class="item-name">menu.clickHandlers<span>
 					</dt>
 					<dd>
-						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their associated functions may be modified afterward.
+						A table of functions associated with menu items.  Items are a defined when calling <a href="../modules/Noble.Menu.html#menu:addItem">addItem</a>, but their associated functions may be modified afterward.</p>
+
 <p> <strong>You cannot add or remove menu items by modifying this table</strong>.
 
 
@@ -714,7 +731,8 @@ menu.clickHandlers = {
 						<span class="item-name">menu.itemPositions<span>
 					</dt>
 					<dd>
-						A key/value table of menu item indices.
+						A key/value table of menu item indices. </p>
+
 <p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 
 
@@ -731,7 +749,8 @@ menu.clickHandlers = {
 						<span class="item-name">menu.itemWidths<span>
 					</dt>
 					<dd>
-						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.
+						A key/value table of pixel widths for each menu item, based on its text.  Useful for animation, layout, etc.</p>
+
 <p> This is meant as a <strong>read-only</strong> table, provided for convenience. Modifying its values will break other methods.
 
 
@@ -758,9 +777,13 @@ menu.clickHandlers = {
 													<li><span class="parameter">__x</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__y</span>
 														<br/>
+
+
 
 													</li>
 							</ul>
@@ -787,13 +810,19 @@ menu.clickHandlers = {
 													<li><span class="parameter">__x</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__y</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__itemIndex</span>
 														<br/>
+
+
 
 													</li>
 							</ul>
@@ -831,13 +860,19 @@ menu.clickHandlers = {
 													<li><span class="parameter">__x</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__y</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__itemIndex</span>
 														<br/>
+
+
 
 													</li>
 							</ul>

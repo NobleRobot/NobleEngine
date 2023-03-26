@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -32,6 +32,7 @@
 							<li><a href="#Noble.Input.getEnabled">.getEnabled</a></li>
 							<li><a href="#Noble.Input.setCrankIndicatorStatus">.setCrankIndicatorStatus</a></li>
 							<li><a href="#Noble.Input.getCrankIndicatorStatus">.getCrankIndicatorStatus</a></li>
+							<li><a href="#Noble.Input.getOrientation">.getOrientation</a></li>
 					</ul>
 					<h3>Constants
   </h3>
@@ -51,6 +52,7 @@
 							<li><a href="#Noble.Input.CRANK_REVERSE">.CRANK_REVERSE</a></li>
 							<li><a href="#Noble.Input.CRANK_DOCK">.CRANK_DOCK</a></li>
 							<li><a href="#Noble.Input.CRANK_UNDOCK">.CRANK_UNDOCK</a></li>
+							<li><a href="#Noble.Input.ORIENTATION_UP">.ORIENTATION_UP</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -81,7 +83,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -96,7 +98,7 @@
  <br><br>By default, Noble Engine assumes each scene will have an inputManager assigned to it. So, for example, you can define one inputManager for menu screens and another for gameplay scenes in your <code>main.lua</code>, and then in each scene, set which one that scene uses. You can instead define a unique inputHandler in each scene.
  <br><br>You may also create and manage inputManagers within and outside of scenes. When a NobleScene is loaded, its inputHandler will become active, thus, inputHandlers do not carry across scenes, and all input is suspended during scene transitions. An advanced use-case is to leave a scene's inputHandler as nil, and manage it separately.
  <br><br><strong>NOTE:</strong> While the Playdate SDK allows you to stack as many inputHandlers as you want, Noble Engine assumes only one <em>active</em> inputHandler at a time. You may still manually call <code>playdate.inputHandlers.push()</code> and <code>playdate.inputHandlers.pop()</code> yourself, but Noble Engine will not know about it and it may cause unexpected behavior.
- <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because many of Noble.Input's functionality will not apply.</p>
+ <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because much of Noble.Input's functionality will not apply.</p>
 			<h3>See</h3>
 			<ul>
 					<a href="../classes/NobleScene.html#NobleScene.inputHandler">NobleScene.inputHandler</a>
@@ -127,6 +129,8 @@
 	cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
 	crankDocked = function() end,						-- Noble Engine implementation.
 	crankUndocked = function() end,						-- Noble Engine implementation.
+
+	orientationChanged = function() end					-- Noble Engine implementation.
 }
 </pre>
 
@@ -256,7 +260,8 @@
 						<span class="item-name">Noble.Input.setCrankIndicatorStatus(__active[, __evenWhenUndocked=false])<span>
 					</dt>
 					<dd>
-						Enable/disable on-screen system crank indicator.
+						Enable/disable on-screen system crank indicator. </p>
+
 <p> <strong>NOTE: The indicator will only ever show if the crank is docked, unless <code>__evenWhenUndocked</code> is true.</strong>
 
 								<h3>Parameters</h3>
@@ -287,7 +292,6 @@
 						Checks whether the system crank indicator status.  Returns a tuple.
 
 
-
 							<h3>Returns</h3>
 								<ol>
 										<li>
@@ -302,6 +306,43 @@
 							<h3>See</h3>
 							<ul>
 									<a href="../modules/Noble.Input.html#Noble.Input.setCrankIndicatorStatus">setCrankIndicatorStatus</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.getOrientation"></a>
+						<span class="item-name">Noble.Input.getOrientation([__getStoredValues=false])<span>
+					</dt>
+					<dd>
+						Checks the current display orientation of the device.  Returns a tuple.
+ If the accelerometer is not currently enabled, this method will turn it on, return current values, and then turn it off.
+ If you are trying to get raw accelerometer values rather than the display orientation, you may want to use <code>playdate.readAccelerometer()</code> instead.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__getStoredValues</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+										<li>
+											<span class="types"><span class="type">str</span></span>
+										The named orientation of the device (a pseudo enum Noble.Input.ORIENTATION_XX)</li>
+										<li>
+											<span class="types"><span class="type">list</span></span>
+										Accelerometer values, where list[1] is x, list[2] is y and list[3] is z</li>
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Input.html#Noble.Input.ORIENTATION_UP">Noble.Input.ORIENTATION_UP</a>
 							</ul>
 
 
@@ -357,7 +398,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.BUTTON_MENU<span>
 					</dt>
 					<dd>
-						The system menu button.
+						The system menu button. </p>
+
 <p> <code>&quot;buttonMenu&quot;</code>
 
 
@@ -371,7 +413,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.DPAD<span>
 					</dt>
 					<dd>
-						Referencing the D-pad component itself, rather than an input.
+						Referencing the D-pad component itself, rather than an input. </p>
+
 <p> <code>&quot;dPad&quot;</code>
 
 
@@ -385,7 +428,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.DPAD_HORIZONTAL<span>
 					</dt>
 					<dd>
-						Referencing the left and right input D-pad inputs.
+						Referencing the left and right input D-pad inputs. </p>
+
 <p> <code>&quot;dPadHorizontal&quot;</code>
 
 
@@ -399,7 +443,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.DPAD_VERTICAL<span>
 					</dt>
 					<dd>
-						Referencing the up and down input D-pad inputs.
+						Referencing the up and down input D-pad inputs. </p>
+
 <p> <code>&quot;dPadVertical&quot;</code>
 
 
@@ -465,7 +510,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.CRANK<span>
 					</dt>
 					<dd>
-						Referencing the crank component itself, rather than an input.
+						Referencing the crank component itself, rather than an input. </p>
+
 <p> <code>&quot;crank&quot;</code>
 
 
@@ -479,7 +525,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.CRANK_FORWARD<span>
 					</dt>
 					<dd>
-						AKA: Clockwise.  See Playdate SDK.
+						AKA: Clockwise.  See Playdate SDK.</p>
+
 <p> <code>&quot;crankForward&quot;</code>
 
 
@@ -493,7 +540,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.CRANK_REVERSE<span>
 					</dt>
 					<dd>
-						AKA: Anticlockwise.  See Playdate SDK.
+						AKA: Anticlockwise.  See Playdate SDK.</p>
+
 <p> <code>&quot;crankReverse&quot;</code>
 
 
@@ -507,7 +555,8 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.CRANK_DOCK<span>
 					</dt>
 					<dd>
-						Referencing the action of docking the crank.
+						Referencing the action of docking the crank. </p>
+
 <p> <code>&quot;crankDock&quot;</code>
 
 
@@ -521,8 +570,24 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 						<span class="item-name">Noble.Input.CRANK_UNDOCK<span>
 					</dt>
 					<dd>
-						Referencing the action of undocking the crank.
+						Referencing the action of undocking the crank. </p>
+
 <p> <code>&quot;crankUndock&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.ORIENTATION_UP"></a>
+						<span class="item-name">Noble.Input.ORIENTATION_UP<span>
+					</dt>
+					<dd>
+						Referencing the display orientations. </p>
+
+<p> <code>&quot;orientationUp&quot;</code>
 
 
 
