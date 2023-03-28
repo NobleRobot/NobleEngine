@@ -37,8 +37,8 @@ Utilities.varName = {}
 setmetatable(
 	Utilities.varName,
 	{
-		__index = function(self, k, v)
-			return string.format('%s', k)
+		__index = function(self, __key, __value)
+			return string.format('%s', __key)
 		end
 	}
 )
@@ -80,79 +80,94 @@ function Utilities.newUUID()
 	return (("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"):gsub("[xy]", func))
 end
 
+
 -- New math methods
 --
-function math.clamp(a, min, max)
-    if min > max then
-        min, max = max, min
+
+function math.clamp(__value, __min, __max)
+    if (__min > __max) then
+        __min, __max = __max, __min
     end
-    return math.max(min, math.min(max, a))
-end
-function math.ring(a, min, max)
-    if min > max then
-        min, max = max, min
-    end
-    return min + (a-min)%(max-min)
-end
-function math.ringInt(a, min, max)
-    return math.ring(a, min, max + 1)
-end
-function math.approach( value, target, step)
-    if value==target then
-        return value, true
-    end
-    local d = target-value
-    if d>0 then
-        value = value + step
-        if value >= target then
-            return target, true
-        else
-            return value, false
-        end
-    elseif d<0 then
-        value = value - step
-        if value <= target then
-            return target, true
-        else
-            return value, false
-        end
-    else
-        return value, true
-    end
-end
-function math.infiniteApproach(at_zero, at_infinite, x_halfway, x)
-    return at_infinite - (at_infinite-at_zero)*0.5^(x/x_halfway)
-end
-function math.round(v, bracket)
-	local bracket = bracket or 1
-	return math.floor(v/bracket + math.sign(v) * 0.5) * bracket
-end
-function math.sign(v)
-	return (v >= 0 and 1) or -1
+    return math.max(__min, math.min(__max, __value))
 end
 
--- New array methods
---
-function table.random(t)
-    if type(t)~="table" then return nil end
-    return t[math.ceil(math.random(#t))]
+function math.ring(__value, __min, __max)
+    if (__min > __max) then
+        __min, __max = __max, __min
+    end
+    return __min + (__value - __min) % (__max - __min)
 end
-function table.each(t, fn)
-	if type(fn)~="function" then return end
-	for _, e in pairs(t) do
-		fn(e)
+
+function math.ringInt(__value, __min, __max)
+    return math.ring(__value, __min, __max + 1)
+end
+
+function math.approach(_value, __target, __step)
+    if (_value == __target) then
+        return _value, true
+    end
+    local d = __target - _value
+    if (d > 0) then
+        _value = _value + __step
+        if (_value >= __target) then
+            return __target, true
+        else
+            return _value, false
+        end
+    elseif (d < 0) then
+        _value = _value - __step
+        if (_value <= __target) then
+            return __target, true
+        else
+            return _value, false
+        end
+    else
+        return _value, true
+    end
+end
+
+function math.infiniteApproach(at_zero, at_infinite, x_halfway, x)
+    return at_infinite - (at_infinite - at_zero) * 0.5 ^ (x / x_halfway)
+end
+
+function math.round(__value, __bracket)
+	local bracket = __bracket or 1
+	return math.floor(__value/bracket + math.sign(__value) * 0.5) * bracket
+end
+
+function math.sign(__value)
+	return (__value >= 0 and 1) or -1
+end
+
+
+-- New array/table methods
+--
+
+function table.random(__table)
+    if (type(__table) ~= "table") then return nil end
+    return __table[math.ceil(math.random(#__table))]
+end
+function table.each(__table, __function)
+	if (type(__function) ~= "function") then return end
+	for _, e in pairs(__table) do
+		__function(e)
 	end
 end
 
-function table.filter(t, filterIter)
+function table.filter(__table, __filter)
 	local out = {}
-
-	for _, value in pairs(t) do
+	for _, value in pairs(__table) do
 	  --if filterIter(v, k, table) then out[k] = v end
-		if (filterIter(value)) then
-			table.insert (out,value)
+		if (__filter(value)) then
+			__table.insert (out,value)
 		end
 	end
 
 	return out
-  end
+end
+
+function table.getSize(__table)
+	local count = 0
+	for _, _ in pairs(__table) do count += 1 end
+	return count
+end
