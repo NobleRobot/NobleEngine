@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -60,7 +60,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -71,11 +71,10 @@
 
 		<h1>Noble.Bonk</h1>
 		<p>Engine-specific error handling.</p>
-		<p>
- Noble Engine overrides/supersedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.
+		<p> Noble Engine overrides/supersedes some Playdate SDK behavior. A "bonk" is what happens when your game breaks the engine.</p>
+
 <p> Most bonks will throw during normal operation, but others ("debug bonks") introduce some execution overhead so are not
- checked by default.
-</p>
+ checked by default.</p>
 
 		<hr/>
 
@@ -105,7 +104,8 @@
 						<span class="item-name">Noble.Bonk.stopCheckingDebugBonks()<span>
 					</dt>
 					<dd>
-						Stop checking for debug bonks on every frame.
+						Stop checking for debug bonks on every frame. </p>
+
 <p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
 
 
@@ -119,7 +119,8 @@
 						<span class="item-name">Noble.Bonk.disableDebugBonkChecking()<span>
 					</dt>
 					<dd>
-						Disable the ability to check for debug bonks.  It frees up some memory. Once you disable debug bonk checking, you cannot re-enable it.
+						Disable the ability to check for debug bonks.  It frees up some memory. Once you disable debug bonk checking, you cannot re-enable it.</p>
+
 <p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
 
 
@@ -141,6 +142,8 @@
 
 											<span class="types"><span class="type">bool</span></span>
 
+
+
 								</ol>
 
 
@@ -153,7 +156,8 @@
 					</dt>
 					<dd>
 						Manually check for debug bonks.
- This method runs every frame when <a href="../modules/Noble.Bonk.html#Noble.Bonk.checkingDebugBonks">checkingDebugBonks</a> is true, but you may call it manually instead.
+ This method runs every frame when <a href="../modules/Noble.Bonk.html#Noble.Bonk.checkingDebugBonks">checkingDebugBonks</a> is true, but you may call it manually instead.</p>
+
 <p> <strong>NOTE: You can only run this if debug bonk checking is enabled.</strong>
 
 

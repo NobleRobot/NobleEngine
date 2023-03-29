@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -79,7 +79,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -90,14 +90,14 @@
 
 		<h1>NobleScene</h1>
 		<p>An abstract scene class.</p>
-		<p>
- Do not copy this file as a template for your scenes. Instead, your scenes will extend this class.
- See <a href="../examples/scenetemplate.lua.html">templates/SceneTemplate.lua</a> for a blank scene that you can copy and modify for your own scenes.
+		<p> Do not copy this file as a template for your scenes. Instead, your scenes will extend this class.
+ See <a href="../examples/SceneTemplate.lua.html">templates/SceneTemplate.lua</a> for a blank scene that you can copy and modify for your own scenes.
  If you are using <a href="http://github.com/NobleRobot/NobleEngine-ProjectTemplate">NobleEngine-ProjectTemplate</a>,
  see <code>scenes/ExampleScene.lua</code> for an implementation example.</p>
 			<h3>Usage</h3>
 				<pre class="example">YourSceneName = {}
 class(&quot;YourSceneName&quot;).extends(NobleScene)
+local scene = YourSceneName
 </pre>
 
 		<hr/>
@@ -155,30 +155,14 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 
 							<h3>Usage</h3>
 								<pre class="example">YourSceneName.inputHandler = {
-	AButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires once when button is pressed down.
-</span>	AButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires each frame while a button is held (Noble Engine implementation).
-</span>	AButtonHeld = <span class="keyword">function</span>() <span class="keyword">end</span>,	<span class="comment">-- Fires once after button is held for 1 second (available for A and B).
-</span>	AButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,		<span class="comment">-- Fires once when button is released.
-</span>	BButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	BButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	BButtonHeld = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	BButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	downButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	downButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	downButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	leftButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	leftButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	leftButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	rightButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	rightButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	rightButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	upButtonDown = <span class="keyword">function</span>() <span class="keyword">end</span>,
-	upButtonHold = <span class="keyword">function</span>() <span class="keyword">end</span>
-	upButtonUp = <span class="keyword">function</span>() <span class="keyword">end</span>,
-
-	cranked = <span class="keyword">function</span>(change, acceleratedChange) <span class="keyword">end</span>,	<span class="comment">-- See Playdate SDK.
-</span>	crankDocked = <span class="keyword">function</span>() <span class="keyword">end</span>,						<span class="comment">-- Noble Engine implementation.
-</span>	crankUndocked = <span class="keyword">function</span>() <span class="keyword">end</span>,						<span class="comment">-- Noble Engine implementation.
+	AButtonDown = <span class="keyword">function</span>()
+		// Your code here
+	<span class="keyword">end</span>,
+	AButtonHold = <span class="keyword">function</span>()
+		// Your code here
+	<span class="keyword">end</span>,
+	<span class="comment">-- ...
+</span>	<span class="comment">-- ...
 </span>}
 <span class="comment">-- OR...
 </span><span class="comment">-- Use a non-scene-specific inputHandler, defined elsewhere.
@@ -193,7 +177,8 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene.sprites<span>
 					</dt>
 					<dd>
-						When you add a sprite to your scene, it is put in this table so the scene can keep track of it.
+						When you add a sprite to your scene, it is put in this table so the scene can keep track of it. </p>
+
 <p> This is intended as <code>read-only</code>. You should not modify this table directly.
 
 
@@ -215,8 +200,10 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene:addSprite(__sprite)<span>
 					</dt>
 					<dd>
-						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>.
-<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:add()</code> will also call this method.
+						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>. </p>
+
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:add()</code> will also call this method.</p>
+
 <p> Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
 
 								<h3>Parameters</h3>
@@ -243,8 +230,10 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene:removeSprite(__sprite)<span>
 					</dt>
 					<dd>
-						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>.
-<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:remove()</code> will also call this method.
+						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>. </p>
+
+<p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:remove()</code> will also call this method.</p>
+
 <p> Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
 
 								<h3>Parameters</h3>
@@ -334,8 +323,7 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 					</dt>
 					<dd>
 						Implement to run scene-specific code on every frame while this scene is active.
- NOTE: you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
-
+ <strong>NOTE:</strong> you may use coroutine.yield() here, because it only runs inside of playdate.update(), which is a coroutine.
 
 
 
@@ -350,20 +338,49 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 					</dd>
 					<dt>
 						<a name = "NobleScene:drawBackground"></a>
-						<span class="item-name">NobleScene:drawBackground()<span>
+						<span class="item-name">NobleScene:drawBackground(__x, __y, __width, __height)<span>
 					</dt>
 					<dd>
-						Implement this function to draw background visual elements in your scene.  This runs every frame.
+						Implement this function to draw background visual elements in your scene.
+ This runs when the engine need to redraw a background area.
+ By default it runs every frame and fills the background with self.backgroundColor. All arguments are optional.
+ Use <code>Graphics.sprite.setAlwaysRedraw(false)</code> after <code>Noble.new()</code> to optimize partial redraw.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+														<br/>
 
 
+
+													</li>
+													<li><span class="parameter">__y</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__width</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__height</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
 
 
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:drawBackground()
-	YourSceneName.super.drawBackground(self)
-	<span class="comment">--[Your code here]--
+								<pre class="example"><span class="keyword">function</span> YourSceneName:drawBackground(__x, __y, __width, __height)
+	YourSceneName.super.drawBackground(self) <span class="comment">-- optional, invokes default behavior.
+</span>	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
@@ -410,12 +427,12 @@ class(&quot;YourSceneName&quot;).extends(NobleScene)
 						<span class="item-name">NobleScene:pause()<span>
 					</dt>
 					<dd>
-						<code>pause()</code> / <code>resume()</code>
+						<code>pause()</code> / <code>resume()</code></p>
+
 <p> Implement one or both of these in your scene if you want something to happen when the game is paused/unpaused
  by the system.  The Playdate SDK does not require you to write pause logic, but these are useful if you want a
  custom menu image (see Playdate SDK for more details), want to obscure game elements to prevent players from
  cheating in a time-sensitive game, want to count the number of times the player pauses the game, etc.
-
 
 
 

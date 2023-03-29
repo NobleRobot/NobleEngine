@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Noble Engine</title>
+    <title>Noble Engine API reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 	<link rel="icon" href="favicon.ico">
 </head>
@@ -76,7 +76,7 @@
 			<div class="nav-kind">
 					<h3>Examples</h3>
 					<ul>
-								<li><a href="../examples/scenetemplate.lua.html">scenetemplate.lua</a></li>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
 					</ul>
 			</div>
 	</div>
@@ -160,11 +160,12 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 					</dd>
 					<dt>
 						<a name = "animation:addState"></a>
-						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete)<span>
+						<span class="item-name">animation:addState(__name, __startFrame, __endFrame, __next[, __loop=true], __onComplete[, __frameDuration=1])<span>
 					</dt>
 					<dd>
-						Add an animation state.  The first state added will be the default set for this animation.
-<p> NOTE: Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
+						Add an animation state.  The first state added will be the default set for this animation.</p>
+
+<p> <strong>NOTE:</strong> Added states are first-degree member objects of your Noble.Animation object, so do not use names of already existing methods/properties ("current", "draw", etc.).
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -198,6 +199,12 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 														<br/>
 														 This function will run when this animation is complete. Be careful when using this on a looping animation!
 													</li>
+													<li><span class="parameter">__frameDuration</span>
+															<span class="types"><span class="type">int</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
+													</li>
 							</ul>
 
 
@@ -223,7 +230,8 @@ animation.idle.startFrame		<span class="comment">-- 30
 						<span class="item-name">animation.current<span>
 					</dt>
 					<dd>
-						The currently set animation state.
+						The currently set animation state. </p>
+
 <p> This is intended as <code>read-only</code>. You should not modify this property directly.
 
 
@@ -241,7 +249,8 @@ animation.idle.startFrame		<span class="comment">-- 30
 						<span class="item-name">animation.currentName<span>
 					</dt>
 					<dd>
-						The name of the current animation state.  Calling this instead of <code>animation.current.name</code> is <em>just</em> a little faster.
+						The name of the current animation state.  Calling this instead of <code>animation.current.name</code> is <em>just</em> a little faster.</p>
+
 <p> This is intended as <code>read-only</code>. You should not modify this property directly.
 
 
@@ -255,7 +264,8 @@ animation.idle.startFrame		<span class="comment">-- 30
 						<span class="item-name">animation.currentFrame<span>
 					</dt>
 					<dd>
-						The current frame of the animation.  This is the index of the imagetable, not the frame of the current state.
+						The current frame of the animation.  This is the index of the imagetable, not the frame of the current state.</p>
+
 <p> Most of the time, you should not modify this directly, although you can if you're feeling saucy and are prepared for unpredictable results.
 
 
@@ -273,7 +283,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 						<span class="item-name">animation.direction<span>
 					</dt>
 					<dd>
-						This controls the flipping of the image when drawing.  DIRECTION_RIGHT is unflipped, DIRECTION_LEFT is flipped on the X axis.
+						This controls the flipping of the image when drawing.  DIRECTION<em>RIGHT is unflipped, DIRECTION</em>LEFT is flipped on the X axis.
 
 
 
@@ -372,7 +382,8 @@ animation.idle.startFrame		<span class="comment">-- 30
 						<span class="item-name">animation:draw([__x=0[, __y=0[, __advance=true]]])<span>
 					</dt>
 					<dd>
-						Draw the current frame.
+						Draw the current frame. </p>
+
 <p> When attached to a NobleSprite, this is called by <code>NobleSprite:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a>.
 
 								<h3>Parameters</h3>
@@ -382,11 +393,15 @@ animation.idle.startFrame		<span class="comment">-- 30
 															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__y</span>
 															<span class="types"><span class="type">number</span></span>
 															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
+
+
 
 													</li>
 													<li><span class="parameter">__advance</span>
@@ -435,11 +450,15 @@ animation.idle.startFrame		<span class="comment">-- 30
 															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
+
+
 													</li>
 													<li><span class="parameter">__y</span>
 															<span class="types"><span class="type">number</span></span>
 															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
+
+
 
 													</li>
 													<li><span class="parameter">__direction</span>
