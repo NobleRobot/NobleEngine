@@ -27,9 +27,16 @@
 					<ul>
 							<li><a href="#new">.new</a></li>
 							<li><a href="#engineInitialized">.engineInitialized</a></li>
+							<li><a href="#getConfig">.getConfig</a></li>
+							<li><a href="#setConfig">.setConfig</a></li>
+							<li><a href="#resetConfig">.resetConfig</a></li>
 							<li><a href="#transition">.transition</a></li>
 							<li><a href="#currentScene">.currentScene</a></li>
 							<li><a href="#currentSceneName">.currentSceneName</a></li>
+					</ul>
+					<h3>Tables</h3>
+					<ul>
+							<li><a href="#configuration">.configuration</a></li>
 					</ul>
 					<h3>Fields</h3>
 					<ul>
@@ -87,7 +94,7 @@
 			<dl class="function">
 					<dt>
 						<a name = "new"></a>
-						<span class="item-name">new(StartingScene[, __transitionDuration[, __transitionType=Noble.Transition.CROSS_DISSOLVE[, __enableDebugBonkChecking=false]]])<span>
+						<span class="item-name">new(StartingScene[, __launcherTransitionDuration=0][, __launcherTransitionType=Noble.Transition.CROSS_DISSOLVE], __configuration)<span>
 					</dt>
 					<dd>
 						Engine initialization.  Run this once in your main.lua file to begin your game.
@@ -97,25 +104,24 @@
 													<li><span class="parameter">StartingScene</span>
 															<span class="types"><a class="type" href="../classes/NobleScene.html#">NobleScene</a></span>
 														<br/>
-														 This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class, not an instance of the scene.
+														 This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. <strong>NOTE: Pass the scene's class name, not an instance of the scene.</strong>
 													</li>
-													<li><span class="parameter">__transitionDuration</span>
+													<li><span class="parameter">__launcherTransitionDuration</span>
 															<span class="types"><span class="type">number</span></span>
-															<span class="optional">(optional)</span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 														 If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 													</li>
-													<li><span class="parameter">__transitionType</span>
+													<li><span class="parameter">__launcherTransitionType</span>
 															<span class="types"><span class="type">Noble.TransitionType</span></span>
 															<span class="default">= <span class="value">Noble.Transition.CROSS_DISSOLVE</span> (default)</span>
 														<br/>
 														 If a transition duration is set, use this transition type.
 													</li>
-													<li><span class="parameter">__enableDebugBonkChecking</span>
-															<span class="types"><span class="type">bool</span></span>
-															<span class="default">= <span class="value">false</span> (default)</span>
+													<li><span class="parameter">__configuration</span>
+															<span class="types"><span class="type">table[optional]</span></span>
 														<br/>
-														 Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
+														 Provide a table of Noble Engine configuration values. This will run <a href="../modules/Noble.html#setConfig">Noble.setConfig</a> for you at launch.
 													</li>
 							</ul>
 
@@ -125,7 +131,7 @@
 							<ul>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
-									<li><a href="../modules/Noble.Bonk.html#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
+									<li><a href="../modules/Noble.html#setConfig">setConfig</a></li>
 							</ul>
 
 
@@ -151,6 +157,73 @@
 							<h3>See</h3>
 							<ul>
 									<a href="../modules/Noble.Bonk.html#">Noble.Bonk</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "getConfig"></a>
+						<span class="item-name">getConfig()<span>
+					</dt>
+					<dd>
+						Retrieve miscellaneous Noble Engine configuration options / default values
+
+
+							<h3>Returns</h3>
+								<ol>
+
+										A table of all configuration values
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#configuration">configuration</a></li>
+									<li><a href="../modules/Noble.html#setConfig">setConfig</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "setConfig"></a>
+						<span class="item-name">setConfig(__configuration)<span>
+					</dt>
+					<dd>
+						Optionally customize miscellaneous Noble Engine configuration options / default values.  You may run this method to change these values during runtime.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__configuration</span>
+															<span class="types"><span class="type">table</span></span>
+														<br/>
+														 This is a table with your configuration values in it.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#configuration">configuration</a></li>
+									<li><a href="../modules/Noble.html#getConfig">getConfig</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "resetConfig"></a>
+						<span class="item-name">resetConfig()<span>
+					</dt>
+					<dd>
+						Reset miscellaneous Noble Engine configuration values to their defaults.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#getConfig">getConfig</a></li>
+									<li><a href="../modules/Noble.html#setConfig">setConfig</a></li>
 							</ul>
 
 
@@ -241,6 +314,63 @@
 								</ol>
 
 
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "configuration"></a>
+						<span class="item-name">configuration<span>
+					</dt>
+					<dd>
+						Miscellaneous Noble Engine configuration options / default values.
+ This table cannot be edited directly. Use <a href="../modules/Noble.html#getConfig">Noble.getConfig</a> and <a href="../modules/Noble.html#setConfig">Noble.setConfig</a>.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">defaultTransitionDuration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> if the scene transition duration is unspecified, it will take this long in seconds.
+													</li>
+													<li><span class="parameter">defaultTransitionHoldDuration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0.2</span> (default)</span>
+														<br/>
+														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
+													</li>
+													<li><span class="parameter">defaultTransitionType</span>
+															<span class="types"><span class="type">Noble.TransitionType</span></span>
+															<span class="default">= <span class="value">Noble.TransitionType.CROSS_DISSOLVE</span> (default)</span>
+														<br/>
+														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> if the transition type is unspecified, it will use this one.
+													</li>
+													<li><span class="parameter">enableDebugBonkChecking</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Noble Engine-specific errors are called "Bonks." You can set this to true during development in order to check for more of them. However, it uses resources, so you will probably want to turn it off before release.
+													</li>
+													<li><span class="parameter">alwaysRedraw</span>
+															<span class="types"><span class="type">bool</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 This sets the Playdate SDK method <code>playdate.graphics.sprite.setAlwaysRedraw</code>. See the Playdate SDK for details on how this function works, and the reasons you might want to set it as true or false for your project.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#getConfig">Noble.getConfig</a></li>
+									<li><a href="../modules/Noble.html#setConfig">Noble.setConfig</a></li>
+									<li><a href="../modules/Noble.Bonk.html#Noble.Bonk.startCheckingDebugBonks">Noble.Bonk.startCheckingDebugBonks</a></li>
+							</ul>
 
 
 					</dd>
