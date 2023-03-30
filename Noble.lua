@@ -65,30 +65,30 @@ local currentScene = nil
 local engineInitialized = false
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
--- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. Pass the scene's class, not an instance of the scene.
--- @number[opt] __transitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
--- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
--- @bool[opt=false] __enableDebugBonkChecking Noble Engine-specific errors are called "bonks." Set this to true during development to check for more of them. It is resource intensive, so turn it off for release.
+-- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
+-- @number[opt=0] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
+-- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __launcherTransitionType If a transition duration is set, use this transition type.
+-- @tparam table[optional] __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
 -- @see NobleScene
 -- @see Noble.TransitionType
--- @see Noble.Bonk.startCheckingDebugBonks
-function Noble.new(StartingScene, __transitionDuration, __transitionType, __enableDebugBonkChecking)
+-- @see setConfig
+function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransitionType, __configuration)
 
 	math.randomseed(playdate.getSecondsSinceEpoch()) -- Set a new random seed at runtime.
 
 	if (engineInitialized) then
 		error("BONK: You can only run Noble.new() once.")
 		return
-	else
-		-- Noble Engine refers to an engine-specific error as a "bonk." We check this before engineInitialized is set to true because we need it to be false.
-		local enableDebugBonkChecking = Utilities.handleOptionalBoolean(__enableDebugBonkChecking, false)
-		if (enableDebugBonkChecking) then Noble.Bonk.enableDebugBonkChecking() end
+	end
 
-		engineInitialized = true
+	-- If the user supplies a config object, we use it, otherwise, we set default values.
+	if (__configuration ~= nil) then
+		Noble.setConfig(__configuration)
+	else
+		Noble.resetConfig()
 	end
 
 	-- Screen drawing: see the Playdate SDK for details on these methods.
-	Graphics.sprite.setAlwaysRedraw(true)
 	Graphics.sprite.setBackgroundDrawingCallback(
 		function (x, y, width, height)
 			if (currentScene ~= nil) then
@@ -103,12 +103,13 @@ function Noble.new(StartingScene, __transitionDuration, __transitionType, __enab
 	end
 
 	local transitionType = Noble.TransitionType.CUT
-	if (__transitionDuration ~= nil) then
-		transitionType = __transitionType or Noble.TransitionType.CROSS_DISSOLVE
+	if (__launcherTransitionDuration ~= nil) then
+		transitionType = __launcherTransitionType or Noble.TransitionType.CROSS_DISSOLVE
 	end
 
 	-- Now that everything is set, let's-a go!
-	Noble.transition(StartingScene, __transitionDuration, transitionType)
+	engineInitialized = true
+	Noble.transition(StartingScene, __launcherTransitionDuration, transitionType)
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -118,6 +119,68 @@ function Noble.engineInitialized()
 	return engineInitialized
 end
 
+-- configuration
+--
+
+local defaultConfiguration = {
+	defaultTransitionDuration = 1,
+	defaultTransitionHoldDuration = 0.2,
+	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
+	enableDebugBonkChecking = false,
+	alwaysRedraw = true,
+}
+local configuration = Utilities.copy(defaultConfiguration)
+
+--- Miscellaneous Noble Engine configuration options / default values.
+-- This table cannot be edited directly. Use `Noble.getConfig` and `Noble.setConfig`.
+-- @table configuration
+-- @number[opt=1] defaultTransitionDuration When running `Noble.transition` if the scene transition duration is unspecified, it will take this long in seconds.
+-- @number[opt=0.2] defaultTransitionHoldDuration When running `Noble.transition` (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
+-- @tparam[opt=Noble.TransitionType.CROSS_DISSOLVE] Noble.TransitionType defaultTransitionType When running `Noble.transition` if the transition type is unspecified, it will use this one.
+-- @bool[opt=false] enableDebugBonkChecking Noble Engine-specific errors are called "Bonks." You can set this to true during development in order to check for more of them. However, it uses resources, so you will probably want to turn it off before release.
+-- @bool[opt=true] alwaysRedraw This sets the Playdate SDK method `playdate.graphics.sprite.setAlwaysRedraw`. See the Playdate SDK for details on how this function works, and the reasons you might want to set it as true or false for your project.
+-- @see Noble.getConfig
+-- @see Noble.setConfig
+-- @see Noble.Bonk.startCheckingDebugBonks
+
+--- Retrieve miscellaneous Noble Engine configuration options / default values
+-- @return A table of all configuration values
+-- @see configuration
+-- @see setConfig
+function Noble.getConfig()
+	return configuration
+end
+
+--- Optionally customize miscellaneous Noble Engine configuration options / default values. You may run this method to change these values during runtime.
+-- @tparam table __configuration This is a table with your configuration values in it.
+-- @see configuration
+-- @see getConfig
+function Noble.setConfig(__configuration)
+
+	if (__configuration == nil) then
+		error("BONK: You cannot pass a nil value to Noble.setConfig(). If you want to reset to default values, use Noble.resetConfig().")
+	end
+
+	if (__configuration.defaultTransitionDuration ~= nil) then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
+	if (__configuration.defaultTransitionHoldDuration ~= nil) then configuration.defaultTransitionHoldDuration = __configuration.defaultTransitionHoldDuration end
+	if (__configuration.defaultTransitionType ~= nil) then configuration.defaultTransitionType = __configuration.defaultTransitionType end
+	if (__configuration.enableDebugBonkChecking ~= nil) then
+		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
+		if (configuration.enableDebugBonkChecking == true) then Noble.Bonk.enableDebugBonkChecking() end
+	end
+	if (__configuration.alwaysRedraw ~= nil) then
+		configuration.alwaysRedraw = __configuration.alwaysRedraw
+		Graphics.sprite.setAlwaysRedraw(configuration.alwaysRedraw)
+	end
+
+end
+
+--- Reset miscellaneous Noble Engine configuration values to their defaults.
+-- @see getConfig
+-- @see setConfig
+function Noble.resetConfig()
+	Noble.setConfig(Utilities.copy(defaultConfiguration))
+end
 
 -- Transition stuff
 --
@@ -204,9 +267,9 @@ local function executeTransition(__transition)
 
 	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
 
-	local duration = __transition.duration or 1
-	local holdDuration = __transition.holdDuration or 0.2
-	currentTransitionType = __transition.transitionType or Noble.TransitionType.DIP_TO_BLACK
+	local duration = __transition.duration or configuration.defaultTransitionDuration
+	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
+	currentTransitionType = __transition.transitionType or configuration.defaultTransitionType
 
 	local onMidpoint = function()
 		if (currentScene ~= nil) then
