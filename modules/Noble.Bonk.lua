@@ -98,9 +98,6 @@ function Noble.Bonk.checkDebugBonks()
 	if (playdate.gameWillResume ~= debugBonks.resume) then
 		error("BONK: Don't manually define playdate.gameWillResume(). Put resume code in your scenes' resume() methods instead.")
 	end
-	if (Graphics.sprite.getAlwaysRedraw() == false) then
-		error("BONK: Don't use Graphics.sprite.setAlwaysRedraw(false) unless you know what you're doing...")
-	end
 	if (Noble.currentScene.backgroundColor == Graphics.kColorClear) then
 		error("BONK: Don't set a scene's backgroundColor to Graphics.kColorClear, silly.")
 	end

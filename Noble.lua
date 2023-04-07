@@ -126,8 +126,7 @@ local defaultConfiguration = {
 	defaultTransitionDuration = 1,
 	defaultTransitionHoldDuration = 0.2,
 	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
-	enableDebugBonkChecking = false,
-	alwaysRedraw = true,
+	enableDebugBonkChecking = false
 }
 local configuration = Utilities.copy(defaultConfiguration)
 
@@ -138,7 +137,6 @@ local configuration = Utilities.copy(defaultConfiguration)
 -- @number[opt=0.2] defaultTransitionHoldDuration When running `Noble.transition` (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
 -- @tparam[opt=Noble.TransitionType.CROSS_DISSOLVE] Noble.TransitionType defaultTransitionType When running `Noble.transition` if the transition type is unspecified, it will use this one.
 -- @bool[opt=false] enableDebugBonkChecking Noble Engine-specific errors are called "Bonks." You can set this to true during development in order to check for more of them. However, it uses resources, so you will probably want to turn it off before release.
--- @bool[opt=true] alwaysRedraw This sets the Playdate SDK method `playdate.graphics.sprite.setAlwaysRedraw`. See the Playdate SDK for details on how this function works, and the reasons you might want to set it as true or false for your project.
 -- @see Noble.getConfig
 -- @see Noble.setConfig
 -- @see Noble.Bonk.startCheckingDebugBonks
@@ -167,10 +165,6 @@ function Noble.setConfig(__configuration)
 	if (__configuration.enableDebugBonkChecking ~= nil) then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
 		if (configuration.enableDebugBonkChecking == true) then Noble.Bonk.enableDebugBonkChecking() end
-	end
-	if (__configuration.alwaysRedraw ~= nil) then
-		configuration.alwaysRedraw = __configuration.alwaysRedraw
-		Graphics.sprite.setAlwaysRedraw(configuration.alwaysRedraw)
 	end
 
 end

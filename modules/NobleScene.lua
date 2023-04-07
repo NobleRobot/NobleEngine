@@ -154,7 +154,6 @@ function NobleScene:update() end
 --- Implement this function to draw background visual elements in your scene.
 --- This runs when the engine need to redraw a background area.
 --- By default it runs every frame and fills the background with self.backgroundColor. All arguments are optional.
---- Use `Graphics.sprite.setAlwaysRedraw(false)` after `Noble.new()` to optimize partial redraw.
 --
 -- @usage
 --	function YourSceneName:drawBackground(__x, __y, __width, __height)
