@@ -101,7 +101,7 @@
  <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because much of Noble.Input's functionality will not apply.</p>
 			<h3>See</h3>
 			<ul>
-					<a href="../classes/NobleScene.html#NobleScene.inputHandler">NobleScene.inputHandler</a>
+					<a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a>
 			</ul>
 			<h3>Usage</h3>
 				<pre class="example">local myInputHandler = {
@@ -157,7 +157,7 @@
 
 							<h3>See</h3>
 							<ul>
-									<a href="../classes/NobleScene.html#NobleScene.inputHandler">NobleScene.inputHandler</a>
+									<a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a>
 							</ul>
 
 
@@ -168,7 +168,7 @@
 					</dt>
 					<dd>
 						Use this to change the active inputHandler.
- <br><br>Enter <code>nil</code> to disable input. Use <a href="../modules/Noble.Input.html#Noble.Input.setEnabled">setEnabled</a> to disable/enable input without losing track of the current inputHandler.
+ <br><br>Enter <code>nil</code> to disable input. Use <a href="../modules/Noble.Input.html#Noble.Input.setEnabled">Noble.Input.setEnabled</a> to disable/enable input without losing track of the current inputHandler.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -184,9 +184,9 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../classes/NobleScene.html#NobleScene.inputHandler">NobleScene.inputHandler</a></li>
-									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">clearHandler</a></li>
-									<li><a href="../modules/Noble.Input.html#Noble.Input.setEnabled">setEnabled</a></li>
+									<li><a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">Noble.Input.clearHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.setEnabled">Noble.Input.setEnabled</a></li>
 							</ul>
 
 
@@ -203,7 +203,7 @@
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Input.html#Noble.Input.setHandler">setHandler</a>
+									<a href="../modules/Noble.Input.html#Noble.Input.setHandler">Noble.Input.setHandler</a>
 							</ul>
 
 
@@ -220,7 +220,7 @@
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__value</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 														<br/>
 														 Set to false to halt input. Set to true to resume accepting input.
 													</li>
@@ -230,8 +230,8 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Input.html#Noble.Input.getHandler">getHandler</a></li>
-									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">clearHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.getHandler">Noble.Input.getHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">Noble.Input.clearHandler</a></li>
 							</ul>
 
 
@@ -267,12 +267,12 @@
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__active</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 														<br/>
 														 Set true to start showing the on-screen crank indicator. Set false to stop showing it.
 													</li>
 													<li><span class="parameter">__evenWhenUndocked</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 														 Set true to show the crank indicator even if the crank is already undocked (<code>__active</code> must also be true).
@@ -305,7 +305,7 @@
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Input.html#Noble.Input.setCrankIndicatorStatus">setCrankIndicatorStatus</a>
+									<a href="../modules/Noble.Input.html#Noble.Input.setCrankIndicatorStatus">Noble.Input.setCrankIndicatorStatus</a>
 							</ul>
 
 
@@ -322,7 +322,7 @@
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__getStoredValues</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 														 If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
@@ -357,15 +357,15 @@
  For faster performance, use the ones that exist in the Playdate SDK (i.e.: <code>playdate.kButtonA</code>), which are stored as binary numbers.
 					</div>
 					<h3>Usage</h3>
-					<pre class="example"><span class="keyword">function</span> newPrompt(__input, __promptString)
+					<pre class="example"><span class="keyword">function</span> <span class="function-name">newPrompt</span>(__input, __promptString)
 	<span class="comment">-- ...
-</span>	<span class="keyword">local</span> icon = Graphics.image.new(<span class="string">"assets/images/UI/Icon_"</span> .. __input)
+</span>	<span class="keyword">local</span> icon = Graphics.image.<span class="function-name">new</span>(<span class="string">"assets/images/UI/Icon_"</span> .. __input)
 	<span class="comment">-- ...
 </span><span class="keyword">end</span>
 
-promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"</span>)				<span class="comment">-- assets/images/UI/Icon_dPadHorizontal.png"
-</span>promptJump = newPrompt(Noble.Input.BUTTON_A, <span class="string">"Jump!"</span>) 						<span class="comment">-- assets/images/UI/Icon_buttonA.png"
-</span>promptCharge = newPrompt(Noble.Input.CRANK_FORWARD, <span class="string">"Charge the battery!"</span>)	<span class="comment">-- assets/images/UI/Icon_crankForward.png"</span></pre>
+promptMove = <span class="function-name">newPrompt</span>(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"</span>)				<span class="comment">-- assets/images/UI/Icon_dPadHorizontal.png"
+</span>promptJump = <span class="function-name">newPrompt</span>(Noble.Input.BUTTON_A, <span class="string">"Jump!"</span>) 						<span class="comment">-- assets/images/UI/Icon_buttonA.png"
+</span>promptCharge = <span class="function-name">newPrompt</span>(Noble.Input.CRANK_FORWARD, <span class="string">"Charge the battery!"</span>)	<span class="comment">-- assets/images/UI/Icon_crankForward.png"</span></pre>
 			<dl class="function">
 					<dt>
 						<a name = "Noble.Input.BUTTON_A"></a>
@@ -605,7 +605,7 @@ promptMove = newPrompt(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 

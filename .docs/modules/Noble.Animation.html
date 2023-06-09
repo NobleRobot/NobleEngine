@@ -119,41 +119,41 @@
 
 							<h3>See</h3>
 							<ul>
-									<a href="../classes/NobleSprite.html#NobleSprite:init">NobleSprite:init</a>
+									<a href="../classes/NobleSprite.html#noblesprite:init">NobleSprite:init</a>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">local</span> myHero = MyHero(<span class="string">"path/to/spritesheet"</span>)</pre>
+								<pre class="example"><span class="keyword">local</span> myHero = <span class="function-name">MyHero</span>(<span class="string">"path/to/spritesheet"</span>)</pre>
 								<pre class="example"><span class="comment">-- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
 </span><span class="comment">-- but you do feed its __spritesheet argument into MySprite.super.init()...
 </span>MyHero = {}
-class(<span class="string">"MyHero"</span>).extends(NobleSprite)
+<span class="function-name">class</span>(<span class="string">"MyHero"</span>).<span class="function-name">extends</span>(NobleSprite)
 
-<span class="keyword">function</span> MyHero:init()
-	MyHero.super.init(self, <span class="string">"assets/images/Hero"</span>)
+<span class="keyword">function</span> MyHero:<span class="function-name">init</span>()
+	MyHero.super.<span class="function-name">init</span>(self, <span class="string">"assets/images/Hero"</span>)
 	<span class="comment">-- ...
 </span>	<span class="comment">-- A new NobleSprite creates a Noble.Animation object named "self.animation"
-</span>	self.animation:addState(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
-	self.animation:addState(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
-	self.animation:addState(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
-	self.animation:addState(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
-	self.animation:addState(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+</span>	self.animation:<span class="function-name">addState</span>(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
 	<span class="comment">-- ...
 </span><span class="keyword">end</span></pre>
-								<pre class="example"><span class="keyword">local</span> myAnimation = Noble.Animation.new(<span class="string">"path/to/spritesheet"</span>)</pre>
+								<pre class="example"><span class="keyword">local</span> myAnimation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"path/to/spritesheet"</span>)</pre>
 								<pre class="example"><span class="comment">-- When extending playdate.graphics.Sprite, Noble.Animation.new() must be called manually...
 </span>MyHero = {}
-class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
+<span class="function-name">class</span>(<span class="string">"MyHero"</span>).<span class="function-name">extends</span>(Graphics.sprite)
 
-<span class="keyword">function</span> MyHero:init()
-	MyHero.super.init(self)
+<span class="keyword">function</span> MyHero:<span class="function-name">init</span>()
+	MyHero.super.<span class="function-name">init</span>(self)
 	<span class="comment">-- ...
-</span>	self.animation = Noble.Animation.new(<span class="string">"assets/images/Hero"</span>)
-	self.animation:addState(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
-	self.animation:addState(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
-	self.animation:addState(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
-	self.animation:addState(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
-	self.animation:addState(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+</span>	self.animation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"assets/images/Hero"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
 	<span class="comment">-- ...
 </span><span class="keyword">end</span></pre>
 
@@ -175,12 +175,12 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 														 The name of the animation, this is also used as the key for the animation.
 													</li>
 													<li><span class="parameter">__startFrame</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 														<br/>
 														 This is the first frame of this animation in the imagetable/spritesheet
 													</li>
 													<li><span class="parameter">__endFrame</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 														<br/>
 														 This is the final frame of this animation in the imagetable/spritesheet
 													</li>
@@ -190,7 +190,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 														 By default, animation states will loop, but if you want to sequence an animation, enter the name of the next state here.
 													</li>
 													<li><span class="parameter">__loop</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 If you want a state to "freeze" on its final frame, instead of looping, enter <code>false</code> here.
@@ -200,7 +200,7 @@ class(<span class="string">"MyHero"</span>).extends(Graphics.sprite)
 														 This function will run when this animation is complete. Be careful when using this on a looping animation!
 													</li>
 													<li><span class="parameter">__frameDuration</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="default">= <span class="value">1</span> (default)</span>
 														<br/>
 														 This is the number of ticks between each frame in this animation. If not specified, it will be set to 1.
@@ -290,7 +290,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> MyHero:goLeft()
+								<pre class="example"><span class="keyword">function</span> MyHero:<span class="function-name">goLeft</span>()
 	self.animation.direction = Noble.Animation.DIRECTION_LEFT
 	<span class="comment">-- ...
 </span><span class="keyword">end</span></pre>
@@ -308,7 +308,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Animation.html#Noble.Animation.new">new</a>
+									<a href="../modules/Noble.Animation.html#Noble.Animation.new">Noble.Animation.new</a>
 							</ul>
 
 
@@ -332,7 +332,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 														 The name of the animation to set. You can pass the name of the state, or the object itself.
 													</li>
 													<li><span class="parameter">__continuous</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 														 Set to true if your new state's frames line up with the previous one's, i.e.: two walk cycles but one is wearing a cute hat!
@@ -348,12 +348,12 @@ animation.idle.startFrame		<span class="comment">-- 30
 
 
 							<h3>Usage</h3>
-								<pre class="example">animation:setState(<span class="string">"walk"</span>)</pre>
-								<pre class="example">animation:setState(animation.walk)</pre>
-								<pre class="example">animation:setState(animation.walkNoHat)
+								<pre class="example">animation:<span class="function-name">setState</span>(<span class="string">"walk"</span>)</pre>
+								<pre class="example">animation:<span class="function-name">setState</span>(animation.walk)</pre>
+								<pre class="example">animation:<span class="function-name">setState</span>(animation.walkNoHat)
 <span class="comment">--
-</span>animation:setState(animation.walkYesHat, <span class="keyword">true</span>)</pre>
-								<pre class="example"><span class="keyword">function</span> MyHero:update()
+</span>animation:<span class="function-name">setState</span>(animation.walkYesHat, <span class="keyword">true</span>)</pre>
+								<pre class="example"><span class="keyword">function</span> MyHero:<span class="function-name">update</span>()
 	<span class="comment">-- Input
 </span>	<span class="comment">-- ...
 </span>
@@ -363,14 +363,14 @@ animation.idle.startFrame		<span class="comment">-- 30
 	<span class="comment">-- Animation states
 </span>	<span class="keyword">if</span> (grounded) <span class="keyword">then</span>
 		<span class="keyword">if</span> (turning) <span class="keyword">then</span>
-			self.animation:setState(self.animation.turn)
-		<span class="keyword">elseif</span> (<span class="global">math</span>.abs(self.velocity.x) &gt; <span class="number">15</span>) <span class="keyword">then</span>
-			self.animation:setState(self.animation.walk, <span class="keyword">false</span>, self.animation.turn)
+			self.animation:<span class="function-name">setState</span>(self.animation.turn)
+		<span class="keyword">elseif</span> (<span class="global">math</span>.<span class="function-name">abs</span>(self.velocity.x) &gt; <span class="number">15</span>) <span class="keyword">then</span>
+			self.animation:<span class="function-name">setState</span>(self.animation.walk, <span class="keyword">false</span>, self.animation.turn)
 		<span class="keyword">else</span>
-			self.animation:setState(self.animation.idle, <span class="keyword">false</span>, self.animation.turn)
+			self.animation:<span class="function-name">setState</span>(self.animation.idle, <span class="keyword">false</span>, self.animation.turn)
 		<span class="keyword">end</span>
 	<span class="keyword">else</span>
-		self.animation:setState(self.animation.jump, <span class="keyword">false</span>, self.animation.float)
+		self.animation:<span class="function-name">setState</span>(self.animation.jump, <span class="keyword">false</span>, self.animation.float)
 	<span class="keyword">end</span>
 
 	groundedLastFrame = grounded
@@ -384,7 +384,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 					<dd>
 						Draw the current frame. </p>
 
-<p> When attached to a NobleSprite, this is called by <code>NobleSprite:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#NobleScene:update">NobleScene:update</a>.
+<p> When attached to a NobleSprite, this is called by <code>NobleSprite:draw()</code> when added to a scene. For non-NobleSprite sprites, put this method inside your sprite's <code>draw()</code> method, or inside <a href="../classes/NobleScene.html#noblescene:update">NobleScene:update</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -405,7 +405,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 
 													</li>
 													<li><span class="parameter">__advance</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Advances to the next frame after drawing this one. Noble.Animation is frame-based, not "delta time"-based, so its speed is dependent on your game's framerate.
@@ -416,11 +416,11 @@ animation.idle.startFrame		<span class="comment">-- 30
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> MySprite:draw()
-	animation:draw()
+								<pre class="example"><span class="keyword">function</span> MySprite:<span class="function-name">draw</span>()
+	animation:<span class="function-name">draw</span>()
 <span class="keyword">end</span></pre>
-								<pre class="example"><span class="keyword">function</span> MyScene:update()
-	animation:draw(<span class="number">100</span>,<span class="number">100</span>)
+								<pre class="example"><span class="keyword">function</span> MyScene:<span class="function-name">update</span>()
+	animation:<span class="function-name">draw</span>(<span class="number">100</span>,<span class="number">100</span>)
 <span class="keyword">end</span></pre>
 
 					</dd>
@@ -435,7 +435,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__frameNumber</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 														<br/>
 														 The frame to draw from the current state. This is not an imagetable index. Entering <code>1</code> will draw the selected state's <code>startFrame</code>.
 													</li>
@@ -513,7 +513,7 @@ animation.idle.startFrame		<span class="comment">-- 30
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 

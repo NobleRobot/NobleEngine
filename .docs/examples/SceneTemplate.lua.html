@@ -71,7 +71,7 @@
 </span><span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 </span>
 SceneTemplate = {}
-class(<span class="string">"SceneTemplate"</span>).extends(NobleScene)
+<span class="function-name">class</span>(<span class="string">"SceneTemplate"</span>).<span class="function-name">extends</span>(NobleScene)
 <span class="keyword">local</span> scene = SceneTemplate
 
 <span class="comment">-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -91,8 +91,8 @@ class(<span class="string">"SceneTemplate"</span>).extends(NobleScene)
 
 <span class="comment">-- This runs when your scene's object is created, which is the
 </span><span class="comment">-- first thing that happens when transitining away from another scene.
-</span><span class="keyword">function</span> scene:init()
-	scene.super.init(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">init</span>()
+	scene.super.<span class="function-name">init</span>(self)
 
 	<span class="comment">-- variable1 = 100
 </span>	<span class="comment">-- SceneTemplate.variable2 = "string"
@@ -103,47 +103,47 @@ class(<span class="string">"SceneTemplate"</span>).extends(NobleScene)
 
 <span class="comment">-- When transitioning from another scene, this runs as soon as this
 </span><span class="comment">-- scene needs to be visible (this moment depends on which transition type is used).
-</span><span class="keyword">function</span> scene:enter()
-	scene.super.enter(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">enter</span>()
+	scene.super.<span class="function-name">enter</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
 <span class="comment">-- This runs once a transition from another scene is complete.
-</span><span class="keyword">function</span> scene:start()
-	scene.super.start(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">start</span>()
+	scene.super.<span class="function-name">start</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
 <span class="comment">-- This runs once per frame.
-</span><span class="keyword">function</span> scene:update()
-	scene.super.update(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">update</span>()
+	scene.super.<span class="function-name">update</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
 <span class="comment">-- This runs once per frame, and is meant for drawing code.
-</span><span class="keyword">function</span> scene:drawBackground()
-	scene.super.drawBackground(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">drawBackground</span>()
+	scene.super.<span class="function-name">drawBackground</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
 <span class="comment">-- This runs as as soon as a transition to another scene begins.
-</span><span class="keyword">function</span> scene:exit()
-	scene.super.exit(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">exit</span>()
+	scene.super.<span class="function-name">exit</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
 <span class="comment">-- This runs once a transition to another scene completes.
-</span><span class="keyword">function</span> scene:finish()
-	scene.super.finish(self)
+</span><span class="keyword">function</span> scene:<span class="function-name">finish</span>()
+	scene.super.<span class="function-name">finish</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
-<span class="keyword">function</span> scene:pause()
-	scene.super.pause(self)
+<span class="keyword">function</span> scene:<span class="function-name">pause</span>()
+	scene.super.<span class="function-name">pause</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
-<span class="keyword">function</span> scene:resume()
-	scene.super.resume(self)
+<span class="keyword">function</span> scene:<span class="function-name">resume</span>()
+	scene.super.<span class="function-name">resume</span>(self)
 	<span class="comment">-- Your code here
 </span><span class="keyword">end</span>
 
@@ -252,7 +252,7 @@ class(<span class="string">"SceneTemplate"</span>).extends(NobleScene)
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 

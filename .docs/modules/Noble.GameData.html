@@ -104,19 +104,19 @@
 														 All the data items for a saved game, and their default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 													</li>
 													<li><span class="parameter">__numberOfSlots</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="default">= <span class="value">1</span> (default)</span>
 														<br/>
 														 If you want multiple save slots, enter an integer here. You can add additional slots later.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves your default values immediately to disk.
 													</li>
 													<li><span class="parameter">__modifyExistingOnKeyChange</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.
@@ -127,12 +127,12 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a></li>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">deleteSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">Noble.GameData.deleteSlot</a></li>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.setup(
+								<pre class="example">Noble.GameData.<span class="function-name">setup</span>(
 	{
 		name = <span class="string">""</span>,
 		checkpointReached = <span class="number">0</span>,
@@ -142,9 +142,9 @@
 	<span class="keyword">true</span>,
 	<span class="keyword">true</span>
 )
-Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Game A"</span>, <span class="number">1</span>)
-Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Game B"</span>, <span class="number">2</span>)
-Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Game C"</span>, <span class="number">3</span>)</pre>
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game A"</span>, <span class="number">1</span>)
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game B"</span>, <span class="number">2</span>)
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game C"</span>, <span class="number">3</span>)</pre>
 
 					</dd>
 					<dt>
@@ -162,7 +162,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 														 The name of the data item.
 													</li>
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="optional">(optional)</span>
 														<br/>
 														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
@@ -181,8 +181,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.get(<span class="string">"equippedItem"</span>)</pre>
-								<pre class="example">Noble.GameData.get(<span class="string">"equippedItem"</span>, <span class="number">2</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">get</span>(<span class="string">"equippedItem"</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">get</span>(<span class="string">"equippedItem"</span>, <span class="number">2</span>)</pre>
 
 					</dd>
 					<dt>
@@ -205,19 +205,19 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 														 The data item's new value
 													</li>
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="optional">(optional)</span>
 														<br/>
 														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
 													</li>
 													<li><span class="parameter">__updateTimestamp</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Sets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
@@ -228,12 +228,12 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.GameData.html#Noble.GameData.save">save</a>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.set(<span class="string">"score"</span>, <span class="number">74205</span>)</pre>
-								<pre class="example">Noble.GameData.set(<span class="string">"score"</span>, Noble.GameData.get(<span class="string">"score"</span>) + <span class="number">100</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">set</span>(<span class="string">"score"</span>, <span class="number">74205</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">set</span>(<span class="string">"score"</span>, Noble.GameData.<span class="function-name">get</span>(<span class="string">"score"</span>) + <span class="number">100</span>)</pre>
 
 					</dd>
 					<dt>
@@ -251,19 +251,19 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 														 The name of the data item.
 													</li>
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="optional">(optional)</span>
 														<br/>
 														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
 													</li>
 													<li><span class="parameter">__updateTimestamp</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
@@ -274,7 +274,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.GameData.html#Noble.GameData.save">save</a>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
 							</ul>
 
 
@@ -289,19 +289,19 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="optional">(optional)</span>
 														<br/>
 														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
 													</li>
 													<li><span class="parameter">__updateTimestamp</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
@@ -312,7 +312,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.GameData.html#Noble.GameData.save">save</a>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
 							</ul>
 
 
@@ -327,13 +327,13 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__numberToAdd</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="default">= <span class="value">1</span> (default)</span>
 														<br/>
 														 What it says on the tin.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
@@ -344,8 +344,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.addSlot()</pre>
-								<pre class="example">Noble.GameData.addSlot(<span class="number">10</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">addSlot</span>()</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">addSlot</span>(<span class="number">10</span>)</pre>
 
 					</dd>
 					<dt>
@@ -361,12 +361,12 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 														<br/>
 														 The slot holding the GameData to delete. Unlike other methods that take this argument, this is not optional.
 													</li>
 													<li><span class="parameter">__collapseGameDatas</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Re-sorts the gameDatas table (and renames existing JSON files on disk) to fill the gap left by the deleted GameData.
@@ -377,14 +377,14 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteAllSlots">deleteAllSlots</a></li>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a></li>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteAllSlots">Noble.GameData.deleteAllSlots</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">Noble.GameData.resetAll</a></li>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.deleteSlot(<span class="number">6</span>)</pre>
-								<pre class="example">Noble.GameData.deleteSlot(<span class="number">15</span>, <span class="keyword">false</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">deleteSlot</span>(<span class="number">6</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">deleteSlot</span>(<span class="number">15</span>, <span class="keyword">false</span>)</pre>
 
 					</dd>
 					<dt>
@@ -401,8 +401,8 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">deleteSlot</a></li>
-									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">Noble.GameData.deleteSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
 							</ul>
 
 
@@ -418,7 +418,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 														<br/>
 														 The GameData slot to get the timestamp of. Unlike other methods that take this argument, this is not optional.
 													</li>
@@ -437,7 +437,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.getTimestamp(<span class="number">1</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">getTimestamp</span>(<span class="number">1</span>)</pre>
 
 					</dd>
 					<dt>
@@ -492,7 +492,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__gameDataSlot</span>
-															<span class="types"><span class="type">int</span></span>
+															<span class="types"><span class="type">integer</span></span>
 															<span class="optional">(optional)</span>
 														<br/>
 														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
@@ -503,12 +503,12 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.GameData.html#Noble.GameData.saveAll">saveAll</a>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.saveAll">Noble.GameData.saveAll</a>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.GameData.save()</pre>
-								<pre class="example">Noble.GameData.save(<span class="number">3</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">save</span>()</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">save</span>(<span class="number">3</span>)</pre>
 
 					</dd>
 					<dt>
@@ -523,7 +523,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.GameData.html#Noble.GameData.save">save</a>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
 							</ul>
 
 
@@ -538,7 +538,7 @@ Noble.GameData.set(<span class="string">"name"</span>, <span class="string">"Gam
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 

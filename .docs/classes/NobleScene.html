@@ -25,30 +25,30 @@
 			<ul>
 					<h3>Properties </h3>
 					<ul>
-							<li><a href="#NobleScene.name">.name</a></li>
-							<li><a href="#NobleScene.backgroundColor">.backgroundColor</a></li>
+							<li><a href="#noblescene.name">noblescene.name</a></li>
+							<li><a href="#noblescene.backgroundColor">noblescene.backgroundColor</a></li>
 					</ul>
 					<h3>Tables </h3>
 					<ul>
-							<li><a href="#NobleScene.inputHandler">.inputHandler</a></li>
-							<li><a href="#NobleScene.sprites">.sprites</a></li>
+							<li><a href="#noblescene.inputHandler">noblescene.inputHandler</a></li>
+							<li><a href="#noblescene.sprites">noblescene.sprites</a></li>
 					</ul>
 					<h3>Methods</h3>
 					<ul>
-							<li><a href="#NobleScene:addSprite">:addSprite</a></li>
-							<li><a href="#NobleScene:removeSprite">:removeSprite</a></li>
+							<li><a href="#noblescene:addSprite">noblescene:addSprite</a></li>
+							<li><a href="#noblescene:removeSprite">noblescene:removeSprite</a></li>
 					</ul>
 					<h3>Callbacks </h3>
 					<ul>
-							<li><a href="#NobleScene:init">:init</a></li>
-							<li><a href="#NobleScene:enter">:enter</a></li>
-							<li><a href="#NobleScene:start">:start</a></li>
-							<li><a href="#NobleScene:update">:update</a></li>
-							<li><a href="#NobleScene:drawBackground">:drawBackground</a></li>
-							<li><a href="#NobleScene:exit">:exit</a></li>
-							<li><a href="#NobleScene:finish">:finish</a></li>
-							<li><a href="#NobleScene:pause">:pause</a></li>
-							<li><a href="#NobleScene:resume">:resume</a></li>
+							<li><a href="#noblescene:init">noblescene:init</a></li>
+							<li><a href="#noblescene:enter">noblescene:enter</a></li>
+							<li><a href="#noblescene:start">noblescene:start</a></li>
+							<li><a href="#noblescene:update">noblescene:update</a></li>
+							<li><a href="#noblescene:drawBackground">noblescene:drawBackground</a></li>
+							<li><a href="#noblescene:exit">noblescene:exit</a></li>
+							<li><a href="#noblescene:finish">noblescene:finish</a></li>
+							<li><a href="#noblescene:pause">noblescene:pause</a></li>
+							<li><a href="#noblescene:resume">noblescene:resume</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -106,8 +106,8 @@ local scene = YourSceneName
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "NobleScene.name"></a>
-						<span class="item-name">NobleScene.name<span>
+						<a name = "noblescene.name"></a>
+						<span class="item-name">noblescene.name<span>
 					</dt>
 					<dd>
 						The name of this scene.  Optional.
@@ -120,8 +120,8 @@ local scene = YourSceneName
 
 					</dd>
 					<dt>
-						<a name = "NobleScene.backgroundColor"></a>
-						<span class="item-name">NobleScene.backgroundColor<span>
+						<a name = "noblescene.backgroundColor"></a>
+						<span class="item-name">noblescene.backgroundColor<span>
 					</dt>
 					<dd>
 						This is the background color of this scene.
@@ -137,12 +137,12 @@ local scene = YourSceneName
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "NobleScene.inputHandler"></a>
-						<span class="item-name">NobleScene.inputHandler<span>
+						<a name = "noblescene.inputHandler"></a>
+						<span class="item-name">noblescene.inputHandler<span>
 					</dt>
 					<dd>
 						All scenes have a default inputHandler which is made active when the scene starts.
- If you do not define your scene's <a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a>, it is <code>nil</code> and input is disabled when this scene
+ If you do not define your scene's <a href="../classes/NobleScene.html#noblescene.inputHandler">inputHandler</a>, it is <code>nil</code> and input is disabled when this scene
  starts.
 
 
@@ -173,8 +173,8 @@ local scene = YourSceneName
 
 					</dd>
 					<dt>
-						<a name = "NobleScene.sprites"></a>
-						<span class="item-name">NobleScene.sprites<span>
+						<a name = "noblescene.sprites"></a>
+						<span class="item-name">noblescene.sprites<span>
 					</dt>
 					<dd>
 						When you add a sprite to your scene, it is put in this table so the scene can keep track of it. </p>
@@ -186,7 +186,7 @@ local scene = YourSceneName
 
 							<h3>See</h3>
 							<ul>
-									<a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a>
+									<a href="../classes/NobleScene.html#noblescene:addSprite">addSprite</a>
 							</ul>
 
 
@@ -196,15 +196,15 @@ local scene = YourSceneName
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "NobleScene:addSprite"></a>
-						<span class="item-name">NobleScene:addSprite(__sprite)<span>
+						<a name = "noblescene:addSprite"></a>
+						<span class="item-name">noblescene:addSprite(__sprite)<span>
 					</dt>
 					<dd>
 						Use this to add sprites to your scene instead of <code>playdate.graphics.sprite:add()</code>. </p>
 
 <p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:add()</code> will also call this method.</p>
 
-<p> Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+<p> Sprites added with this method that are tracked by the scene. Any not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#noblescene:finish">finish</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -219,22 +219,22 @@ local scene = YourSceneName
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../classes/NobleSprite.html#NobleSprite:add">NobleSprite:add</a></li>
-									<li><a href="../classes/NobleScene.html#NobleScene:removeSprite">removeSprite</a></li>
+									<li><a href="../classes/NobleSprite.html#noblesprite:add">NobleSprite:add</a></li>
+									<li><a href="../classes/NobleScene.html#noblescene:removeSprite">removeSprite</a></li>
 							</ul>
 
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:removeSprite"></a>
-						<span class="item-name">NobleScene:removeSprite(__sprite)<span>
+						<a name = "noblescene:removeSprite"></a>
+						<span class="item-name">noblescene:removeSprite(__sprite)<span>
 					</dt>
 					<dd>
 						Use this to remove sprites from your scene instead of <code>playdate.graphics.sprite:remove()</code>. </p>
 
 <p> If your sprite is a <a href="../classes/NobleSprite.html#">NobleSprite</a>, using <code>NobleSprite:remove()</code> will also call this method.</p>
 
-<p> Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#NobleScene:finish">finish</a>.
+<p> Sprites not manually removed before transitioning to another scene are automatically removed in <a href="../classes/NobleScene.html#noblescene:finish">finish</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -249,8 +249,8 @@ local scene = YourSceneName
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../classes/NobleSprite.html#NobleSprite:remove">NobleSprite:remove</a></li>
-									<li><a href="../classes/NobleScene.html#NobleScene:addSprite">addSprite</a></li>
+									<li><a href="../classes/NobleSprite.html#noblesprite:remove">NobleSprite:remove</a></li>
+									<li><a href="../classes/NobleScene.html#noblescene:addSprite">addSprite</a></li>
 							</ul>
 
 
@@ -260,8 +260,8 @@ local scene = YourSceneName
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "NobleScene:init"></a>
-						<span class="item-name">NobleScene:init()<span>
+						<a name = "noblescene:init"></a>
+						<span class="item-name">noblescene:init()<span>
 					</dt>
 					<dd>
 						Implement this in your scene if you have code to run when your scene's object is created.
@@ -271,15 +271,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:init()
-	YourSceneName.super.init(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">init</span>()
+	YourSceneName.super.<span class="function-name">init</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:enter"></a>
-						<span class="item-name">NobleScene:enter()<span>
+						<a name = "noblescene:enter"></a>
+						<span class="item-name">noblescene:enter()<span>
 					</dt>
 					<dd>
 						Implement if you want to run code as the transition to this scene begins, such as UI animation, triggers, etc.
@@ -289,37 +289,37 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:enter()
-	YourSceneName.super.enter(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">enter</span>()
+	YourSceneName.super.<span class="function-name">enter</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:start"></a>
-						<span class="item-name">NobleScene:start()<span>
+						<a name = "noblescene:start"></a>
+						<span class="item-name">noblescene:start()<span>
 					</dt>
 					<dd>
-						Implement if you have code to run once the transition to this scene is complete.  This method signifies the full activation of a scene. If this scene's <a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a> is defined, it is enabled now.
+						Implement if you have code to run once the transition to this scene is complete.  This method signifies the full activation of a scene. If this scene's <a href="../classes/NobleScene.html#noblescene.inputHandler">inputHandler</a> is defined, it is enabled now.
 
 
 
 
 							<h3>See</h3>
 							<ul>
-									<a href="../classes/NobleScene.html#NobleScene.inputHandler">inputHandler</a>
+									<a href="../classes/NobleScene.html#noblescene.inputHandler">inputHandler</a>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:start()
-	YourSceneName.super.start(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">start</span>()
+	YourSceneName.super.<span class="function-name">start</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:update"></a>
-						<span class="item-name">NobleScene:update()<span>
+						<a name = "noblescene:update"></a>
+						<span class="item-name">noblescene:update()<span>
 					</dt>
 					<dd>
 						Implement to run scene-specific code on every frame while this scene is active.
@@ -330,15 +330,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:update()
-	YourSceneName.super.update(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">update</span>()
+	YourSceneName.super.<span class="function-name">update</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:drawBackground"></a>
-						<span class="item-name">NobleScene:drawBackground(__x, __y, __width, __height)<span>
+						<a name = "noblescene:drawBackground"></a>
+						<span class="item-name">noblescene:drawBackground(__x, __y, __width, __height)<span>
 					</dt>
 					<dd>
 						Implement this function to draw background visual elements in your scene.
@@ -378,15 +378,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:drawBackground(__x, __y, __width, __height)
-	YourSceneName.super.drawBackground(self) <span class="comment">-- optional, invokes default behavior.
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">drawBackground</span>(__x, __y, __width, __height)
+	YourSceneName.super.<span class="function-name">drawBackground</span>(self) <span class="comment">-- optional, invokes default behavior.
 </span>	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:exit"></a>
-						<span class="item-name">NobleScene:exit()<span>
+						<a name = "noblescene:exit"></a>
+						<span class="item-name">noblescene:exit()<span>
 					</dt>
 					<dd>
 						Implement this in your scene if you have "goodbye" code to run when a transition to another scene
@@ -397,15 +397,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:exit()
-	YourSceneName.super.exit(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">exit</span>()
+	YourSceneName.super.<span class="function-name">exit</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:finish"></a>
-						<span class="item-name">NobleScene:finish()<span>
+						<a name = "noblescene:finish"></a>
+						<span class="item-name">noblescene:finish()<span>
 					</dt>
 					<dd>
 						Implement this in your scene if you have code to run when a transition to another scene
@@ -416,15 +416,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:finish()
-	YourSceneName.super.finish(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">finish</span>()
+	YourSceneName.super.<span class="function-name">finish</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:pause"></a>
-						<span class="item-name">NobleScene:pause()<span>
+						<a name = "noblescene:pause"></a>
+						<span class="item-name">noblescene:pause()<span>
 					</dt>
 					<dd>
 						<code>pause()</code> / <code>resume()</code></p>
@@ -439,15 +439,15 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:pause()
-	YourSceneName.super.pause(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">pause</span>()
+	YourSceneName.super.<span class="function-name">pause</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
-						<a name = "NobleScene:resume"></a>
-						<span class="item-name">NobleScene:resume()<span>
+						<a name = "noblescene:resume"></a>
+						<span class="item-name">noblescene:resume()<span>
 					</dt>
 					<dd>
 						<span></span>
@@ -457,8 +457,8 @@ local scene = YourSceneName
 
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">function</span> YourSceneName:resume()
-	YourSceneName.super.resume(self)
+								<pre class="example"><span class="keyword">function</span> YourSceneName:<span class="function-name">resume</span>()
+	YourSceneName.super.<span class="function-name">resume</span>(self)
 	<span class="comment">--[Your code here]--
 </span><span class="keyword">end</span></pre>
 
@@ -473,7 +473,7 @@ local scene = YourSceneName
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 

@@ -100,13 +100,13 @@
 														 table. Your game's settings, and thier default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves your default values immediatly to disk.
 													</li>
 													<li><span class="parameter">__modifyExistingOnKeyChange</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
@@ -117,7 +117,7 @@
 
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.Settings.setup({
+								<pre class="example">Noble.Settings.<span class="function-name">setup</span>({
 	difficulty = <span class="string">"normal"</span>,
 	music = <span class="keyword">true</span>,
 	sfx = <span class="keyword">true</span>,
@@ -152,7 +152,7 @@
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.Settings.html#Noble.Settings.set">set</a>
+									<a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a>
 							</ul>
 
 
@@ -179,7 +179,7 @@
 														 The setting's new value
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
@@ -190,9 +190,9 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.setup">setup</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.get">get</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">save</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.setup">Noble.Settings.setup</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.get">Noble.Settings.get</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
 							</ul>
 
 
@@ -212,7 +212,7 @@
 														 The name of the setting.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
@@ -223,9 +223,9 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">resetSome</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">resetAll</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">save</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">Noble.Settings.resetSome</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
 							</ul>
 
 
@@ -245,7 +245,7 @@
 														 The names of the settings, in an array-style table.
 													</li>
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
@@ -256,8 +256,8 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">resetAll</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">save</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
 							</ul>
 
 
@@ -272,7 +272,7 @@
 								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__saveToDisk</span>
-															<span class="types"><span class="type">bool</span></span>
+															<span class="types"><span class="type">boolean</span></span>
 															<span class="default">= <span class="value">true</span> (default)</span>
 														<br/>
 														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
@@ -283,8 +283,8 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">resetSome</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">save</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">Noble.Settings.resetSome</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
 							</ul>
 
 
@@ -302,9 +302,9 @@
 
 							<h3>See</h3>
 							<ul>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.set">set</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.reset">reset</a></li>
-									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">resetAll</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.reset">Noble.Settings.reset</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
 							</ul>
 
 
@@ -319,7 +319,7 @@
 <div id="about">
 	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
 	<span style="float:right;">
-		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.4.6</a>.
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
 	</span>
 </div> <!-- id="about" -->
 
