@@ -429,7 +429,7 @@ function Sequence:addRunning()
 end
 
 function Sequence:removeRunning()
-	local indexInRunningTable = table.indexOfElement(self)
+	local indexInRunningTable = table.indexOfElement(_runningSequences, self)
 	if indexInRunningTable then
 		table.remove(_runningSequences, indexInRunningTable)
 	end
