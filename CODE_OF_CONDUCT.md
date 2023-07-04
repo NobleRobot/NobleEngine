@@ -38,6 +38,6 @@ All project leaders are obligated to respect the privacy and security of the rep
 
 ## Attribution
 
-This Code of Conduct is adapted and simplified from the [Contributor Covenant][homepage], version 2.0, available at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
+This Code of Conduct is adapted and simplified from Contributor Covenant version 2.0, which is available at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
 
 For answers to common questions about the originating document, see the FAQ at https://www.contributor-covenant.org/faq.
