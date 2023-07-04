@@ -9,7 +9,6 @@ Noble.Animation = {}
 
 --- Create a new animation "state machine". This function is called automatically when creating a new `NobleSprite`.
 -- @string __view This can be: the path to a spritesheet image file or an image table object (`Graphics.imagetable`). See Playdate SDK docs for imagetable file naming conventions.
-
 -- @return `animation`, a new animation object.
 -- @usage
 --	local myHero = MyHero("path/to/spritesheet")
