@@ -96,17 +96,18 @@
 			<dl class="function">
 					<dt>
 						<a name = "Noble.Animation.new"></a>
-						<span class="item-name">Noble.Animation.new(__spritesheet)<span>
+						<span class="item-name">Noble.Animation.new(__view)<span>
 					</dt>
 					<dd>
 						Create a new animation "state machine".  This function is called automatically when creating a new <a href="../classes/NobleSprite.html#">NobleSprite</a>.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
-													<li><span class="parameter">__spritesheet</span>
+													<li><span class="parameter">__view</span>
 															<span class="types"><span class="type">string</span></span>
 														<br/>
-														 The path to the bitmap spritesheet/imagetable asset. See Playdate SDK docs for imagetable file naming conventions.
+														This can be: the path to a spritesheet image file or an image table object (<code>Graphics.imagetable</code>). See Playdate SDK docs for imagetable file naming conventions.
+
 													</li>
 							</ul>
 
@@ -125,7 +126,7 @@
 							<h3>Usage</h3>
 								<pre class="example"><span class="keyword">local</span> myHero = <span class="function-name">MyHero</span>(<span class="string">"path/to/spritesheet"</span>)</pre>
 								<pre class="example"><span class="comment">-- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
-</span><span class="comment">-- but you do feed its __spritesheet argument into MySprite.super.init()...
+</span><span class="comment">-- but you do feed its __view argument into MySprite.super.init()...
 </span>MyHero = {}
 <span class="function-name">class</span>(<span class="string">"MyHero"</span>).<span class="function-name">extends</span>(NobleSprite)
 

@@ -8,13 +8,14 @@ Noble.Animation = {}
 -- @section setup
 
 --- Create a new animation "state machine". This function is called automatically when creating a new `NobleSprite`.
--- @string __spritesheet The path to the bitmap spritesheet/imagetable asset. See Playdate SDK docs for imagetable file naming conventions.
+-- @string __view This can be: the path to a spritesheet image file or an image table object (`Graphics.imagetable`). See Playdate SDK docs for imagetable file naming conventions.
+
 -- @return `animation`, a new animation object.
 -- @usage
 --	local myHero = MyHero("path/to/spritesheet")
 -- @usage
 -- -- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
--- -- but you do feed its __spritesheet argument into MySprite.super.init()...
+-- -- but you do feed its __view argument into MySprite.super.init()...
 --	MyHero = {}
 --	class("MyHero").extends(NobleSprite)
 --
@@ -48,7 +49,7 @@ Noble.Animation = {}
 --		-- ...
 --	end
 --	@see NobleSprite:init
-function Noble.Animation.new(__spritesheet)
+function Noble.Animation.new(__view)
 
 	local animation = {}
 
@@ -82,7 +83,11 @@ function Noble.Animation.new(__spritesheet)
 
 	--- This animation's spritesheet. You can replace this with another `playdate.graphics.imagetable` object, but generally you would not want to.
 	-- @see new
-	animation.imageTable = Graphics.imagetable.new(__spritesheet)
+	if (type(__view) == "userdata") then
+		animation.imageTable = __view
+	else
+		animation.imageTable = Graphics.imagetable.new(__view)
+	end
 	-- The current count of frame durations. This is used to determine when to advance to the next frame.
 	animation.frameDurationCount = 1
 	-- The previous number of frame durations in the animation
