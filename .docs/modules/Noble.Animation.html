@@ -25,7 +25,7 @@
 			<ul>
 					<h3>Setup </h3>
 					<ul>
-							<li><a href="#__view">__view</a></li>
+							<li><a href="#Noble.Animation.new">.new</a></li>
 							<li><a href="#animation:addState">animation:addState</a></li>
 					</ul>
 					<h3>Properties </h3>
@@ -94,12 +94,13 @@
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "__view"></a>
-						<span class="item-name">__view<span>
+						<a name = "Noble.Animation.new"></a>
+						<span class="item-name">Noble.Animation.new(__view)<span>
 					</dt>
 					<dd>
 						Create a new animation "state machine".  This function is called automatically when creating a new <a href="../classes/NobleSprite.html#">NobleSprite</a>.
 
+								<h3>Parameters</h3>
 							<ul class="parameters">
 													<li><span class="parameter">__view</span>
 															<span class="types"><span class="type">string</span></span>
@@ -108,9 +109,52 @@
 													</li>
 							</ul>
 
+							<h3>Returns</h3>
+								<ol>
+
+										<code>animation</code>, a new animation object.
+								</ol>
 
 
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleSprite.html#noblesprite:init">NobleSprite:init</a>
+							</ul>
 
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> myHero = <span class="function-name">MyHero</span>(<span class="string">"path/to/spritesheet"</span>)</pre>
+								<pre class="example"><span class="comment">-- When extending NobleSprite (recommended), you don't call Noble.Animation.new(),
+</span><span class="comment">-- but you do feed its __view argument into MySprite.super.init()...
+</span>MyHero = {}
+<span class="function-name">class</span>(<span class="string">"MyHero"</span>).<span class="function-name">extends</span>(NobleSprite)
+
+<span class="keyword">function</span> MyHero:<span class="function-name">init</span>()
+	MyHero.super.<span class="function-name">init</span>(self, <span class="string">"assets/images/Hero"</span>)
+	<span class="comment">-- ...
+</span>	<span class="comment">-- A new NobleSprite creates a Noble.Animation object named "self.animation"
+</span>	self.animation:<span class="function-name">addState</span>(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span></pre>
+								<pre class="example"><span class="keyword">local</span> myAnimation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"path/to/spritesheet"</span>)</pre>
+								<pre class="example"><span class="comment">-- When extending playdate.graphics.Sprite, Noble.Animation.new() must be called manually...
+</span>MyHero = {}
+<span class="function-name">class</span>(<span class="string">"MyHero"</span>).<span class="function-name">extends</span>(Graphics.sprite)
+
+<span class="keyword">function</span> MyHero:<span class="function-name">init</span>()
+	MyHero.super.<span class="function-name">init</span>(self)
+	<span class="comment">-- ...
+</span>	self.animation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"assets/images/Hero"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"idle"</span>, <span class="number">1</span>, <span class="number">30</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"jump"</span>, <span class="number">31</span>, <span class="number">34</span>, <span class="string">"float"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"float"</span>, <span class="number">35</span>, <span class="number">45</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"turn"</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="string">"idle"</span>)
+	self.animation:<span class="function-name">addState</span>(<span class="string">"walk"</span>, <span class="number">56</span>, <span class="number">65</span>)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span></pre>
 
 					</dd>
 					<dt>
