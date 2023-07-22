@@ -26,6 +26,10 @@ NobleScene.name = ""
 --
 NobleScene.backgroundColor = Graphics.kColorWhite
 
+--- This is the color the scene will use for the `drawDebug` method.
+--
+NobleScene.debugColor = Graphics.kColorWhite
+
 --- Tables
 -- @section tables
 
@@ -126,7 +130,9 @@ end
 --		--[Your code here]--
 --	end
 --
-function NobleScene:enter() end
+function NobleScene:enter()
+    playdate.setDebugDrawColor(table.unpack(self.debugColor))
+end
 
 --- Implement if you have code to run once the transition to this scene is complete. This method signifies the full activation of a scene. If this scene's `inputHandler` is defined, it is enabled now.
 -- @see inputHandler
@@ -184,6 +190,17 @@ function NobleScene:drawBackground(__x, __y, __width, __height)
 	end
 end
 
+--- Implement this function to draw debug elements in the simulator.
+--- This will only run when using the simulator.
+--
+-- @usage
+--	function YourSceneName:drawBackground(__x, __y, __width, __height)
+--		YourSceneName.super.drawBackground(self) -- optional, invokes default behavior.
+--		--[Your code here]--
+--	end
+--
+function NobleScene:drawDebug() end
+
 --- Implement this in your scene if you have "goodbye" code to run when a transition to another scene
 -- begins, such as UI animation, saving to disk, etc.
 --
@@ -198,6 +215,7 @@ function NobleScene:exit()
 		sprite:setUpdatesEnabled(false)
 		sprite:setCollisionsEnabled(false)
 	end
+    self:disableDebug()
 end
 
 --- Implement this in your scene if you have code to run when a transition to another scene
@@ -240,3 +258,26 @@ function NobleScene:pause() end
 --		--[Your code here]--
 --	end
 function NobleScene:resume() end
+
+--- `enableDebug()` / `disableDebug()`
+--
+--- Use this to enable the `drawDebug` function in the simulator.
+--
+-- Implement one or both of these in your scene if you want something to happen.
+-- These are useful if you want to toggle fps with `Noble.showFPS = true`.
+--
+-- @usage
+--	function YourSceneName:enableDebug()
+--		YourSceneName.super.enableDebug(self)
+--		--[Your code here]--
+--	end
+function NobleScene:enableDebug()
+    function playdate.debugDraw()
+        self:drawDebug()
+    end
+end
+
+function NobleScene:disableDebug()
+	Noble.showFPS = false
+    function playdate.debugDraw() end
+end
