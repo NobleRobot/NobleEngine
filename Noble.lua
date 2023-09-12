@@ -236,7 +236,7 @@ local queuedTransition = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
+function Noble.transition(NewScene, __duration, __transitionType, __holdDuration, ...)
 	if (Noble.isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -253,6 +253,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		duration = __duration,
 		holdDuration = __holdDuration,
 		transitionType = __transitionType,
+		args = {...},
 	}
 end
 
@@ -265,7 +266,7 @@ local function executeTransition(__transition)
 		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
+	local newScene = __transition.NewScene(table.unpack(__transition.args)) -- Creates new scene object. Its init() function runs.
 
 	local duration = __transition.duration or configuration.defaultTransitionDuration
 	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
