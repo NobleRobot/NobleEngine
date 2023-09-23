@@ -47,7 +47,7 @@ import 'libraries/noble/modules/Noble.GameData.lua'
 import 'libraries/noble/modules/Noble.Input.lua'
 import 'libraries/noble/modules/Noble.Settings.lua'
 import 'libraries/noble/modules/Noble.Text.lua'
-import 'libraries/noble/modules/Noble.TransitionType.lua'
+import 'libraries/noble/modules/Noble.Transition.lua'
 import 'libraries/noble/modules/Noble.Menu.lua'
 import 'libraries/noble/modules/NobleScene'
 import 'libraries/noble/modules/NobleSprite'
@@ -92,8 +92,10 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 	Graphics.sprite.setBackgroundDrawingCallback(
 		function (x, y, width, height)
 			if (currentScene ~= nil) then
-				 -- Each scene has its own method for this. We only want to run one at a time.
-				currentScene:drawBackground(x, y, width, height)
+				-- Each scene has its own method for this. We only want to run one at a time.
+                currentScene:drawBackground(x, y, width, height)
+            else
+				Graphics.clear(playdate.graphics.kColorBlack)
 			end
 		end
 	)
@@ -187,7 +189,7 @@ end
 local transitionSequence = nil
 local previousSceneScreenCapture = nil
 
-local currentTransitionType = nil
+local currentTransition = nil
 
 local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
 local dipToWhitePanel = Graphics.image.new(400,240, Graphics.kColorWhite)
@@ -267,142 +269,45 @@ local function executeTransition(__transition)
 
 	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
 
-	local duration = __transition.duration or configuration.defaultTransitionDuration
-	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
-	currentTransitionType = __transition.transitionType or configuration.defaultTransitionType
-
-	local onMidpoint = function()
-		if (currentScene ~= nil) then
+	local onMidpoint = nil
+	if currentScene ~= nil then
+		onMidpoint = function()
 			currentScene:finish()
 			currentScene = nil			-- Allows current scene to be garbage collected.
+			currentScene = newScene			-- New scene's update loop begins.
+			newScene:enter()				-- The new scene runs its "hello" code.
 		end
-		currentScene = newScene			-- New scene's update loop begins.
-		newScene:enter()				-- The new scene runs its "hello" code.
 	end
 
-	local onComplete = function()
-		previousSceneScreenCapture = nil -- Reset (if necessary).
+    local onComplete = function()
+		if currentScene == nil then			-- The new scene runs its "hello" code.
+			currentScene = newScene			-- New scene's update loop begins.
+			newScene:enter()				-- The new scene runs its "hello" code.
+		end
 		Noble.isTransitioning = false	-- Reset
 		newScene:start()				-- The new scene is now active.
 	end
-
-	if (Utilities.startsWith(currentTransitionType, Noble.TransitionType.DIP)) then
-		transitionSequence = Sequence.new()
-			:from(0)
-			:to(1, (duration-holdDuration)/2, Ease.linear)
-			:callback(onMidpoint)
-			:sleep(holdDuration)
-			:to(2, (duration-holdDuration)/2, Ease.linear)
-			:callback(onComplete)
-	else
-		previousSceneScreenCapture = Utilities.screenshot()
-		onMidpoint()
-		transitionSequence = Sequence.new()
-			:from(0)
-			:to(1, duration, Ease.linear)
-			:callback(onComplete)
-	end
-	transitionSequence:start()
+	local duration = __transition.duration or configuration.defaultTransitionDuration
+	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
+    currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
+        onComplete,
+        onMidpoint,
+        duration * 1000,
+		holdDuration * 1000
+    )
 end
 
-local transitionCanvas = Graphics.image.new(400,240, Graphics.kColorClear)
+local transitionCanvas = Graphics.image.new(400, 240)
 
 local function transitionUpdate()
-	local progress = transitionSequence:get()
-
 	transitionCanvas:clear(Graphics.kColorClear)
 	Graphics.lockFocus(transitionCanvas)
 
-	-- Transition type: Dip to black
-	if (currentTransitionType == Noble.TransitionType.DIP_TO_BLACK) then
-		if (progress < 1) then
-			dipToBlackPanel:drawFaded(0, 0, Ease.outQuad(progress, 0, 1, 1), Graphics.image.kDitherTypeBayer4x4)
-		elseif (progress < 2) then
-			dipToBlackPanel:drawFaded(0, 0, 1 - Ease.inQuad(progress - 1, 0, 1, 1), Graphics.image.kDitherTypeBayer4x4)
-		end
+	currentTransition:update()
 
-	-- Transition type: Dip to white
-	elseif (currentTransitionType == Noble.TransitionType.DIP_TO_WHITE) then
-		if (progress < 1) then
-			dipToWhitePanel:drawFaded(0, 0, Ease.outQuad(progress, 0, 1, 1), Graphics.image.kDitherTypeBayer8x8)
-		elseif (progress < 2) then
-			dipToWhitePanel:drawFaded(0, 0, 1 - Ease.inQuad(progress - 1, 0, 1, 1), Graphics.image.kDitherTypeBayer8x8)
-		end
-
-	-- Transition type: Cross dissolve (aka: crossfade)
-	elseif (currentTransitionType == Noble.TransitionType.CROSS_DISSOLVE) then
-		-- if previousSceneScreenCapture == nil then
-		-- 	previousSceneScreenCapture = Utilities.screenshot()
-		-- end
-		if (progress < 1) then
-			previousSceneScreenCapture:drawFaded(0, 0, 1 - Ease.inOutQuart(progress, 0, 1, 1), Graphics.image.kDitherTypeBayer4x4)
-		-- else
-		-- 	previousSceneScreenCapture = nil -- Reset
-		end
-
-	-- -- Transition type: Custom Fade
-	-- elseif (Noble.Transition.type == Noble.Transition.DIP_CUSTOM) then
-	-- 	if (progress < 1) then
-	-- 		Graphics.setPattern(Pattern.fade[math.floor(progress*#Pattern.fade) + 1])
-	-- 	elseif (progress < 2) then
-	-- 		Graphics.setPattern(Pattern.fade[#Pattern.fade * 2 - (math.floor(progress * #Pattern.fade))])
-	-- 	end
-	-- 	Graphics.fillRect(0, 0, 400, 240)
-
-	-- Transition type: Widget Satchel (horizontal "color" panels)
-	elseif (currentTransitionType == Noble.TransitionType.DIP_WIDGET_SATCHEL) then
-		if (progress < 1) then
-			widgetSatchelPanels[1]:draw(0, -48 + Ease.outCubic(progress, 0, 1, 1) * 48*1 )
-			widgetSatchelPanels[2]:draw(0, -48 + Ease.outCubic(progress, 0, 1, 1) * 48*2 )
-			widgetSatchelPanels[3]:draw(0, -48 + Ease.outCubic(progress, 0, 1, 1) * 48*3 )
-			widgetSatchelPanels[4]:draw(0, -48 + Ease.outCubic(progress, 0, 1, 1) * 48*4 )
-			widgetSatchelPanels[5]:draw(0, -48 + Ease.outCubic(progress, 0, 1, 1) * 48*5 )
-		elseif (progress < 2) then
-			widgetSatchelPanels[1]:draw(0, 48*0 + Ease.inCubic(progress - 1, 0, 1, 1) * 48*5)
-			widgetSatchelPanels[2]:draw(0, 48*1 + Ease.inCubic(progress - 1, 0, 1, 1) * 48*4)
-			widgetSatchelPanels[3]:draw(0, 48*2 + Ease.inCubic(progress - 1, 0, 1, 1) * 48*3)
-			widgetSatchelPanels[4]:draw(0, 48*3 + Ease.inCubic(progress - 1, 0, 1, 1) * 48*2)
-			widgetSatchelPanels[5]:draw(0, 48*4 + Ease.inCubic(progress - 1, 0, 1, 1) * 48*1)
-		end
-
-	-- Transition type: Metro Nexus (vertical white panels)
-	elseif (currentTransitionType == Noble.TransitionType.DIP_METRO_NEXUS) then
-		if (progress < 1) then
-			metroNexusPanels[1]:draw(000, (-1 + Ease.outQuint(progress, 0, 1, 1)) * 240 )
-			metroNexusPanels[2]:draw(080, (-1 + Ease.outQuart(progress, 0, 1, 1)) * 240 )
-			metroNexusPanels[3]:draw(160, (-1 + Ease.outQuart(progress, 0, 1, 1)) * 240 )
-			metroNexusPanels[4]:draw(240, (-1 + Ease.outCubic(progress, 0, 1, 1)) * 240 )
-			metroNexusPanels[5]:draw(320, (-1 + Ease.outSine (progress, 0, 1, 1)) * 240 )
-		elseif (progress < 2) then
-			metroNexusPanels[1]:draw(000, (1 - Ease.inQuint(progress - 1, 0, 1, 1)) * -240 + 240)
-			metroNexusPanels[2]:draw(080, (1 - Ease.inQuart(progress - 1, 0, 1, 1)) * -240 + 240)
-			metroNexusPanels[3]:draw(160, (1 - Ease.inQuart(progress - 1, 0, 1, 1)) * -240 + 240)
-			metroNexusPanels[4]:draw(240, (1 - Ease.inCubic(progress - 1, 0, 1, 1)) * -240 + 240)
-			metroNexusPanels[5]:draw(320, (1 - Ease.inSine (progress - 1, 0, 1, 1)) * -240 + 240)
-		end
-
-	-- Transition type: Slide
-	elseif (currentTransitionType == Noble.TransitionType.SLIDE_OFF_LEFT) then
-		if (progress < 1) then
-			previousSceneScreenCapture:draw(Ease.inQuart(progress, 0, 1, 1) * -400, 0)
-		end
-	elseif (currentTransitionType == Noble.TransitionType.SLIDE_OFF_RIGHT) then
-		if (progress < 1) then
-			previousSceneScreenCapture:draw(Ease.inQuart(progress, 0, 1, 1) * 400, 0)
-		end
-	elseif (currentTransitionType == Noble.TransitionType.SLIDE_OFF_UP) then
-		if (progress < 1) then
-			previousSceneScreenCapture:draw(0, Ease.inQuart(progress, 0, 1, 1) * -240)
-		end
-	elseif (currentTransitionType == Noble.TransitionType.SLIDE_OFF_DOWN) then
-		if (progress < 1) then
-			previousSceneScreenCapture:draw(0, Ease.inQuart(progress, 0, 1, 1) * 240, 0)
-		end
-	end
-
-	Graphics.unlockFocus()
+    Graphics.unlockFocus()
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	transitionCanvas:drawIgnoringOffset(0,0)
-
 end
 
 --- Get the current scene object
@@ -433,8 +338,8 @@ function playdate.update()
 		currentScene:update()			-- Scene-specific update code.
 	end
 
-	if (Noble.isTransitioning) then
-		transitionUpdate()				-- Update transition animations (if active).
+    if (Noble.isTransitioning) then
+		transitionUpdate()
 	end
 
 	crankIndicatorActive, crankIndicatorForced = Noble.Input.getCrankIndicatorStatus()
