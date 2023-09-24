@@ -126,7 +126,8 @@ end
 
 local defaultConfiguration = {
 	defaultTransitionDuration = 1,
-	defaultTransitionHoldDuration = 0.2,
+    defaultTransitionHoldDuration = 0.2,
+	defaultTransitionEasing = Ease.inSin,
 	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
@@ -162,9 +163,9 @@ function Noble.setConfig(__configuration)
 	if (__configuration == nil) then
 		error("BONK: You cannot pass a nil value to Noble.setConfig(). If you want to reset to default values, use Noble.resetConfig().")
 	end
-
 	if (__configuration.defaultTransitionDuration ~= nil) then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
 	if (__configuration.defaultTransitionHoldDuration ~= nil) then configuration.defaultTransitionHoldDuration = __configuration.defaultTransitionHoldDuration end
+	if (__configuration.defaultTransitionEasing ~= nil) then configuration.defaultTransitionEasing = __configuration.defaultTransitionEasing end
 	if (__configuration.defaultTransitionType ~= nil) then configuration.defaultTransitionType = __configuration.defaultTransitionType end
 	if (__configuration.enableDebugBonkChecking ~= nil) then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
@@ -238,7 +239,7 @@ local queuedTransition = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __transitionType, __holdDuration)
+function Noble.transition(NewScene, __duration, __transitionType, __holdDuration, __easing)
 	if (Noble.isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -254,7 +255,8 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		NewScene = NewScene,
 		duration = __duration,
 		holdDuration = __holdDuration,
-		transitionType = __transitionType,
+        transitionType = __transitionType,
+		easing = __easing
 	}
 end
 
@@ -288,12 +290,14 @@ local function executeTransition(__transition)
 		newScene:start()				-- The new scene is now active.
 	end
 	local duration = __transition.duration or configuration.defaultTransitionDuration
-	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
+    local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
+	local easing = __transition.easing or configuration.defaultTransitionEasing
     currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
         onComplete,
         onMidpoint,
         duration * 1000,
-		holdDuration * 1000
+        holdDuration * 1000,
+		easing
     )
 end
 

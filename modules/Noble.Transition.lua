@@ -24,7 +24,7 @@ function Noble.Transition.BaseTransition:init(fin, mid, duration, hold, easing)
         self.hold = 200
     end
     self.easing = easing or pd.easingFunctions.linear
-    self.animator = gfx.animator.new(self.duration, 0, 1, self.easing)
+    self.animator = gfx.animator.new(self.duration / 2, 0, 1, self.easing)
     self.screenshot = Utilities.screenshot()
 end
 function Noble.Transition.BaseTransition:update()
@@ -32,20 +32,17 @@ function Noble.Transition.BaseTransition:update()
         if self.mid ~= nil and not self.mid_called then
             if self.hold_timer == nil then
                 self.hold_timer = pd.timer.new(self.hold, function()
-                    self:draw()
                     self:mid()
                     self.mid_called = true
-                    self.animator = gfx.animator.new(self.duration, 1, 0, self.easing)
+                    self.animator = gfx.animator.new(self.duration / 2, 1, 0, self.easing)
                 end)
             end
         else
             self:fin()
             self.fin_called = true
         end
-        self:draw()
-    else
-        self:draw()
     end
+    self:draw()
 end
 function Noble.Transition.BaseTransition:draw() end
 
@@ -62,7 +59,6 @@ end
 local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
 class("DipToBlack", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.DipToBlack:draw()
-    print(self.animator:currentValue())
     dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
 end
 
@@ -125,6 +121,7 @@ Noble.TransitionType.DIP_TO_BLACK = Noble.TransitionType.DIP .. " to black"
 Noble.TransitionType.DIP_TO_BLACK = Noble.Transition.DipToBlack
 --- Fade to white, then to the next scene.
 Noble.TransitionType.DIP_TO_WHITE = Noble.TransitionType.DIP .. " to white"
+Noble.TransitionType.DIP_TO_WHITE = Noble.Transition.DipToWhite
 
 Noble.TransitionType.DIP_CUSTOM = Noble.TransitionType.DIP .. ": Custom"
 --- An "accordion" transition, from "Widget Satchel" by Noble Robot.
