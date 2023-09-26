@@ -18,13 +18,15 @@ function Noble.Transition.BaseTransition:init(fin, mid, duration, hold, easing)
     self.fin = fin
     self.fin_called = false
     self.duration = duration or 1
+    self.out = mid == nil
     if hold ~= nil then
         self.hold = hold
     else
         self.hold = 200
     end
     self.easing = easing or pd.easingFunctions.linear
-    self.animator = gfx.animator.new(self.duration / 2, 0, 1, self.easing)
+    local start = self.out and 1 or 0
+    self.animator = gfx.animator.new(self.duration / 2, start, 1 - start, self.easing)
     self.screenshot = Utilities.screenshot()
 end
 function Noble.Transition.BaseTransition:update()
@@ -32,6 +34,7 @@ function Noble.Transition.BaseTransition:update()
         if self.mid ~= nil and not self.mid_called then
             if self.hold_timer == nil then
                 self.hold_timer = pd.timer.new(self.hold, function()
+                    self.out = true
                     self:mid()
                     self.mid_called = true
                     self.animator = gfx.animator.new(self.duration / 2, 1, 0, self.easing)
@@ -49,10 +52,10 @@ function Noble.Transition.BaseTransition:draw() end
 class("Cut", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Cut:init(fin, mid)
     if mid ~= nil then
-        mid()
+        mid(self)
     end
     if fin ~= nil then
-        fin()
+        fin(self)
     end
 end
 
@@ -69,6 +72,12 @@ function Noble.Transition.DipToWhite:draw()
 end
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
+function Noble.Transition.CrossDissolve:init(fin, mid, duration, hold, easing)
+    Noble.Transition.CrossDissolve.super.init(self, fin, nil, duration, hold, easing)
+    if mid ~= nil then
+        mid(self)
+    end
+end
 function Noble.Transition.CrossDissolve:draw()
     self.screenshot:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
 end
