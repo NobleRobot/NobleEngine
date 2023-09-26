@@ -256,7 +256,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		duration = __duration,
 		holdDuration = __holdDuration,
         transitionType = __transitionType,
-		easing = __easing
+        easing = __easing
 	}
 end
 
@@ -272,13 +272,16 @@ local function executeTransition(__transition)
 	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
 
 	local onMidpoint = nil
-	if currentScene ~= nil then
-		onMidpoint = function()
-			currentScene:finish()
-			currentScene = nil			-- Allows current scene to be garbage collected.
-			currentScene = newScene			-- New scene's update loop begins.
-			newScene:enter()				-- The new scene runs its "hello" code.
-		end
+    if currentScene == nil then
+		currentScene = newScene -- New scene's update loop begins.
+        newScene:enter() -- The new scene runs its "hello" code.
+    else
+        onMidpoint = function()
+            currentScene:finish()
+            currentScene = nil -- Allows current scene to be garbage collected.
+            currentScene = newScene -- New scene's update loop begins.
+            newScene:enter() -- The new scene runs its "hello" code.
+        end
 	end
 
     local onComplete = function()
