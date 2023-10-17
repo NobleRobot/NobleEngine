@@ -32,7 +32,6 @@ Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
-local swipe = Graphics.imagetable.new("assets/images/swipe")
 ---
 -- A set of constants for scene transition animations.
 -- @module Noble.TransitionType
@@ -197,8 +196,8 @@ end
 
 class("Animation", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Animation:init(fin, mid, duration, hold, easing, it)
-    Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing, it)
-    self.it = it or swipe
+    Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+    self.it = it
 end
 function Noble.Transition.Animation:draw()
     local progress = self.animator:currentValue()

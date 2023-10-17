@@ -128,7 +128,8 @@ local defaultConfiguration = {
 	defaultTransitionDuration = 1,
     defaultTransitionHoldDuration = 0.2,
 	defaultTransitionEasing = Ease.inSin,
-	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
+    defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
+	defaultTransitionArgs = nil,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
 }
@@ -166,6 +167,7 @@ function Noble.setConfig(__configuration)
 	if (__configuration.defaultTransitionDuration ~= nil) then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
 	if (__configuration.defaultTransitionHoldDuration ~= nil) then configuration.defaultTransitionHoldDuration = __configuration.defaultTransitionHoldDuration end
 	if (__configuration.defaultTransitionEasing ~= nil) then configuration.defaultTransitionEasing = __configuration.defaultTransitionEasing end
+	if (__configuration.defaultTransitionArgs ~= nil) then configuration.defaultTransitionArgs = __configuration.defaultTransitionArgs end
 	if (__configuration.defaultTransitionType ~= nil) then configuration.defaultTransitionType = __configuration.defaultTransitionType end
 	if (__configuration.enableDebugBonkChecking ~= nil) then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
@@ -257,11 +259,11 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		holdDuration = __holdDuration,
         transitionType = __transitionType,
         easing = __easing,
-		args = ...
+		args = {...}
 	}
 end
 
-local function executeTransition(__transition, args)
+local function executeTransition(__transition)
 	Noble.isTransitioning = true
 
 	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
@@ -295,14 +297,15 @@ local function executeTransition(__transition, args)
 	end
 	local duration = __transition.duration or configuration.defaultTransitionDuration
     local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
-	local easing = __transition.easing or configuration.defaultTransitionEasing
+    local easing = __transition.easing or configuration.defaultTransitionEasing
+    local args = __transition.args or configuration.defaultTransitionArgs
     currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
         onComplete,
         onMidpoint,
         duration * 1000,
         holdDuration * 1000,
 		easing,
-		args
+		table.unpack(args)
     )
 end
 
