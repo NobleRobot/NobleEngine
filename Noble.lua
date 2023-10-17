@@ -239,7 +239,7 @@ local queuedTransition = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __transitionType, __holdDuration, __easing)
+function Noble.transition(NewScene, __duration, __transitionType, __holdDuration, __easing, ...)
 	if (Noble.isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -256,11 +256,12 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		duration = __duration,
 		holdDuration = __holdDuration,
         transitionType = __transitionType,
-        easing = __easing
+        easing = __easing,
+		args = ...
 	}
 end
 
-local function executeTransition(__transition)
+local function executeTransition(__transition, args)
 	Noble.isTransitioning = true
 
 	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
@@ -300,7 +301,8 @@ local function executeTransition(__transition)
         onMidpoint,
         duration * 1000,
         holdDuration * 1000,
-		easing
+		easing,
+		args
     )
 end
 
