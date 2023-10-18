@@ -189,6 +189,25 @@ function Noble.Transition.Animation:draw()
     self.it[index]:draw(0, 0)
 end
 
+class("Spotlight", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
+function Noble.Transition.Spotlight:init(fin, mid, duration, hold, easing, x1, y1, x2, y2)
+    Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+    self.x1, self.y1 = x1, y1
+    self.x2, self.y2 = x2 or x1, y2 or y1
+end
+function Noble.Transition.Spotlight:draw()
+    Graphics.pushContext() do
+        dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
+        Graphics.setColor(Graphics.kColorClear)
+        if not self.out then
+            Graphics.fillCircleAtPoint(self.x1, self.y1, (1 - self.animator:currentValue()) * 400)
+        else
+            Graphics.fillCircleAtPoint(self.x2, self.y2, (1 - self.animator:currentValue()) * 400)
+        end
+    end Graphics.popContext()
+end
+
+-- For backwards compatibility
 Noble.TransitionType = Noble.Transition
 --- An all-time classic.
 Noble.TransitionType.CUT = Noble.Transition.Cut
