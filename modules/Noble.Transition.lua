@@ -80,6 +80,14 @@ function Noble.Transition.BaseTransition:update()
 end
 function Noble.Transition.BaseTransition:draw() end
 
+class("OutTransition", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
+function Noble.Transition.OutTransition:init(fin, mid, duration, hold, easing, ...)
+    Noble.Transition.OutTransition.super.init(self, fin, nil, duration, hold, easing, ...)
+    if mid ~= nil then
+        mid(self)
+    end
+end
+
 class("Cut", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Cut:init(fin, mid)
     if mid ~= nil then
@@ -102,57 +110,27 @@ function Noble.Transition.DipToWhite:draw()
     dipToWhitePanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
 end
 
-class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.CrossDissolve:init(fin, mid, duration, hold, easing)
-    Noble.Transition.CrossDissolve.super.init(self, fin, nil, duration, hold, easing)
-    if mid ~= nil then
-        mid(self)
-    end
-end
+class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.CrossDissolve:draw()
     self.screenshot:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
 end
 
-class("SlideOffLeft", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.SlideOffLeft:init(fin, mid, duration, hold, easing)
-    Noble.Transition.SlideOffLeft.super.init(self, fin, nil, duration, hold, easing)
-    if mid ~= nil then
-        mid(self)
-    end
-end
+class("SlideOffLeft", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffLeft:draw()
     self.screenshot:draw(-400 + self.animator:currentValue() * 400, 0)
 end
 
-class("SlideOffRight", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.SlideOffRight:init(fin, mid, duration, hold, easing)
-    Noble.Transition.SlideOffRight.super.init(self, fin, nil, duration, hold, easing)
-    if mid ~= nil then
-        mid(self)
-    end
-end
+class("SlideOffRight", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffRight:draw()
     self.screenshot:draw(400 - self.animator:currentValue() * 400, 0)
 end
 
-class("SlideOffUp", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.SlideOffUp:init(fin, mid, duration, hold, easing)
-    Noble.Transition.SlideOffUp.super.init(self, fin, nil, duration, hold, easing)
-    if mid ~= nil then
-        mid(self)
-    end
-end
+class("SlideOffUp", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffUp:draw()
     self.screenshot:draw(0, -240 + self.animator:currentValue() * 240)
 end
 
-class("SlideOffDown", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.SlideOffDown:init(fin, mid, duration, hold, easing)
-    Noble.Transition.SlideOffDown.super.init(self, fin, nil, duration, hold, easing)
-    if mid ~= nil then
-        mid(self)
-    end
-end
+class("SlideOffDown", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffDown:draw()
     self.screenshot:draw(0, 240 - self.animator:currentValue() * 240)
 end
@@ -213,10 +191,8 @@ end
 
 Noble.TransitionType = Noble.Transition
 --- An all-time classic.
-Noble.TransitionType.CUT = "Cut"
 Noble.TransitionType.CUT = Noble.Transition.Cut
 --- A simple cross-fade.
-Noble.TransitionType.CROSS_DISSOLVE = "Cross dissolve"
 Noble.TransitionType.CROSS_DISSOLVE = Noble.Transition.CrossDissolve
 
 --- Fade to black, then to the next scene.
@@ -224,11 +200,9 @@ Noble.TransitionType.DIP_TO_BLACK = Noble.Transition.DipToBlack
 --- Fade to white, then to the next scene.
 Noble.TransitionType.DIP_TO_WHITE = Noble.Transition.DipToWhite
 
--- Noble.TransitionType.DIP_CUSTOM = Noble.TransitionType.DIP .. ": Custom"
 --- An "accordion" transition, from "Widget Satchel" by Noble Robot.
 Noble.TransitionType.DIP_WIDGET_SATCHEL = Noble.Transition.DipWidgetSatchel
 --- A "cascade" transition, from "Metro Nexus" by Noble Robot.
--- Noble.TransitionType.DIP_METRO_NEXUS = Noble.TransitionType.DIP .. ": Metro Nexus"
 Noble.TransitionType.DIP_METRO_NEXUS = Noble.Transition.DipMetroNexus
 
 --- The existing scene slides off the left side of the screen, revealing the next scene.
