@@ -313,11 +313,9 @@ local transitionCanvas = Graphics.image.new(400, 240)
 
 local function transitionUpdate()
 	transitionCanvas:clear(Graphics.kColorClear)
-	Graphics.lockFocus(transitionCanvas)
-
-	currentTransition:update()
-
-    Graphics.unlockFocus()
+	Graphics.pushContext(transitionCanvas) do
+		currentTransition:update()
+    end Graphics.popContext()
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	transitionCanvas:drawIgnoringOffset(0,0)
 end
