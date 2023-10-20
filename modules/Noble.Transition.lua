@@ -100,19 +100,31 @@ end
 
 local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
 class("DipToBlack", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
+function Noble.Transition.DipToBlack:init(fin, mid, duration, hold, easing, dither, ...)
+    Noble.Transition.DipToBlack.super.init(self, fin, mid, duration, hold, easing, ...)
+    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+end
 function Noble.Transition.DipToBlack:draw()
-    dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
+    dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 local dipToWhitePanel = Graphics.image.new(400, 240, Graphics.kColorWhite)
 class("DipToWhite", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
+function Noble.Transition.DipToWhite:init(fin, mid, duration, hold, easing, dither, ...)
+    Noble.Transition.DipToWhite.super.init(self, fin, mid, duration, hold, easing, ...)
+    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+end
 function Noble.Transition.DipToWhite:draw()
-    dipToWhitePanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
+    dipToWhitePanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
+function Noble.Transition.CrossDissolve:init(fin, mid, duration, hold, easing, dither, ...)
+    Noble.Transition.CrossDissolve.super.init(self, fin, mid, duration, hold, easing, ...)
+    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+end
 function Noble.Transition.CrossDissolve:draw()
-    self.screenshot:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
+    self.screenshot:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 class("SlideOffLeft", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
