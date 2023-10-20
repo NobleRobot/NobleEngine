@@ -44,177 +44,177 @@ Noble.Transition = {}
 
 class("BaseTransition", nil, Noble.Transition).extends()
 function Noble.Transition.BaseTransition:init(fin, mid, duration, hold, easing, ...)
-    self.mid = mid
-    self.mid_called = false
-    self.fin = fin
-    self.fin_called = false
-    self.duration = duration or 1
-    self.out = mid == nil
-    if hold ~= nil then
-        self.hold = hold
-    else
-        self.hold = 200
-    end
-    self.easing = easing or pd.easingFunctions.inOutSine
-    local start = self.out and 1 or 0
-    self.animator = gfx.animator.new(self.duration / 2, start, 1 - start, self.easing)
-    self.screenshot = Utilities.screenshot()
+	self.mid = mid
+	self.mid_called = false
+	self.fin = fin
+	self.fin_called = false
+	self.duration = duration or 1
+	self.out = mid == nil
+	if hold ~= nil then
+		self.hold = hold
+	else
+		self.hold = 200
+	end
+	self.easing = easing or pd.easingFunctions.inOutSine
+	local start = self.out and 1 or 0
+	self.animator = gfx.animator.new(self.duration / 2, start, 1 - start, self.easing)
+	self.screenshot = Utilities.screenshot()
 end
 function Noble.Transition.BaseTransition:update()
-    if self.animator:ended() and not self.fin_called then
-        if self.mid ~= nil and not self.mid_called then
-            if self.hold_timer == nil then
-                self.hold_timer = pd.timer.new(self.hold, function()
-                    self.out = true
-                    self:mid()
-                    self.mid_called = true
-                    self.animator = gfx.animator.new(self.duration / 2, 1, 0, self.easing)
-                end)
-            end
-        else
-            self:fin()
-            self.fin_called = true
-        end
-    end
-    self:draw()
+	if self.animator:ended() and not self.fin_called then
+		if self.mid ~= nil and not self.mid_called then
+			if self.hold_timer == nil then
+				self.hold_timer = pd.timer.new(self.hold, function()
+					self.out = true
+					self:mid()
+					self.mid_called = true
+					self.animator = gfx.animator.new(self.duration / 2, 1, 0, self.easing)
+				end)
+			end
+		else
+			self:fin()
+			self.fin_called = true
+		end
+	end
+	self:draw()
 end
 function Noble.Transition.BaseTransition:draw() end
 
 class("OutTransition", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.OutTransition:init(fin, mid, duration, hold, easing, ...)
-    Noble.Transition.OutTransition.super.init(self, fin, nil, duration, hold, easing, ...)
-    if mid ~= nil then
-        mid(self)
-    end
+	Noble.Transition.OutTransition.super.init(self, fin, nil, duration, hold, easing, ...)
+	if mid ~= nil then
+		mid(self)
+	end
 end
 
 class("Cut", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Cut:init(fin, mid)
-    if mid ~= nil then
-        mid(self)
-    end
-    if fin ~= nil then
-        fin(self)
-    end
+	if mid ~= nil then
+		mid(self)
+	end
+	if fin ~= nil then
+		fin(self)
+	end
 end
 
 local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
 class("DipToBlack", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.DipToBlack:init(fin, mid, duration, hold, easing, dither, ...)
-    Noble.Transition.DipToBlack.super.init(self, fin, mid, duration, hold, easing, ...)
-    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+	Noble.Transition.DipToBlack.super.init(self, fin, mid, duration, hold, easing, ...)
+	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.DipToBlack:draw()
-    dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
+	dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 local dipToWhitePanel = Graphics.image.new(400, 240, Graphics.kColorWhite)
 class("DipToWhite", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.DipToWhite:init(fin, mid, duration, hold, easing, dither, ...)
-    Noble.Transition.DipToWhite.super.init(self, fin, mid, duration, hold, easing, ...)
-    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+	Noble.Transition.DipToWhite.super.init(self, fin, mid, duration, hold, easing, ...)
+	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.DipToWhite:draw()
-    dipToWhitePanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
+	dipToWhitePanel:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.CrossDissolve:init(fin, mid, duration, hold, easing, dither, ...)
-    Noble.Transition.CrossDissolve.super.init(self, fin, mid, duration, hold, easing, ...)
-    self.dither = dither or Graphics.image.kDitherTypeBayer4x4
+	Noble.Transition.CrossDissolve.super.init(self, fin, mid, duration, hold, easing, ...)
+	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.CrossDissolve:draw()
-    self.screenshot:drawFaded(0, 0, self.animator:currentValue(), self.dither)
+	self.screenshot:drawFaded(0, 0, self.animator:currentValue(), self.dither)
 end
 
 class("SlideOffLeft", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffLeft:draw()
-    self.screenshot:draw(-400 + self.animator:currentValue() * 400, 0)
+	self.screenshot:draw(-400 + self.animator:currentValue() * 400, 0)
 end
 
 class("SlideOffRight", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffRight:draw()
-    self.screenshot:draw(400 - self.animator:currentValue() * 400, 0)
+	self.screenshot:draw(400 - self.animator:currentValue() * 400, 0)
 end
 
 class("SlideOffUp", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffUp:draw()
-    self.screenshot:draw(0, -240 + self.animator:currentValue() * 240)
+	self.screenshot:draw(0, -240 + self.animator:currentValue() * 240)
 end
 
 class("SlideOffDown", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
 function Noble.Transition.SlideOffDown:draw()
-    self.screenshot:draw(0, 240 - self.animator:currentValue() * 240)
+	self.screenshot:draw(0, 240 - self.animator:currentValue() * 240)
 end
 
 class("DipWidgetSatchel", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.DipWidgetSatchel:draw()
-    local progress = self.animator:currentValue()
-    if not self.out then
-        widgetSatchelPanels[1]:draw(0, -48 + progress * 48*1 )
-        widgetSatchelPanels[2]:draw(0, -48 + progress * 48*2 )
-        widgetSatchelPanels[3]:draw(0, -48 + progress * 48*3 )
-        widgetSatchelPanels[4]:draw(0, -48 + progress * 48*4 )
-        widgetSatchelPanels[5]:draw(0, -48 + progress * 48*5 )
-    else
-        widgetSatchelPanels[1]:draw(0, 48*0 + (1 - progress) * 48*5)
-        widgetSatchelPanels[2]:draw(0, 48*1 + (1 - progress) * 48*4)
-        widgetSatchelPanels[3]:draw(0, 48*2 + (1 - progress) * 48*3)
-        widgetSatchelPanels[4]:draw(0, 48*3 + (1 - progress) * 48*2)
-        widgetSatchelPanels[5]:draw(0, 48*4 + (1 - progress) * 48*1)
-    end
+	local progress = self.animator:currentValue()
+	if not self.out then
+		widgetSatchelPanels[1]:draw(0, -48 + progress * 48*1 )
+		widgetSatchelPanels[2]:draw(0, -48 + progress * 48*2 )
+		widgetSatchelPanels[3]:draw(0, -48 + progress * 48*3 )
+		widgetSatchelPanels[4]:draw(0, -48 + progress * 48*4 )
+		widgetSatchelPanels[5]:draw(0, -48 + progress * 48*5 )
+	else
+		widgetSatchelPanels[1]:draw(0, 48*0 + (1 - progress) * 48*5)
+		widgetSatchelPanels[2]:draw(0, 48*1 + (1 - progress) * 48*4)
+		widgetSatchelPanels[3]:draw(0, 48*2 + (1 - progress) * 48*3)
+		widgetSatchelPanels[4]:draw(0, 48*3 + (1 - progress) * 48*2)
+		widgetSatchelPanels[5]:draw(0, 48*4 + (1 - progress) * 48*1)
+	end
 end
 
 class("DipMetroNexus", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.DipMetroNexus:draw()
-    local progress = self.animator:currentValue()
+	local progress = self.animator:currentValue()
 
-    if not self.out then
-        metroNexusPanels[1]:draw(000, (-1 + math.clamp(progress * 1, 0, 1)) * 240 )
-        metroNexusPanels[2]:draw(080, (-1 + math.clamp(progress * 1.5, 0, 1)) * 240 )
-        metroNexusPanels[3]:draw(160, (-1 + math.clamp(progress * 2, 0, 1)) * 240 )
-        metroNexusPanels[4]:draw(240, (-1 + math.clamp(progress * 2.5, 0, 1)) * 240 )
-        metroNexusPanels[5]:draw(320, (-1 + math.clamp(progress * 3, 0, 1)) * 240 )
-    else
-        metroNexusPanels[1]:draw(000, math.clamp(progress * 1, 0, 1) * -240 + 240)
-        metroNexusPanels[2]:draw(080, math.clamp(progress * 1.5, 0, 1) * -240 + 240)
-        metroNexusPanels[3]:draw(160, math.clamp(progress * 2, 0, 1) * -240 + 240)
-        metroNexusPanels[4]:draw(240, math.clamp(progress * 2.5, 0, 1) * -240 + 240)
-        metroNexusPanels[5]:draw(320, math.clamp(progress * 3, 0, 1) * -240 + 240)
-    end
+	if not self.out then
+		metroNexusPanels[1]:draw(000, (-1 + math.clamp(progress * 1, 0, 1)) * 240 )
+		metroNexusPanels[2]:draw(080, (-1 + math.clamp(progress * 1.5, 0, 1)) * 240 )
+		metroNexusPanels[3]:draw(160, (-1 + math.clamp(progress * 2, 0, 1)) * 240 )
+		metroNexusPanels[4]:draw(240, (-1 + math.clamp(progress * 2.5, 0, 1)) * 240 )
+		metroNexusPanels[5]:draw(320, (-1 + math.clamp(progress * 3, 0, 1)) * 240 )
+	else
+		metroNexusPanels[1]:draw(000, math.clamp(progress * 1, 0, 1) * -240 + 240)
+		metroNexusPanels[2]:draw(080, math.clamp(progress * 1.5, 0, 1) * -240 + 240)
+		metroNexusPanels[3]:draw(160, math.clamp(progress * 2, 0, 1) * -240 + 240)
+		metroNexusPanels[4]:draw(240, math.clamp(progress * 2.5, 0, 1) * -240 + 240)
+		metroNexusPanels[5]:draw(320, math.clamp(progress * 3, 0, 1) * -240 + 240)
+	end
 end
 
 class("Animation", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Animation:init(fin, mid, duration, hold, easing, it)
-    Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
-    self.it = it
+	Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+	self.it = it
 end
 function Noble.Transition.Animation:draw()
-    local progress = self.animator:currentValue()
-    local it_len = #self.it
-    local index = 1
-    if not self.out then
-        index = math.clamp((progress * it_len) // 2, 1, it_len)
-    else
-        index = math.clamp((progress * it_len) // 2, 1, it_len)
-    end
-    self.it[index]:draw(0, 0)
+	local progress = self.animator:currentValue()
+	local it_len = #self.it
+	local index = 1
+	if not self.out then
+		index = math.clamp((progress * it_len) // 2, 1, it_len)
+	else
+		index = math.clamp((progress * it_len) // 2, 1, it_len)
+	end
+	self.it[index]:draw(0, 0)
 end
 
 class("Spotlight", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
 function Noble.Transition.Spotlight:init(fin, mid, duration, hold, easing, x1, y1, x2, y2)
-    Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
-    self.x1, self.y1 = x1, y1
-    self.x2, self.y2 = x2 or x1, y2 or y1
+	Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+	self.x1, self.y1 = x1, y1
+	self.x2, self.y2 = x2 or x1, y2 or y1
 end
 function Noble.Transition.Spotlight:draw()
-    dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
-    Graphics.setColor(Graphics.kColorClear)
-    if not self.out then
-        Graphics.fillCircleAtPoint(self.x1, self.y1, (1 - self.animator:currentValue()) * 400)
-    else
-        Graphics.fillCircleAtPoint(self.x2, self.y2, (1 - self.animator:currentValue()) * 400)
-    end
+	dipToBlackPanel:drawFaded(0, 0, self.animator:currentValue(), Graphics.image.kDitherTypeBayer4x4)
+	Graphics.setColor(Graphics.kColorClear)
+	if not self.out then
+		Graphics.fillCircleAtPoint(self.x1, self.y1, (1 - self.animator:currentValue()) * 400)
+	else
+		Graphics.fillCircleAtPoint(self.x2, self.y2, (1 - self.animator:currentValue()) * 400)
+	end
 end
 
 -- For backwards compatibility

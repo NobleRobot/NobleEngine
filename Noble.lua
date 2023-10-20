@@ -93,8 +93,8 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 		function (x, y, width, height)
 			if (currentScene ~= nil) then
 				-- Each scene has its own method for this. We only want to run one at a time.
-                currentScene:drawBackground(x, y, width, height)
-            else
+				currentScene:drawBackground(x, y, width, height)
+			else
 				Graphics.clear(playdate.graphics.kColorBlack)
 			end
 		end
@@ -126,9 +126,9 @@ end
 
 local defaultConfiguration = {
 	defaultTransitionDuration = 1,
-    defaultTransitionHoldDuration = 0.2,
+	defaultTransitionHoldDuration = 0.2,
 	defaultTransitionEasing = Ease.inSin,
-    defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
+	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
 	defaultTransitionArgs = nil,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
@@ -257,8 +257,8 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 		NewScene = NewScene,
 		duration = __duration,
 		holdDuration = __holdDuration,
-        transitionType = __transitionType,
-        easing = __easing,
+		transitionType = __transitionType,
+		easing = __easing,
 		args = {...}
 	}
 end
@@ -275,19 +275,19 @@ local function executeTransition(__transition)
 	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
 
 	local onMidpoint = nil
-    if currentScene == nil then
+	if currentScene == nil then
 		currentScene = newScene -- New scene's update loop begins.
-        newScene:enter() -- The new scene runs its "hello" code.
-    else
-        onMidpoint = function()
-            currentScene:finish()
-            currentScene = nil -- Allows current scene to be garbage collected.
-            currentScene = newScene -- New scene's update loop begins.
-            newScene:enter() -- The new scene runs its "hello" code.
-        end
+		newScene:enter() -- The new scene runs its "hello" code.
+	else
+		onMidpoint = function()
+			currentScene:finish()
+			currentScene = nil -- Allows current scene to be garbage collected.
+			currentScene = newScene -- New scene's update loop begins.
+			newScene:enter() -- The new scene runs its "hello" code.
+		end
 	end
 
-    local onComplete = function()
+	local onComplete = function()
 		if currentScene == nil then			-- The new scene runs its "hello" code.
 			currentScene = newScene			-- New scene's update loop begins.
 			newScene:enter()				-- The new scene runs its "hello" code.
@@ -296,17 +296,17 @@ local function executeTransition(__transition)
 		newScene:start()				-- The new scene is now active.
 	end
 	local duration = __transition.duration or configuration.defaultTransitionDuration
-    local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
-    local easing = __transition.easing or configuration.defaultTransitionEasing
-    local args = __transition.args or configuration.defaultTransitionArgs
-    currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
-        onComplete,
-        onMidpoint,
-        duration * 1000,
-        holdDuration * 1000,
+	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
+	local easing = __transition.easing or configuration.defaultTransitionEasing
+	local args = __transition.args or configuration.defaultTransitionArgs
+	currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
+		onComplete,
+		onMidpoint,
+		duration * 1000,
+		holdDuration * 1000,
 		easing,
 		table.unpack(args)
-    )
+	)
 end
 
 local transitionCanvas = Graphics.image.new(400, 240)
@@ -315,7 +315,7 @@ local function transitionUpdate()
 	transitionCanvas:clear(Graphics.kColorClear)
 	Graphics.pushContext(transitionCanvas) do
 		currentTransition:update()
-    end Graphics.popContext()
+	end Graphics.popContext()
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	transitionCanvas:drawIgnoringOffset(0,0)
 end
@@ -348,7 +348,7 @@ function playdate.update()
 		currentScene:update()			-- Scene-specific update code.
 	end
 
-    if (Noble.isTransitioning) then
+	if (Noble.isTransitioning) then
 		transitionUpdate()
 	end
 
