@@ -193,42 +193,6 @@ local transitionSequence = nil
 local previousSceneScreenCapture = nil
 
 local currentTransition = nil
-
-local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
-local dipToWhitePanel = Graphics.image.new(400,240, Graphics.kColorWhite)
-
-local metroNexusPanels = {
-	Graphics.image.new(80,240, Graphics.kColorWhite),
-	Graphics.image.new(80,240, Graphics.kColorWhite),
-	Graphics.image.new(80,240, Graphics.kColorWhite),
-	Graphics.image.new(80,240, Graphics.kColorWhite),
-	Graphics.image.new(80,240, Graphics.kColorWhite)
-}
-
-local widgetSatchelPanels = {
-	Graphics.image.new(400,48, Graphics.kColorWhite),
-	Graphics.image.new(400,48, Graphics.kColorWhite),
-	Graphics.image.new(400,48, Graphics.kColorWhite),
-	Graphics.image.new(400,48, Graphics.kColorWhite),
-	Graphics.image.new(400,48, Graphics.kColorWhite)
-}
-Graphics.lockFocus(widgetSatchelPanels[1])
-Graphics.setDitherPattern(0.4, Graphics.image.kDitherTypeScreen)
-Graphics.fillRect(0,0,400,48)
-Graphics.lockFocus(widgetSatchelPanels[2])
-Graphics.setDitherPattern(0.7, Graphics.image.kDitherTypeScreen)
-Graphics.fillRect(0,0,400,48)
-Graphics.lockFocus(widgetSatchelPanels[3])
-Graphics.setDitherPattern(0.25, Graphics.image.kDitherTypeBayer8x8)
-Graphics.fillRect(0,0,400,48)
-Graphics.lockFocus(widgetSatchelPanels[4])
-Graphics.setDitherPattern(0.5, Graphics.image.kDitherTypeDiagonalLine)
-Graphics.fillRect(0,0,400,48)
-Graphics.lockFocus(widgetSatchelPanels[5])
-Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
-Graphics.fillRect(0,0,400,48)
-Graphics.unlockFocus()
-
 local queuedTransition = nil
 
 --- Transition to a new scene (at the end of this frame).
