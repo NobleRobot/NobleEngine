@@ -1,14 +1,15 @@
-local pd <const> = playdate
-local gfx <const> = pd.graphics
+local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
+local dipToWhitePanel = Graphics.image.new(400,240, Graphics.kColorWhite)
 
-local metroNexusPanels <const> = {
+local metroNexusPanels = {
 	Graphics.image.new(80,240, Graphics.kColorWhite),
 	Graphics.image.new(80,240, Graphics.kColorWhite),
 	Graphics.image.new(80,240, Graphics.kColorWhite),
 	Graphics.image.new(80,240, Graphics.kColorWhite),
 	Graphics.image.new(80,240, Graphics.kColorWhite)
 }
-local widgetSatchelPanels <const> = {
+
+local widgetSatchelPanels = {
 	Graphics.image.new(400,48, Graphics.kColorWhite),
 	Graphics.image.new(400,48, Graphics.kColorWhite),
 	Graphics.image.new(400,48, Graphics.kColorWhite),
@@ -32,48 +33,43 @@ Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 Graphics.fillRect(0,0,400,48)
 Graphics.unlockFocus()
 
----
--- A set of constants for scene transition animations.
--- @module Noble.TransitionType
--- @see Noble.transition
-
 --- Constants
 -- @section constants
 
 Noble.Transition = {}
 
 class("BaseTransition", nil, Noble.Transition).extends()
-function Noble.Transition.BaseTransition:init(fin, mid, duration, hold, easing, ...)
-	self.mid = mid
-	self.mid_called = false
-	self.fin = fin
-	self.fin_called = false
+function Noble.Transition.BaseTransition:init(onComplete, onMidpoint, duration, hold, easing, ...)
+	self.onMidpoint = onMidpoint
+	self.onMidpointCalled = false
+	self.onComplete = onComplete
+	self.onCompleteCalled = false
 	self.duration = duration or 1
-	self.out = mid == nil
+	self.out = onMidpoint == nil
 	if hold ~= nil then
 		self.hold = hold
 	else
 		self.hold = 200
 	end
-	self.easing = easing or pd.easingFunctions.inOutSine
+	self.easing = easing or Ease.inOutSine
 	local start = self.out and 1 or 0
-	self.animator = gfx.animator.new(self.duration / 2, start, 1 - start, self.easing)
+	self.animator = Graphics.animator.new(self.duration / 2, start, 1 - start, self.easing)
 	self.screenshot = Utilities.screenshot()
 end
 function Noble.Transition.BaseTransition:update()
-	if self.animator:ended() and not self.fin_called then
-		if self.mid ~= nil and not self.mid_called then
+	if self.animator:ended() and not self.onCompleteCalled then
+		if self.onMidpoint ~= nil and not self.onMidpointCalled then
 			if self.hold_timer == nil then
-				self.hold_timer = pd.timer.new(self.hold, function()
+				self.hold_timer = Timer.new(self.hold, function()
 					self.out = true
-					self:mid()
-					self.mid_called = true
-					self.animator = gfx.animator.new(self.duration / 2, 1, 0, self.easing)
+					self:onMidpoint()
+					self.onMidpointCalled = true
+					self.animator = Graphics.animator.new(self.duration / 2, 1, 0, self.easing)
 				end)
 			end
 		else
-			self:fin()
-			self.fin_called = true
+			self:onComplete()
+			self.onCompleteCalled = true
 		end
 	end
 	self:draw()
@@ -81,27 +77,27 @@ end
 function Noble.Transition.BaseTransition:draw() end
 
 class("OutTransition", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.OutTransition:init(fin, mid, duration, hold, easing, ...)
-	Noble.Transition.OutTransition.super.init(self, fin, nil, duration, hold, easing, ...)
-	if mid ~= nil then
-		mid(self)
+function Noble.Transition.OutTransition:init(onComplete, onMidpoint, duration, hold, easing, ...)
+	Noble.Transition.OutTransition.super.init(self, onComplete, nil, duration, hold, easing, ...)
+	if onMidpoint ~= nil then
+		onMidpoint(self)
 	end
 end
 
 class("Cut", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.Cut:init(fin, mid)
-	if mid ~= nil then
-		mid(self)
+function Noble.Transition.Cut:init(onComplete, onMidpoint)
+	if onMidpoint ~= nil then
+		onMidpoint(self)
 	end
-	if fin ~= nil then
-		fin(self)
+	if onComplete ~= nil then
+		onComplete(self)
 	end
 end
 
 local dipToBlackPanel = Graphics.image.new(400,240, Graphics.kColorBlack)
 class("DipToBlack", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.DipToBlack:init(fin, mid, duration, hold, easing, dither, ...)
-	Noble.Transition.DipToBlack.super.init(self, fin, mid, duration, hold, easing, ...)
+function Noble.Transition.DipToBlack:init(onComplete, onMidpoint, duration, hold, easing, dither, ...)
+	Noble.Transition.DipToBlack.super.init(self, onComplete, onMidpoint, duration, hold, easing, ...)
 	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.DipToBlack:draw()
@@ -110,8 +106,8 @@ end
 
 local dipToWhitePanel = Graphics.image.new(400, 240, Graphics.kColorWhite)
 class("DipToWhite", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.DipToWhite:init(fin, mid, duration, hold, easing, dither, ...)
-	Noble.Transition.DipToWhite.super.init(self, fin, mid, duration, hold, easing, ...)
+function Noble.Transition.DipToWhite:init(onComplete, onMidpoint, duration, hold, easing, dither, ...)
+	Noble.Transition.DipToWhite.super.init(self, onComplete, onMidpoint, duration, hold, easing, ...)
 	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.DipToWhite:draw()
@@ -119,8 +115,8 @@ function Noble.Transition.DipToWhite:draw()
 end
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition.OutTransition)
-function Noble.Transition.CrossDissolve:init(fin, mid, duration, hold, easing, dither, ...)
-	Noble.Transition.CrossDissolve.super.init(self, fin, mid, duration, hold, easing, ...)
+function Noble.Transition.CrossDissolve:init(onComplete, onMidpoint, duration, hold, easing, dither, ...)
+	Noble.Transition.CrossDissolve.super.init(self, onComplete, onMidpoint, duration, hold, easing, ...)
 	self.dither = dither or Graphics.image.kDitherTypeBayer4x4
 end
 function Noble.Transition.CrossDissolve:draw()
@@ -185,8 +181,8 @@ function Noble.Transition.DipMetroNexus:draw()
 end
 
 class("Animation", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.Animation:init(fin, mid, duration, hold, easing, it)
-	Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+function Noble.Transition.Animation:init(onComplete, onMidpoint, duration, hold, easing, it)
+	Noble.Transition.Animation.super.init(self, onComplete, onMidpoint, duration, hold, easing)
 	self.it = it
 end
 function Noble.Transition.Animation:draw()
@@ -202,8 +198,8 @@ function Noble.Transition.Animation:draw()
 end
 
 class("Spotlight", nil, Noble.Transition).extends(Noble.Transition.BaseTransition)
-function Noble.Transition.Spotlight:init(fin, mid, duration, hold, easing, x1, y1, x2, y2)
-	Noble.Transition.Animation.super.init(self, fin, mid, duration, hold, easing)
+function Noble.Transition.Spotlight:init(onComplete, onMidpoint, duration, hold, easing, x1, y1, x2, y2)
+	Noble.Transition.Animation.super.init(self, onComplete, onMidpoint, duration, hold, easing)
 	self.x1, self.y1 = x1, y1
 	self.x2, self.y2 = x2 or x1, y2 or y1
 end
@@ -217,28 +213,26 @@ function Noble.Transition.Spotlight:draw()
 	end
 end
 
--- For backwards compatibility
-Noble.TransitionType = Noble.Transition
 --- An all-time classic.
-Noble.TransitionType.CUT = Noble.Transition.Cut
+Noble.Transition.Cut.name = "Cut"
 --- A simple cross-fade.
-Noble.TransitionType.CROSS_DISSOLVE = Noble.Transition.CrossDissolve
+Noble.Transition.CrossDissolve.name = "Cross dissolve"
 
 --- Fade to black, then to the next scene.
-Noble.TransitionType.DIP_TO_BLACK = Noble.Transition.DipToBlack
+Noble.Transition.DipToBlack.name = "Dip to black"
 --- Fade to white, then to the next scene.
-Noble.TransitionType.DIP_TO_WHITE = Noble.Transition.DipToWhite
+Noble.Transition.DipToWhite.name = "Dip to white"
 
 --- An "accordion" transition, from "Widget Satchel" by Noble Robot.
-Noble.TransitionType.DIP_WIDGET_SATCHEL = Noble.Transition.DipWidgetSatchel
+Noble.Transition.DipWidgetSatchel.name = "Widget Satchel"
 --- A "cascade" transition, from "Metro Nexus" by Noble Robot.
-Noble.TransitionType.DIP_METRO_NEXUS = Noble.Transition.DipMetroNexus
+Noble.Transition.DipMetroNexus.name = "Metro Nexus"
 
 --- The existing scene slides off the left side of the screen, revealing the next scene.
-Noble.TransitionType.SLIDE_OFF_LEFT = Noble.Transition.SlideOffLeft
+Noble.Transition.SlideOffLeft.name = "Slide off left"
 --- The existing scene slides off the right side of the screen, revealing the next scene.
-Noble.TransitionType.SLIDE_OFF_RIGHT = Noble.Transition.SlideOffRight
+Noble.Transition.SlideOffRight.name = "Slide off right"
 --- The existing scene slides off the top of the screen.
-Noble.TransitionType.SLIDE_OFF_UP = Noble.Transition.SlideOffUp
+Noble.Transition.SlideOffUp.name = "Slide off up"
 --- The existing scene slides off the bottom of the screen, revealing the next scene.
-Noble.TransitionType.SLIDE_OFF_DOWN = Noble.Transition.SlideOffDown
+Noble.Transition.SlideOffDown.name = "Slide off down"

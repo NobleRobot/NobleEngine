@@ -104,7 +104,7 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 		error("BONK: Don't call Graphics.sprite.setBackgroundDrawingCallback() directly. Put background drawing code in your scenes' drawBackground() methods instead.")
 	end
 
-	local transitionType = Noble.TransitionType.CUT
+	local transitionType = Noble.Transition.Cut
 	if (__launcherTransitionDuration ~= nil) then
 		transitionType = __launcherTransitionType or Noble.TransitionType.CROSS_DISSOLVE
 	end
@@ -128,7 +128,7 @@ local defaultConfiguration = {
 	defaultTransitionDuration = 1,
 	defaultTransitionHoldDuration = 0.2,
 	defaultTransitionEasing = Ease.inSin,
-	defaultTransitionType = Noble.TransitionType.DIP_TO_BLACK,
+	defaultTransitionType = Noble.Transition.DipToBlack,
 	defaultTransitionArgs = nil,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
