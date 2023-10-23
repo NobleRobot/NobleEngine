@@ -308,7 +308,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	local menu = Noble.Menu.new(false)
 	--	menu:activate()
 	function menu:activate()
-		self:select(self.currentItemNumber, true)
+		self:select(self.currentItemNumber)
 		active = true
 	end
 	--- Deactivate this menu.
