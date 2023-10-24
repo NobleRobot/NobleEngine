@@ -46,11 +46,11 @@ import 'libraries/noble/modules/Noble.Bonk.lua'
 import 'libraries/noble/modules/Noble.GameData.lua'
 import 'libraries/noble/modules/Noble.Input.lua'
 import 'libraries/noble/modules/Noble.Settings.lua'
-import 'libraries/noble/modules/Noble.Text.lua'
 import 'libraries/noble/modules/Noble.Transition.lua'
+import 'libraries/noble/modules/Noble.Text.lua'
 import 'libraries/noble/modules/Noble.Menu.lua'
-import 'libraries/noble/modules/NobleScene'
-import 'libraries/noble/modules/NobleSprite'
+import 'libraries/noble/modules/NobleScene.lua'
+import 'libraries/noble/modules/NobleSprite.lua'
 
 --- Check to see if the game is transitioning between scenes.
 -- Useful to control game logic that lives outside of a scene's `update()` method.
@@ -63,6 +63,19 @@ Noble.showFPS = false;
 
 local currentScene = nil
 local engineInitialized = false
+
+-- configuration
+--
+
+local defaultConfiguration = {
+	defaultTransitionDuration = 1,
+	defaultTransitionHoldDuration = 0.2,
+	--defaultTransitionEasing = Ease.inSine,
+	defaultTransitionType = Noble.Transition.DipToBlack,
+	enableDebugBonkChecking = false,
+	alwaysRedraw = true,
+}
+local configuration = Utilities.copy(defaultConfiguration)
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
 -- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
@@ -106,7 +119,7 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 
 	local transitionType = Noble.Transition.Cut
 	if (__launcherTransitionDuration ~= nil) then
-		transitionType = __launcherTransitionType or Noble.TransitionType.CROSS_DISSOLVE
+		transitionType = __launcherTransitionType or defaultConfiguration.defaultTransitionType
 	end
 
 	-- Now that everything is set, let's-a go!
@@ -120,20 +133,6 @@ end
 function Noble.engineInitialized()
 	return engineInitialized
 end
-
--- configuration
---
-
-local defaultConfiguration = {
-	defaultTransitionDuration = 1,
-	defaultTransitionHoldDuration = 0.2,
-	defaultTransitionEasing = Ease.inSin,
-	defaultTransitionType = Noble.Transition.DipToBlack,
-	defaultTransitionArgs = nil,
-	enableDebugBonkChecking = false,
-	alwaysRedraw = true,
-}
-local configuration = Utilities.copy(defaultConfiguration)
 
 --- Miscellaneous Noble Engine configuration options / default values.
 -- This table cannot be edited directly. Use `Noble.getConfig` and `Noble.setConfig`.
@@ -166,8 +165,7 @@ function Noble.setConfig(__configuration)
 	end
 	if (__configuration.defaultTransitionDuration ~= nil) then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
 	if (__configuration.defaultTransitionHoldDuration ~= nil) then configuration.defaultTransitionHoldDuration = __configuration.defaultTransitionHoldDuration end
-	if (__configuration.defaultTransitionEasing ~= nil) then configuration.defaultTransitionEasing = __configuration.defaultTransitionEasing end
-	if (__configuration.defaultTransitionArgs ~= nil) then configuration.defaultTransitionArgs = __configuration.defaultTransitionArgs end
+	--if (__configuration.defaultTransitionEase ~= nil) then configuration.defaultTransitionEase = __configuration.defaultTransitionEase end
 	if (__configuration.defaultTransitionType ~= nil) then configuration.defaultTransitionType = __configuration.defaultTransitionType end
 	if (__configuration.enableDebugBonkChecking ~= nil) then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
@@ -227,22 +225,21 @@ function Noble.transition(NewScene, __duration, __transitionType, __holdDuration
 	}
 end
 
-local function executeTransition(__transition)
+local onMidpoint
+local onComplete
+
+local function executeQueuedTransition(__transition)
 	Noble.isTransitioning = true
 
-	Noble.Input.setHandler(nil)			-- Disable user input. (This happens after self:ext() so exit() can query input)
+	Noble.Input.setHandler(nil)					-- Disable user input. (This happens after self:ext() so exit() can query input)
 
 	if (currentScene ~= nil) then
-		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
+		currentScene:exit()						-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	local newScene = __transition.NewScene()			-- Creates new scene object. Its init() function runs.
+	local newScene = __transition.NewScene()	-- Creates new scene object. Its init() function runs.
 
-	local onMidpoint = nil
-	if currentScene == nil then
-		currentScene = newScene -- New scene's update loop begins.
-		newScene:enter() -- The new scene runs its "hello" code.
-	else
+	if currentScene ~= nil then
 		onMidpoint = function()
 			currentScene:finish()
 			currentScene = nil -- Allows current scene to be garbage collected.
@@ -251,7 +248,7 @@ local function executeTransition(__transition)
 		end
 	end
 
-	local onComplete = function()
+	onComplete = function()
 		if currentScene == nil then			-- The new scene runs its "hello" code.
 			currentScene = newScene			-- New scene's update loop begins.
 			newScene:enter()				-- The new scene runs its "hello" code.
@@ -259,29 +256,46 @@ local function executeTransition(__transition)
 		Noble.isTransitioning = false	-- Reset
 		newScene:start()				-- The new scene is now active.
 	end
+
 	local duration = __transition.duration or configuration.defaultTransitionDuration
 	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
-	local easing = __transition.easing or configuration.defaultTransitionEasing
-	local args = __transition.args or configuration.defaultTransitionArgs
+	local easeFunction = __transition.easeFunction -- or configuration.defaultTransitionEase
+	local args = __transition.args or {}
 	currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
-		onComplete,
-		onMidpoint,
 		duration * 1000,
 		holdDuration * 1000,
-		easing,
+		easeFunction,
 		table.unpack(args)
 	)
+
 end
 
 local transitionCanvas = Graphics.image.new(400, 240)
 
 local function transitionUpdate()
-	transitionCanvas:clear(Graphics.kColorClear)
-	Graphics.pushContext(transitionCanvas) do
-		currentTransition:update()
-	end Graphics.popContext()
-	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
-	transitionCanvas:drawIgnoringOffset(0,0)
+	if (currentTransition ~= nil) then
+		transitionCanvas:clear(Graphics.kColorClear)
+		Graphics.pushContext(transitionCanvas) do
+			if currentTransition.animator:ended() and not currentTransition.onCompleteCalled then
+				if onMidpoint ~= nil and not currentTransition.onMidpointCalled then
+					if currentTransition.holdTimer == nil then
+						currentTransition.holdTimer = Timer.new(currentTransition.holdTime, function()
+							currentTransition.out = true
+							onMidpoint()
+							currentTransition.onMidpointCalled = true
+							currentTransition.animator = Graphics.animator.new(currentTransition.duration / 2, 1, 0, currentTransition.easeOutFunction)
+						end)
+					end
+				else
+					onComplete()
+					currentTransition.onCompleteCalled = true
+				end
+			end
+			currentTransition:draw()
+		end Graphics.popContext()
+		Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+		transitionCanvas:drawIgnoringOffset(0,0)
+	end
 end
 
 --- Get the current scene object
@@ -335,7 +349,7 @@ function playdate.update()
 	end
 
 	if (queuedTransition ~= nil) then
-		executeTransition(queuedTransition)
+		executeQueuedTransition(queuedTransition)
 		queuedTransition = nil;
 	end
 end
