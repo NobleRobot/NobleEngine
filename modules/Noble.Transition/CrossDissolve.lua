@@ -1,3 +1,5 @@
+--- A simple cross-fade.
+
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.CrossDissolve
 
@@ -10,5 +12,5 @@ function transition:init(__duration, __holdTime, __easeFunction, __dither)
 end
 
 function transition:draw()
-	self.screenshot:drawFaded(0, 0, self.animator:currentValue(), self.dither)
+	self.screenshot:drawFaded(0, 0, self.sequence:get(), self.dither)
 end

@@ -1,3 +1,5 @@
+--- Fade to white, then to the next scene.
+
 class("DipToWhite", nil, Noble.Transition).extends(Noble.Transition.Dip)
 local transition = Noble.Transition.DipToWhite
 

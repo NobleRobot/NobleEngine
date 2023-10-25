@@ -69,9 +69,8 @@ local engineInitialized = false
 
 local defaultConfiguration = {
 	defaultTransitionDuration = 1,
-	defaultTransitionHoldDuration = 0.2,
-	--defaultTransitionEasing = Ease.inSine,
-	defaultTransitionType = Noble.Transition.DipToBlack,
+	defaultTransitionHoldTime = 0.2,
+	defaultTransition = Noble.Transition.DipToBlack,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
 }
@@ -85,7 +84,7 @@ local configuration = Utilities.copy(defaultConfiguration)
 -- @see NobleScene
 -- @see Noble.TransitionType
 -- @see setConfig
-function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransitionType, __configuration)
+function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDuration, __launcherTransitionHoldTime, __launcherTransitionArguments, __configuration)
 
 	math.randomseed(playdate.getSecondsSinceEpoch()) -- Set a new random seed at runtime.
 
@@ -112,19 +111,20 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 			end
 		end
 	)
-	-- Override Playdate methods we've used already, and don't want to be used again, with Bonks!
+	-- Override this Playdate method that we've used already and don't want to be used again!
 	Graphics.sprite.setBackgroundDrawingCallback = function(callback)
 		error("BONK: Don't call Graphics.sprite.setBackgroundDrawingCallback() directly. Put background drawing code in your scenes' drawBackground() methods instead.")
 	end
 
-	local transitionType = Noble.Transition.Cut
-	if (__launcherTransitionDuration ~= nil) then
-		transitionType = __launcherTransitionType or defaultConfiguration.defaultTransitionType
-	end
+	-- These values are used if not set.
+	local launcherTransition =			__launcherTransition or defaultConfiguration.defaultTransition
+	local launcherTransitionDuration =	__launcherTransitionDuration or 1.5
+	local launcherTransitionHoldTime =	__launcherTransitionHoldTime or 0
+	local launcherTransitionArguments =	__launcherTransitionArguments or {}
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, __launcherTransitionDuration, transitionType)
+	Noble.transition(StartingScene, launcherTransition, launcherTransitionDuration, launcherTransitionHoldTime, table.unpack(launcherTransitionArguments))
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -138,7 +138,7 @@ end
 -- This table cannot be edited directly. Use `Noble.getConfig` and `Noble.setConfig`.
 -- @table configuration
 -- @number[opt=1] defaultTransitionDuration When running `Noble.transition` if the scene transition duration is unspecified, it will take this long in seconds.
--- @number[opt=0.2] defaultTransitionHoldDuration When running `Noble.transition` (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
+-- @number[opt=0.2] defaultTransitionHoldTime When running `Noble.transition` (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
 -- @tparam[opt=Noble.TransitionType.CROSS_DISSOLVE] Noble.TransitionType defaultTransitionType When running `Noble.transition` if the transition type is unspecified, it will use this one.
 -- @bool[opt=false] enableDebugBonkChecking Noble Engine-specific errors are called "Bonks." You can set this to true during development in order to check for more of them. However, it uses resources, so you will probably want to turn it off before release.
 -- @bool[opt=true] alwaysRedraw This sets the Playdate SDK method `playdate.graphics.sprite.setAlwaysRedraw`. See the Playdate SDK for details on how this function works, and the reasons you might want to set it as true or false for your project.
@@ -163,14 +163,16 @@ function Noble.setConfig(__configuration)
 	if (__configuration == nil) then
 		error("BONK: You cannot pass a nil value to Noble.setConfig(). If you want to reset to default values, use Noble.resetConfig().")
 	end
-	if (__configuration.defaultTransitionDuration ~= nil) then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
-	if (__configuration.defaultTransitionHoldDuration ~= nil) then configuration.defaultTransitionHoldDuration = __configuration.defaultTransitionHoldDuration end
-	--if (__configuration.defaultTransitionEase ~= nil) then configuration.defaultTransitionEase = __configuration.defaultTransitionEase end
-	if (__configuration.defaultTransitionType ~= nil) then configuration.defaultTransitionType = __configuration.defaultTransitionType end
-	if (__configuration.enableDebugBonkChecking ~= nil) then
+
+	if (__configuration.defaultTransition ~= nil)			then configuration.defaultTransition = __configuration.defaultTransition end
+	if (__configuration.defaultTransitionDuration ~= nil)	then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
+	if (__configuration.defaultTransitionHoldTime ~= nil)	then configuration.defaultTransitionHoldTime = __configuration.defaultTransitionHoldTime end
+
+	if (__configuration.enableDebugBonkChecking ~= nil)	then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
 		if (configuration.enableDebugBonkChecking == true) then Noble.Bonk.enableDebugBonkChecking() end
 	end
+
 	if (__configuration.alwaysRedraw ~= nil) then
 		configuration.alwaysRedraw = __configuration.alwaysRedraw
 		Graphics.sprite.setAlwaysRedraw(configuration.alwaysRedraw)
@@ -191,7 +193,7 @@ local transitionSequence = nil
 local previousSceneScreenCapture = nil
 
 local currentTransition = nil
-local queuedTransition = nil
+local transitionQueue = nil
 
 --- Transition to a new scene (at the end of this frame).
 --- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
@@ -203,70 +205,112 @@ local queuedTransition = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __transitionType, __holdDuration, __easing, ...)
+function Noble.transition(NewScene, __transition, __duration, __holdTime, ...)
 	if (Noble.isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
 		return -- Let's get otta here!
-	elseif (queuedTransition ~= nil) then
+	elseif (transitionQueue ~= nil) then
 		-- Calling this mothod multiple times between Noble.update() calls is probably not intentional behavior.
 		warn("BONK: You are calling Noble.transition() multiple times within the same frame. Did you mean to do that?")
 		-- We don't return here because maybe the developer *did* intened to override a previous call to Noble.transition().
 	end
 
 	-- Okay, let's pass this method's arguments into a table which we hold onto until the next Noble.update() call.
-	queuedTransition = {
+	transitionQueue = {
 		NewScene = NewScene,
+		transition = __transition,
 		duration = __duration,
-		holdDuration = __holdDuration,
-		transitionType = __transitionType,
-		easing = __easing,
-		args = {...}
+		holdTime = __holdTime,
+		arguments = {...}
 	}
 end
 
 local onMidpoint
 local onComplete
 
-local function executeQueuedTransition(__transition)
+local function executeQueuedTransition()
 	Noble.isTransitioning = true
 
-	Noble.Input.setHandler(nil)					-- Disable user input. (This happens after self:ext() so exit() can query input)
+	Noble.Input.setHandler(nil)						-- Disable user input. (This happens after self:ext() so exit() can query input)
 
 	if (currentScene ~= nil) then
-		currentScene:exit()						-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
+		currentScene:exit()							-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 
-	local newScene = __transition.NewScene()	-- Creates new scene object. Its init() function runs.
-
-	if currentScene ~= nil then
-		onMidpoint = function()
-			currentScene:finish()
-			currentScene = nil -- Allows current scene to be garbage collected.
-			currentScene = newScene -- New scene's update loop begins.
-			newScene:enter() -- The new scene runs its "hello" code.
-		end
-	end
-
-	onComplete = function()
-		if currentScene == nil then			-- The new scene runs its "hello" code.
-			currentScene = newScene			-- New scene's update loop begins.
-			newScene:enter()				-- The new scene runs its "hello" code.
-		end
-		Noble.isTransitioning = false	-- Reset
-		newScene:start()				-- The new scene is now active.
-	end
-
-	local duration = __transition.duration or configuration.defaultTransitionDuration
-	local holdDuration = __transition.holdDuration or configuration.defaultTransitionHoldDuration
-	local easeFunction = __transition.easeFunction -- or configuration.defaultTransitionEase
-	local args = __transition.args or {}
-	currentTransition = (__transition.transitionType or configuration.defaultTransitionType)(
-		duration * 1000,
-		holdDuration * 1000,
-		easeFunction,
-		table.unpack(args)
+	local newScene = transitionQueue.NewScene()	-- Creates new scene object. Its init() function runs now.
+	currentTransition = (transitionQueue.transition or configuration.defaultTransition)(
+		(transitionQueue.duration or configuration.defaultTransitionDuration), --* 1000,
+		(transitionQueue.holdDuration or configuration.defaultTransitionHoldTime), --* 1000,
+		table.unpack(transitionQueue.arguments)
 	)
+	transitionQueue = nil -- Reset!
+
+	local onMidpoint = function()
+		currentTransition.midpointReached = true
+		if (currentScene ~= nil) then
+			currentScene:finish()
+			currentScene = nil				-- Allows current scene to be garbage collected.
+		end
+		currentScene = newScene				-- New scene's update loop begins.
+		if (currentTransition.onMidpoint ~= nil) then
+			currentTransition:onMidpoint()	-- If this transition has any custom code to run here, run it.
+		end
+		newScene:enter()					-- The new scene runs its "hello" code.
+	end
+
+	local onHoldTimeElapsed = function()
+		currentTransition.holdTimeElapsed = true
+		if (currentTransition.onHoldTimeElapsed ~= nil) then
+			currentTransition:onHoldTimeElapsed()
+		end
+	end
+
+	local onComplete = function()
+		Noble.isTransitioning = false		-- Reset
+		if (currentTransition.onComplete ~= nil) then
+			currentTransition:onComplete()	-- If this transition has any custom code to run here, run it.
+		end
+		newScene:start()					-- The new scene is now active.
+		currentTransition = nil				-- Clear the transition variable.
+	end
+
+	local type = currentTransition.type
+	local duration = currentTransition.duration
+	local holdTime = currentTransition.holdTime
+	local easeInFunction = currentTransition.easeInFunction or Ease.linear
+	local easeOutFunction = currentTransition.easeOutFunction or Ease.linear
+	local inStartValue = currentTransition.sequenceInStartValue or 0
+	local midpointValue = currentTransition.sequenceMidpointValue or 1
+	local outStartValue = currentTransition.sequenceOutStartValue or currentTransition.sequenceMidpointValue
+	local completeValue = currentTransition.sequenceCompleteValue or 0
+
+	if (type == Noble.Transition.Type.CUT) then
+		onMidpoint()
+		onComplete()
+	elseif (type == Noble.Transition.Type.IN_OUT) then
+		currentTransition.sequence = Sequence.new()
+			:from(inStartValue)
+			:to(midpointValue, (duration-holdTime)/2, easeInFunction)
+			:callback(onMidpoint)
+			:sleep(holdTime)
+			:callback(onHoldTimeElapsed)
+			:to(outStartValue, 0)
+			:to(completeValue, (duration-holdTime)/2, easeOutFunction)
+			:callback(onComplete)
+			:start()
+	elseif (type == Noble.Transition.Type.OUT) then
+		onMidpoint()
+		currentTransition.sequence = Sequence.new()
+			:from(midpointValue)
+			:to(midpointValue, 0) -- Needed to invoke holdTime
+			:sleep(holdTime)
+			:callback(onHoldTimeElapsed)
+			:to(outStartValue, 0)
+			:to(completeValue, duration, easeOutFunction)
+			:callback(onComplete)
+			:start()
+	end
 
 end
 
@@ -275,24 +319,11 @@ local transitionCanvas = Graphics.image.new(400, 240)
 local function transitionUpdate()
 	if (currentTransition ~= nil) then
 		transitionCanvas:clear(Graphics.kColorClear)
+
 		Graphics.pushContext(transitionCanvas) do
-			if currentTransition.animator:ended() and not currentTransition.onCompleteCalled then
-				if onMidpoint ~= nil and not currentTransition.onMidpointCalled then
-					if currentTransition.holdTimer == nil then
-						currentTransition.holdTimer = Timer.new(currentTransition.holdTime, function()
-							currentTransition.out = true
-							onMidpoint()
-							currentTransition.onMidpointCalled = true
-							currentTransition.animator = Graphics.animator.new(currentTransition.duration / 2, 1, 0, currentTransition.easeOutFunction)
-						end)
-					end
-				else
-					onComplete()
-					currentTransition.onCompleteCalled = true
-				end
-			end
 			currentTransition:draw()
 		end Graphics.popContext()
+
 		Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 		transitionCanvas:drawIgnoringOffset(0,0)
 	end
@@ -348,9 +379,8 @@ function playdate.update()
 		Noble.Bonk.checkDebugBonks()
 	end
 
-	if (queuedTransition ~= nil) then
-		executeQueuedTransition(queuedTransition)
-		queuedTransition = nil;
+	if (transitionQueue ~= nil) then
+		executeQueuedTransition()
 	end
 end
 

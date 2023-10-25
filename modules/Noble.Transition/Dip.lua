@@ -14,5 +14,5 @@ end
 
 function transition:draw()
 	transition.super.draw(self)
-	self.panelImage:drawFaded(self.x, self.y, self.animator:currentValue(), self.dither)
+	self.panelImage:drawFaded(self.x, self.y, self.sequence:get(), self.dither)
 end

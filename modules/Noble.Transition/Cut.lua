@@ -1,3 +1,5 @@
+--- An all-time classic.
+
 class("Cut", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.Cut
 
@@ -6,10 +8,4 @@ transition.type = Noble.Transition.Type.CUT
 
 function transition:init(__duration)
 	transition.super.init(self, __duration, nil, nil, nil)
-	-- if __onMidpoint ~= nil then
-	-- 	__onMidpoint(self)
-	-- end
-	-- if __onComplete ~= nil then
-	-- 	__onComplete(self)
-	-- end
 end
