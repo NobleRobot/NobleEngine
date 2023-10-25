@@ -35,10 +35,10 @@ function transition:draw()
 		panels[4]:draw(240, (-1 + Ease.outCubic(progress, 0, 1, 1)) * 240)
 		panels[5]:draw(320, (-1 + Ease.outSine (progress, 0, 1, 1)) * 240)
 	else
-		panels[1]:draw(000,  (1 - Ease.inQuint (progress, 0, 1, 1)) * 0)
-		panels[2]:draw(080,  (1 - Ease.inQuart (progress, 0, 1, 1)) * 0)
-		panels[3]:draw(160,  (1 - Ease.inQuart (progress, 0, 1, 1)) * 0)
-		panels[4]:draw(240,  (1 - Ease.inCubic (progress, 0, 1, 1)) * 0)
-		panels[5]:draw(320,  (1 - Ease.inSine  (progress, 0, 1, 1)) * 0)
+		panels[1]:draw(000,  (1 - Ease.inQuint(progress, 0, 1, 1)) * -240 + 240)
+		panels[2]:draw(080,  (1 - Ease.inQuart(progress, 0, 1, 1)) * -240 + 240)
+		panels[3]:draw(160,  (1 - Ease.inQuart(progress, 0, 1, 1)) * -240 + 240)
+		panels[4]:draw(240,  (1 - Ease.inCubic(progress, 0, 1, 1)) * -240 + 240)
+		panels[5]:draw(320,  (1 - Ease.inSine (progress, 0, 1, 1)) * -240 + 240)
 	end
 end
