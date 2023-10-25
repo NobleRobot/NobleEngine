@@ -15,6 +15,7 @@ In your game loop
 Add hooks or callback
 	animation = sequence.new():from(0):to(1,2.0,"outQuad"):callback(function() print("end animation") end):mirror()
 ]]--
+import 'CoreLibs/easing'
 
 Sequence = {}
 Sequence.__index = Sequence
@@ -91,6 +92,9 @@ end
 
 function Sequence.print()
 	print("Sequences running:", #_runningSequences)
+for index, seq in pairs(_runningSequences) do
+		print(" Sequence", index, seq)
+	end
 end
 
 function Sequence:clear()
@@ -128,10 +132,10 @@ function Sequence:to( to, duration, easingFunction, ... )
 
 	-- default parameters
 	to = to or 0
-	duration = duration or 0
-	easingFunction = easingFunction or _easing.inOutQuad
+	duration = duration or 0.3
+	easingFunction = easingFunction or _easings.inOutQuad
 	if type(easingFunction)=="string" then
-		easingFunction = _easings[easingFunction] or _easing.inOutQuad
+		easingFunction = _easings[easingFunction] or _easings.inOutQuad
 	end
 
 	local lastEasing = self.easings[self.easingCount]
@@ -205,7 +209,7 @@ end
 function Sequence:sleep( duration )
 	if not self then return end
 
-	duration = duration or 0
+	duration = duration or 0.5
 	if duration==0 then
 		return self
 	end
@@ -226,13 +230,15 @@ function Sequence:sleep( duration )
 	return self
 end
 
-function Sequence:callback( fn )
+function Sequence:callback( fn, timeOffset )
 	if not self then return end
+
+	timeOffset = timeOffset or 0
 
 	local lastEasing = self.easings[self.easingCount]
 
 	local cb = self:newCallback()
-	cb.timestamp = lastEasing.timestamp + lastEasing.duration
+	cb.timestamp = lastEasing.timestamp + lastEasing.duration + timeOffset
 	cb.fn = fn
 
 	return self
@@ -481,6 +487,3 @@ math.clamp = math.clamp or function(a, min, max)
 	end
 	return math.max(min, math.min(max, a))
 end
-
-
-
