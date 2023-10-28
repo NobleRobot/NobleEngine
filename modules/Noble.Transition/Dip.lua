@@ -2,14 +2,13 @@ class("Dip", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.Dip
 
 transition.name = "Dip"
-transition.type = Noble.Transition.Type.IN_OUT
+transition.type = Noble.Transition.Type.COVER
 
-function transition:init(__duration,  __holdTime, __panelImage, __easeInFunction, __easeOutFunction, __dither, __x, __y)
-	transition.super.init(self, __duration, __holdTime, (__easeInFunction or Ease.outQuad),  (__easeOutFunction or Ease.inQuad))
-	self.dither = __dither or Graphics.image.kDitherTypeBayer4x4
-	self.panelImage = __panelImage
-	self.x = __x or 0
-	self.y = __y or 0
+function transition:setCustomArguments(__arguments)
+	self.dither = __arguments.dither or Graphics.image.kDitherTypeBayer4x4
+	self.panelImage = __arguments.panelImage
+	self.x = __arguments.x or 0
+	self.y = __arguments.y or 0
 end
 
 function transition:draw()

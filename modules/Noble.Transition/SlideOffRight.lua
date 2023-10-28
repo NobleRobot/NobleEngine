@@ -5,6 +5,8 @@ local transition = Noble.Transition.SlideOffRight
 
 transition.name = "Slide Off (Right)"
 
-function transition:init(__duration, __easeFunction)
-	transition.super.init(self, __duration, 400, 0, __easeFunction)
+function transition:setCustomArguments(__arguments)
+	transition.super.setCustomArguments(self, __arguments)
+	self.x = 400
+	self.y = 0
 end

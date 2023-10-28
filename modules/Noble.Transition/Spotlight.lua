@@ -2,12 +2,12 @@ class("Spotlight", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.Spotlight
 
 transition.name = "Spotlight"
-transition.type = Noble.Transition.Type.IN_OUT
+transition.type = Noble.Transition.Type.COVER
 
 local panel
 
-function transition:init(__duration,  __holdTime, __fromX, __fromY, __toX, __toY, __easeInFunction, __easeOutFunction, __dither)
-	transition.super.init(self, __duration, __holdTime, (__easeInFunction or Ease.outQuad), (__easeOutFunction or Ease.inQuad))
+function transition:init(__duration,  __holdTime, __fromX, __fromY, __toX, __toY, __easeIn, __easeOut, __dither)
+	transition.super.init(self, __duration, __holdTime, (__easeIn or Ease.outQuad), (__easeOut or Ease.inQuad))
 	if (panel == nil) then panel = Graphics.image.new(400,240, Graphics.kColorBlack) end
 	self.dither = __dither or Graphics.image.kDitherTypeBayer4x4
 	self.fromX = __fromX or 200

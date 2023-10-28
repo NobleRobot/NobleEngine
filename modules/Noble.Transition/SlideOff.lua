@@ -4,19 +4,19 @@ class("SlideOff", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.SlideOff
 
 transition.name = "Slide Off"
-transition.type = Noble.Transition.Type.OUT
+transition.type = Noble.Transition.Type.MIX
+transition.ease = Ease.inQuart
 
-function transition:init(__duration, __toX, __toY, __easeFunction)
-	transition.super.init(self, __duration, 0, nil, (__easeFunction or Ease.inQuart))
-	self.toX = __toX
-	self.toY = __toY
+function transition:setCustomArguments(__arguments)
+	self.x = __arguments.x
+	self.y = __arguments.y
 end
 
 function transition:draw()
 	transition.super.draw(self)
 	local progress = self.sequence:get()
-	self.screenshot:draw(
-		self.toX * (1 - progress),
-		self.toY * (1 - progress)
+	self.oldSceneScreenshot:draw(
+		self.x * progress,
+		self.y * progress
 	)
 end

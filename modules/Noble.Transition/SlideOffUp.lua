@@ -5,6 +5,8 @@ local transition = Noble.Transition.SlideOffUp
 
 transition.name = "Slide Off (Up)"
 
-function transition:init(__duration, __easeFunction)
-	transition.super.init(self, __duration, 0, -240, __easeFunction)
+function transition:setCustomArguments(__arguments)
+	transition.super.setCustomArguments(self, __arguments)
+	self.x = 0
+	self.y = -240
 end

@@ -2,16 +2,21 @@
 
 class("WidgetSatchel", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.WidgetSatchel
-
 transition.name = "Widget Satchel"
-transition.type = Noble.Transition.Type.IN_OUT
+
+transition.type = Noble.Transition.Type.COVER
+transition.sequenceCompleteValue = 2
 
 local panels
 
-function transition:init(__duration,  __holdTime)
-	transition.super.init(self, __duration, __holdTime, Ease.outCubic, Ease.inCubic)
+function transition:setCustomArguments(__arguments)
 
-	self.sequenceCompleteValue = 2
+	if (__arguments.easeIn or __arguments.easeIn or __arguments.ease) then
+		warn("BONK: 'Noble.Transition.WidgetSatchel' does not support custom 'ease' values.")
+	end
+
+	transition.easeIn = Ease.outCubit
+	transition.easeOut = Ease.inCubit
 
 	if (panels == nil) then
 		panels = {

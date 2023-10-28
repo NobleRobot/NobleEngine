@@ -2,17 +2,22 @@
 
 class("MetroNexus", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.MetroNexus
-
 transition.name = "Metro Nexus"
-transition.type = Noble.Transition.Type.IN_OUT
+
+transition.type = Noble.Transition.Type.COVER
 
 local panels
 
-function transition:init(__duration,  __holdTime)
-	transition.super.init(self, __duration, __holdTime, Ease.linear)
+function transition:setCustomArguments(__arguments)
 
-	self.sequenceOutStartValue = 0
+	if (__arguments.easeIn or __arguments.easeIn or __arguments.ease) then
+		warn("BONK: 'Noble.Transition.MetroNexus' does not support custom 'ease' values.")
+	end
+
+	self.sequenceResumeValue = 0
 	self.sequenceCompleteValue = 1
+	self.easeIn = Ease.linear
+	self.easeOut = Ease.linear
 
 	if (panels == nil) then
 		panels = {

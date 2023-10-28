@@ -125,7 +125,7 @@ function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDura
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransitionHoldTime, launcherTransition, table.unpack(launcherTransitionArguments))
+	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransitionHoldTime, launcherTransition, launcherTransitionArguments)
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -198,7 +198,7 @@ local queuedScene = nil
 
 --- Transition to a new scene (at the end of this frame).
 --- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
---- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transtion begins will be ignored until the transition completes.
+--- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1] __duration The length of the transition, in seconds.
 -- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
@@ -212,16 +212,16 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
 		return -- Let's get otta here!
 	elseif (queuedScene ~= nil) then
-		-- Calling this mothod multiple times between Noble.update() calls is probably not intentional behavior.
-		warn("BONK: You are calling Noble.transition() multiple times within the same frame. Did you mean to do that?")
-		-- We don't return here because maybe the developer *did* intened to override a previous call to Noble.transition().
+		-- Calling this method multiple times between Noble.update() calls is probably not intentional behavior.
+		warn("Soft-BONK: You are calling Noble.transition() multiple times within the same frame. Did you mean to do that?")
+		-- We don't return here because maybe the developer *did* intend to override a previous call to Noble.transition().
 	end
 
 	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
 	currentTransition = (__transitionType or configuration.defaultTransition)(
-		(__duration or configuration.defaultTransitionDuration), --* 1000,
-		(__holdTime or configuration.defaultTransitionHoldTime), --* 1000,
-		table.unpack(__transitionArguments or {})
+		__duration or configuration.defaultTransitionDuration, --* 1000,
+		__holdTime or configuration.defaultTransitionHoldTime, --* 1000,
+		__transitionArguments or {}
 	)
 end
 
@@ -267,36 +267,36 @@ local function executeTransition()
 	local type = currentTransition.type
 	local duration = currentTransition.duration
 	local holdTime = currentTransition.holdTime
-	local easeInFunction = currentTransition.easeInFunction or Ease.linear
-	local easeOutFunction = currentTransition.easeOutFunction or Ease.linear
-	local inStartValue = currentTransition.sequenceInStartValue or 0
+	local ease = currentTransition.ease or Ease.linear
+	local easeIn = currentTransition.easeIn or Ease.linear
+	local easeOut = currentTransition.easeOut or Ease.linear
+	local startValue = currentTransition.sequenceStartValue or 0
 	local midpointValue = currentTransition.sequenceMidpointValue or 1
-	local outStartValue = currentTransition.sequenceOutStartValue or currentTransition.sequenceMidpointValue
+	local resumeValue = currentTransition.sequenceResumeValue or currentTransition.sequenceMidpointValue
 	local completeValue = currentTransition.sequenceCompleteValue or 0
 
 	if (type == Noble.Transition.Type.CUT) then
 		onMidpoint()
 		onComplete()
-	elseif (type == Noble.Transition.Type.IN_OUT) then
+	elseif (type == Noble.Transition.Type.COVER) then
 		currentTransition.sequence = Sequence.new()
-			:from(inStartValue)
-			:to(midpointValue, (duration-holdTime)/2, easeInFunction)
+			:from(startValue)
+			:to(midpointValue, (duration-holdTime)/2, easeIn)
 			:callback(onMidpoint)
 			:sleep(holdTime)
 			:callback(onHoldTimeElapsed)
-			:to(outStartValue, 0)
-			:to(completeValue, (duration-holdTime)/2, easeOutFunction)
+			:to(resumeValue, 0)
+			:to(completeValue, (duration-holdTime)/2, easeOut)
 			:callback(onComplete)
 			:start()
-	elseif (type == Noble.Transition.Type.OUT) then
+	elseif (type == Noble.Transition.Type.MIX) then
 		onMidpoint()
 		currentTransition.sequence = Sequence.new()
-			:from(midpointValue)
-			:to(midpointValue, 0) -- Needed to invoke holdTime
+			:from(startValue)
+			:to(startValue, 0) -- Needed to invoke holdTime
 			:sleep(holdTime)
 			:callback(onHoldTimeElapsed)
-			:to(outStartValue, 0)
-			:to(completeValue, duration, easeOutFunction)
+			:to(completeValue, duration, ease)
 			:callback(onComplete)
 			:start()
 	end
@@ -312,9 +312,9 @@ local function transitionUpdate()
 	currentTransition:draw()
 	Graphics.popContext()
 
-	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
-
+	Graphics.setImageDrawMode(currentTransition.drawMode)
 	transitionCanvas:drawIgnoringOffset(0, 0)
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 --- Get the current scene object
@@ -339,6 +339,13 @@ function playdate.update()
 
 	Sequence.update()					-- Update all animations that use the Sequence library.
 
+	-- Here we check to see if a transition currently in progress needs screenshots of the new scene.
+	-- If so, we route drawing for this frame into a new context.
+	if (Noble.isTransitioning and currentTransition.captureScreenshotsDuringTransition) then
+		currentTransition.newSceneScreenshot = Graphics.image.new(400, 240)
+		Graphics.pushContext(currentTransition.newSceneScreenshot)
+	end
+
 	Graphics.sprite.update()			-- Let's draw our sprites (and backgrounds).
 
 	if (currentScene ~= nil) then
@@ -346,6 +353,9 @@ function playdate.update()
 	end
 
 	if (Noble.isTransitioning) then
+		if (currentTransition.captureScreenshotsDuringTransition) then
+			Graphics.popContext()
+		end
 		transitionUpdate()
 	end
 
