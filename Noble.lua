@@ -125,7 +125,7 @@ function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDura
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, launcherTransition, launcherTransitionDuration, launcherTransitionHoldTime, table.unpack(launcherTransitionArguments))
+	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransitionHoldTime, launcherTransition, table.unpack(launcherTransitionArguments))
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -194,7 +194,7 @@ local transitionSequence = nil
 local previousSceneScreenCapture = nil
 
 local currentTransition = nil
-local transitionQueue = nil
+local queuedScene = nil
 
 --- Transition to a new scene (at the end of this frame).
 --- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
@@ -217,11 +217,11 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 		-- We don't return here because maybe the developer *did* intened to override a previous call to Noble.transition().
 	end
 
-	local newScene = NewScene()	-- Creates new scene object. Its init() function runs now.
+	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
 	currentTransition = (__transitionType or configuration.defaultTransition)(
 		(__duration or configuration.defaultTransitionDuration), --* 1000,
 		(__holdTime or configuration.defaultTransitionHoldTime), --* 1000,
-		table.unpack(__transitionArguments)
+		table.unpack(__transitionArguments or {})
 	)
 end
 
@@ -238,13 +238,14 @@ local function executeTransition()
 		currentTransition.midpointReached = true
 		if (currentScene ~= nil) then
 			currentScene:finish()
-			currentScene = nil				-- Allows current scene to be garbage collected.
+			currentScene = nil							-- Allows current scene to be garbage collected.
 		end
-		currentScene = newScene				-- New scene's update loop begins.
+		currentScene = queuedScene						-- New scene's update loop begins.
+		queuedScene = nil								-- Reset!
 		if (currentTransition.onMidpoint ~= nil) then
-			currentTransition:onMidpoint()	-- If this transition has any custom code to run here, run it.
+			currentTransition:onMidpoint()				-- If this transition has any custom code to run here, run it.
 		end
-		newScene:enter()					-- The new scene runs its "hello" code.
+		currentScene:enter()							-- The new scene runs its "hello" code.
 	end
 
 	local onHoldTimeElapsed = function()
@@ -259,7 +260,7 @@ local function executeTransition()
 		if (currentTransition.onComplete ~= nil) then
 			currentTransition:onComplete()	-- If this transition has any custom code to run here, run it.
 		end
-		newScene:start()					-- The new scene is now active.
+		currentScene:start()					-- The new scene is now active.
 		currentTransition = nil				-- Clear the transition variable.
 	end
 
@@ -303,7 +304,6 @@ local function executeTransition()
 end
 
 local transitionCanvas = Graphics.image.new(400, 240)
-transitionCanvas:setIgnoresDrawOffset(true)
 
 local function transitionUpdate()
 	transitionCanvas:clear(Graphics.kColorClear)
@@ -313,6 +313,8 @@ local function transitionUpdate()
 	Graphics.popContext()
 
 	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+
+	transitionCanvas:drawIgnoringOffset(0, 0)
 end
 
 --- Get the current scene object
