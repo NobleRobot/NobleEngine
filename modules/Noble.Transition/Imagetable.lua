@@ -9,8 +9,8 @@ transition.drawMode = Graphics.kDrawModeCopy
 
 function transition:setCustomArguments(__arguments)
 
-	self.imagetable = __arguments.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransition")
-	self.imagetableOut = __arguments.imagetableOut or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransition2")
+	self.imagetable = __arguments.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BetelgeuseTransition")
+	self.imagetableOut = __arguments.imagetableOut or self.imagetable
 
 	self.imagetableLength = self.imagetable and #self.imagetable or 0
 	self.imagetableOutLength = self.imagetableOut and #self.imagetableOut or 0

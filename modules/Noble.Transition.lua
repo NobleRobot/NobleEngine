@@ -77,8 +77,6 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 		self.oldSceneScreenshot = Utilities.screenshot()
 	elseif (self.type == Noble.Transition.Type.COVER) then
 
-		self.duration *= 2
-
 		self.sequenceStartValue = self.sequenceStartValue or 0
 		self.sequenceMidpointValue = self.sequenceMidpointValue or 1
 		self.sequenceResumeValue = self.sequenceResumeValue or 1

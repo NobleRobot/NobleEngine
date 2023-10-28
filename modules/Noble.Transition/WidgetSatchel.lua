@@ -15,8 +15,8 @@ function transition:setCustomArguments(__arguments)
 		warn("BONK: 'Noble.Transition.WidgetSatchel' does not support custom 'ease' values.")
 	end
 
-	transition.easeIn = Ease.outCubit
-	transition.easeOut = Ease.inCubit
+	self.easeIn = Ease.outCubit
+	self.easeOut = Ease.inCubit
 
 	if (panels == nil) then
 		panels = {

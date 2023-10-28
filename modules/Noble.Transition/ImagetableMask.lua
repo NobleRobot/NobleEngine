@@ -15,7 +15,7 @@ transition.invertMask = false
 
 function transition:setCustomArguments(__arguments)
 
-	self.imagetable = __arguments.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransition")
+	self.imagetable = __arguments.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BetelgeuseTransition")
 	self.imagetableLength = self.imagetable and #self.imagetable or 0
 
 	-- Warnings

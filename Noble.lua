@@ -69,8 +69,8 @@ local engineInitialized = false
 --
 
 local defaultConfiguration = {
-	defaultTransitionDuration = 1,
-	defaultTransitionHoldTime = 0.2,
+	defaultTransitionDuration = 1.5,
+	defaultTransitionHoldTime = 0.25,
 	defaultTransition = Noble.Transition.DipToBlack,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
@@ -219,8 +219,8 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 
 	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
 	currentTransition = (__transitionType or configuration.defaultTransition)(
-		__duration or configuration.defaultTransitionDuration, --* 1000,
-		__holdTime or configuration.defaultTransitionHoldTime, --* 1000,
+		__duration or configuration.defaultTransitionDuration,
+		__holdTime or configuration.defaultTransitionHoldTime,
 		__transitionArguments or {}
 	)
 end
@@ -260,20 +260,17 @@ local function executeTransition()
 		if (currentTransition.onComplete ~= nil) then
 			currentTransition:onComplete()	-- If this transition has any custom code to run here, run it.
 		end
-		currentScene:start()					-- The new scene is now active.
+		currentScene:start()				-- The new scene is now active.
 		currentTransition = nil				-- Clear the transition variable.
 	end
 
 	local type = currentTransition.type
 	local duration = currentTransition.duration
 	local holdTime = currentTransition.holdTime
-	local ease = currentTransition.ease or Ease.linear
-	local easeIn = currentTransition.easeIn or Ease.linear
-	local easeOut = currentTransition.easeOut or Ease.linear
-	local startValue = currentTransition.sequenceStartValue or 0
-	local midpointValue = currentTransition.sequenceMidpointValue or 1
-	local resumeValue = currentTransition.sequenceResumeValue or currentTransition.sequenceMidpointValue
-	local completeValue = currentTransition.sequenceCompleteValue or 0
+	local startValue = currentTransition.sequenceStartValue
+	local midpointValue = currentTransition.sequenceMidpointValue
+	local resumeValue = currentTransition.sequenceResumeValue
+	local completeValue = currentTransition.sequenceCompleteValue
 
 	if (type == Noble.Transition.Type.CUT) then
 		onMidpoint()
@@ -281,22 +278,20 @@ local function executeTransition()
 	elseif (type == Noble.Transition.Type.COVER) then
 		currentTransition.sequence = Sequence.new()
 			:from(startValue)
-			:to(midpointValue, (duration-holdTime)/2, easeIn)
+			:to(midpointValue, (duration-holdTime)/2, currentTransition.easeIn)
 			:callback(onMidpoint)
 			:sleep(holdTime)
 			:callback(onHoldTimeElapsed)
 			:to(resumeValue, 0)
-			:to(completeValue, (duration-holdTime)/2, easeOut)
+			:to(completeValue, (duration-holdTime)/2, currentTransition.easeOut)
 			:callback(onComplete)
 			:start()
 	elseif (type == Noble.Transition.Type.MIX) then
 		onMidpoint()
+		onHoldTimeElapsed()
 		currentTransition.sequence = Sequence.new()
 			:from(startValue)
-			:to(startValue, 0) -- Needed to invoke holdTime
-			:sleep(holdTime)
-			:callback(onHoldTimeElapsed)
-			:to(completeValue, duration, ease)
+			:to(completeValue, duration, currentTransition.ease)
 			:callback(onComplete)
 			:start()
 	end
