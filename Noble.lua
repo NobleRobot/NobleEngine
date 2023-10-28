@@ -201,12 +201,12 @@ local transitionQueue = nil
 --- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transtion begins will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1] __duration The length of the transition, in seconds.
--- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
 -- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
+-- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __transition, __duration, __holdTime, ...)
+function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __transitionArguments)
 	if (Noble.isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -217,20 +217,15 @@ function Noble.transition(NewScene, __transition, __duration, __holdTime, ...)
 		-- We don't return here because maybe the developer *did* intened to override a previous call to Noble.transition().
 	end
 
-	-- Okay, let's pass this method's arguments into a table which we hold onto until the next Noble.update() call.
-	transitionQueue = {
-		NewScene = NewScene,
-		transition = __transition,
-		duration = __duration,
-		holdTime = __holdTime,
-		arguments = {...}
-	}
+	local newScene = NewScene()	-- Creates new scene object. Its init() function runs now.
+	currentTransition = (__transitionType or configuration.defaultTransition)(
+		(__duration or configuration.defaultTransitionDuration), --* 1000,
+		(__holdTime or configuration.defaultTransitionHoldTime), --* 1000,
+		table.unpack(__transitionArguments)
+	)
 end
 
-local onMidpoint
-local onComplete
-
-local function executeQueuedTransition()
+local function executeTransition()
 	Noble.isTransitioning = true
 
 	Noble.Input.setHandler(nil)						-- Disable user input. (This happens after self:ext() so exit() can query input)
@@ -238,14 +233,6 @@ local function executeQueuedTransition()
 	if (currentScene ~= nil) then
 		currentScene:exit()							-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
-
-	local newScene = transitionQueue.NewScene()	-- Creates new scene object. Its init() function runs now.
-	currentTransition = (transitionQueue.transition or configuration.defaultTransition)(
-		(transitionQueue.duration or configuration.defaultTransitionDuration), --* 1000,
-		(transitionQueue.holdDuration or configuration.defaultTransitionHoldTime), --* 1000,
-		table.unpack(transitionQueue.arguments)
-	)
-	transitionQueue = nil -- Reset!
 
 	local onMidpoint = function()
 		currentTransition.midpointReached = true
@@ -360,26 +347,27 @@ function playdate.update()
 		transitionUpdate()
 	end
 
+	-- We want to draw the crank indicator and FPS display last
 	crankIndicatorActive, crankIndicatorForced = Noble.Input.getCrankIndicatorStatus()
 	if (crankIndicatorActive) then
 		if (playdate.isCrankDocked() or crankIndicatorForced) then
 			UI.crankIndicator:update()	-- Draw crank indicator (if requested).
 		end
 	end
-
-	Timer.updateTimers()		-- Finally, update all SDK timers.
-	FrameTimer.updateTimers() 	-- Update all frame timers
-
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
 	end
+
+	Timer.updateTimers()		-- Finally, update all SDK timers.
+	FrameTimer.updateTimers() 	-- Update all frame timers
 
 	if (Noble.Bonk.checkingDebugBonks()) then	-- Checks for code that breaks the engine.
 		Noble.Bonk.checkDebugBonks()
 	end
 
-	if (transitionQueue ~= nil) then
-		executeQueuedTransition()
+	-- Once this frame is complete, we can check to see if it's time to start transitioning to a new scene.
+	if (not Noble.isTransitioning and currentTransition ~= nil) then
+		executeTransition()
 	end
 end
 
