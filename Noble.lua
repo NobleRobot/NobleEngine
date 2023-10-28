@@ -26,6 +26,7 @@ UI = playdate.ui
 File = playdate.file
 Datastore = playdate.datastore
 Timer = playdate.timer
+FrameTimer = playdate.frameTimer
 
 -- In lua, variables are global by default, but having a "Global" object to put
 -- variables into is useful for maintaining sanity if you're coming from an OOP language.
@@ -107,7 +108,7 @@ function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDura
 				-- Each scene has its own method for this. We only want to run one at a time.
 				currentScene:drawBackground(x, y, width, height)
 			else
-				Graphics.clear(playdate.graphics.kColorBlack)
+				Graphics.clear(Graphics.kColorBlack)
 			end
 		end
 	)
@@ -315,18 +316,16 @@ local function executeQueuedTransition()
 end
 
 local transitionCanvas = Graphics.image.new(400, 240)
+transitionCanvas:setIgnoresDrawOffset(true)
 
 local function transitionUpdate()
-	if (currentTransition ~= nil) then
-		transitionCanvas:clear(Graphics.kColorClear)
+	transitionCanvas:clear(Graphics.kColorClear)
 
-		Graphics.pushContext(transitionCanvas) do
-			currentTransition:draw()
-		end Graphics.popContext()
+	Graphics.pushContext(transitionCanvas)
+	currentTransition:draw()
+	Graphics.popContext()
 
-		Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
-		transitionCanvas:drawIgnoringOffset(0,0)
-	end
+	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 end
 
 --- Get the current scene object
@@ -368,8 +367,8 @@ function playdate.update()
 		end
 	end
 
-	playdate.timer.updateTimers()		-- Finally, update all SDK timers.
-	playdate.frameTimer.updateTimers() 	-- Update all frame timers
+	Timer.updateTimers()		-- Finally, update all SDK timers.
+	FrameTimer.updateTimers() 	-- Update all frame timers
 
 	if (Noble.showFPS) then
 		playdate.drawFPS(4, 4)
