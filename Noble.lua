@@ -266,11 +266,13 @@ local function executeTransition()
 
 	local type = currentTransition.type
 	local duration = currentTransition.duration
+	local durationIn = currentTransition.durationIn
+	local durationOut = currentTransition.durationOut
 	local holdTime = currentTransition.holdTime
-	local startValue = currentTransition.sequenceStartValue
-	local midpointValue = currentTransition.sequenceMidpointValue
-	local resumeValue = currentTransition.sequenceResumeValue
-	local completeValue = currentTransition.sequenceCompleteValue
+	local startValue = currentTransition._sequenceStartValue
+	local midpointValue = currentTransition._sequenceMidpointValue
+	local resumeValue = currentTransition._sequenceResumeValue
+	local completeValue = currentTransition._sequenceCompleteValue
 
 	if (type == Noble.Transition.Type.CUT) then
 		onMidpoint()
@@ -278,12 +280,12 @@ local function executeTransition()
 	elseif (type == Noble.Transition.Type.COVER) then
 		currentTransition.sequence = Sequence.new()
 			:from(startValue)
-			:to(midpointValue, (duration-holdTime)/2, currentTransition.easeIn)
+			:to(midpointValue, durationIn-(holdTime/2), currentTransition.easeIn)
 			:callback(onMidpoint)
 			:sleep(holdTime)
 			:callback(onHoldTimeElapsed)
 			:to(resumeValue, 0)
-			:to(completeValue, (duration-holdTime)/2, currentTransition.easeOut)
+			:to(completeValue, durationOut-(holdTime/2), currentTransition.easeOut)
 			:callback(onComplete)
 			:start()
 	elseif (type == Noble.Transition.Type.MIX) then

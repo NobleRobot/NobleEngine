@@ -56,6 +56,15 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 	self.duration = __duration
 	self.holdTime = __holdTime
 
+	self.durationIn = __arguments.durationIn or self.duration/2
+	self.durationOut = __arguments.durationOut or self.duration/2
+
+	if (__arguments.durationIn and not __arguments.durationOut) then
+		warn("Soft-BONK: You've specified 'durationIn' but not 'durationOut' for this transition. Thus, 'durationOut' will be half the value of 'duration'. Did you intend to do that?")
+	elseif (__arguments.durationOut and not __arguments.durationIn) then
+		warn("Soft-BONK: You've specified 'durationOut' but not 'durationIn' for this transition. Thus, 'durationIn' will be half the value of 'duration'. Did you intend to do that?")
+	end
+
 	self.sequence = nil
 
 	self.captureScreenshotsDuringTransition = self.captureScreenshotsDuringTransition or false
