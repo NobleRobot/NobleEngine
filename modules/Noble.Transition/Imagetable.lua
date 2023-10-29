@@ -18,16 +18,24 @@ function transition:setCustomArguments(__arguments)
 	self.color = __arguments.color or Graphics.kColorBlack
 	self.invertMask = __arguments.invertMask or false
 
+	self.imagetableReverse = __arguments.imagetableReverse or false
+	self.imagetableOutReverse = __arguments.imagetableOutReverse or false
+
+	local sequence0 = (not self.imagetableReverse) and 0 or 1
+	local sequence1 = (not self.imagetableReverse) and 1 or 0
+	local sequenceOut0 = (not self.imagetableOutReverse) and 0 or 1
+	local sequenceOut1 = (not self.imagetableOutReverse) and 1 or 0
+
 	if (self.imagetable == self.imagetableOut) then
-		self.sequenceStartValue = 0
-		self.sequenceMidpointValue = 1
-		self.sequenceResumeValue = 1
-		self.sequenceCompleteValue = 0
+		self.sequenceStartValue = sequence0
+		self.sequenceMidpointValue = sequence1
+		self.sequenceResumeValue = sequence1
+		self.sequenceCompleteValue = sequence0
 	else
-		self.sequenceStartValue = 0
-		self.sequenceMidpointValue = 1
-		self.sequenceResumeValue = 0
-		self.sequenceCompleteValue = 1
+		self.sequenceStartValue = sequence0
+		self.sequenceMidpointValue = sequence1
+		self.sequenceResumeValue = sequenceOut0
+		self.sequenceCompleteValue = sequenceOut1
 	end
 end
 
