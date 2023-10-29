@@ -67,8 +67,8 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 	self.drawMode = __arguments.drawMode or self.drawMode or Graphics.kDrawModeCopy
 
 	if (self.type == Noble.Transition.Type.MIX) then
-		self.sequenceStartValue = self.sequenceStartValue or 0
-		self.sequenceCompleteValue = self.sequenceCompleteValue or 1
+		self._sequenceStartValue = self._sequenceStartValue or 0
+		self._sequenceCompleteValue = self._sequenceCompleteValue or 1
 
 		if ((__arguments.easeIn or __arguments.easeOut) ~= nil) then
 			warn("BONK: You've specified an 'easeIn' and/or 'easeOut' argument for a transition of type 'Noble.Transition.Type.MIX'. This will have no effect. Use 'ease' instead, or specify a transition of type 'Noble.Transition.Type.COVER'.")
@@ -77,10 +77,10 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 		self.oldSceneScreenshot = Utilities.screenshot()
 	elseif (self.type == Noble.Transition.Type.COVER) then
 
-		self.sequenceStartValue = self.sequenceStartValue or 0
-		self.sequenceMidpointValue = self.sequenceMidpointValue or 1
-		self.sequenceResumeValue = self.sequenceResumeValue or 1
-		self.sequenceCompleteValue = self.sequenceCompleteValue or 0
+		self._sequenceStartValue = self._sequenceStartValue or 0
+		self._sequenceMidpointValue = self._sequenceMidpointValue or 1
+		self._sequenceResumeValue = self._sequenceResumeValue or 1
+		self._sequenceCompleteValue = self._sequenceCompleteValue or 0
 
 		local ease = __arguments.ease or self.ease
 		if (ease) then

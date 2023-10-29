@@ -27,15 +27,15 @@ function transition:setCustomArguments(__arguments)
 	local sequenceOut1 = (not self.imagetableOutReverse) and 1 or 0
 
 	if (self.imagetable == self.imagetableOut) then
-		self.sequenceStartValue = sequence0
-		self.sequenceMidpointValue = sequence1
-		self.sequenceResumeValue = sequence1
-		self.sequenceCompleteValue = sequence0
+		self._sequenceStartValue = sequence0
+		self._sequenceMidpointValue = sequence1
+		self._sequenceResumeValue = sequence1
+		self._sequenceCompleteValue = sequence0
 	else
-		self.sequenceStartValue = sequence0
-		self.sequenceMidpointValue = sequence1
-		self.sequenceResumeValue = sequenceOut0
-		self.sequenceCompleteValue = sequenceOut1
+		self._sequenceStartValue = sequence0
+		self._sequenceMidpointValue = sequence1
+		self._sequenceResumeValue = sequenceOut0
+		self._sequenceCompleteValue = sequenceOut1
 	end
 end
 

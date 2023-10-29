@@ -14,8 +14,8 @@ function transition:setCustomArguments(__arguments)
 		warn("BONK: 'Noble.Transition.MetroNexus' does not support custom 'ease' values.")
 	end
 
-	self.sequenceResumeValue = 0
-	self.sequenceCompleteValue = 1
+	self._sequenceResumeValue = 0
+	self._sequenceCompleteValue = 1
 	self.easeIn = Ease.linear
 	self.easeOut = Ease.linear
 

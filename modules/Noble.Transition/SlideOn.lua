@@ -4,8 +4,8 @@ transition.name = "Slide On"
 
 transition.type = Noble.Transition.Type.MIX
 transition.ease = Ease.outQuart
-transition.sequenceStartValue = 1
-transition.sequenceCompleteValue = 0
+transition._sequenceStartValue = 1
+transition._sequenceCompleteValue = 0
 transition.captureScreenshotsDuringTransition = true
 
 function transition:setCustomArguments(__arguments)

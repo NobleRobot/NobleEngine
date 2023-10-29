@@ -5,8 +5,8 @@ local transition = Noble.Transition.ImagetableMask
 transition.name = "Imagetable Mask"
 
 transition.type = Noble.Transition.Type.MIX
-transition.sequenceStartValue = 0
-transition.sequenceCompleteValue = 1
+transition._sequenceStartValue = 0
+transition._sequenceCompleteValue = 1
 
 transition.drawMode = Graphics.kDrawModeCopy
 transition.ease = Ease.linear

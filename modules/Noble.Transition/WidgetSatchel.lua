@@ -5,7 +5,7 @@ local transition = Noble.Transition.WidgetSatchel
 transition.name = "Widget Satchel"
 
 transition.type = Noble.Transition.Type.COVER
-transition.sequenceCompleteValue = 2
+transition._sequenceCompleteValue = 2
 
 local panels
 
