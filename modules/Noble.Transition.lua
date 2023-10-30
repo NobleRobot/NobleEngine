@@ -31,14 +31,17 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 	self.drawMode = __arguments.drawMode or self.drawMode or Graphics.kDrawModeCopy
 
 	if (self._type == Noble.Transition.Type.MIX) then
+
 		self._sequenceStartValue = self._sequenceStartValue or 0
 		self._sequenceCompleteValue = self._sequenceCompleteValue or 1
 
+		self.ease = __arguments.ease or self.ease or Ease.linear
 		if ((__arguments.easeEnter or __arguments.easeExit) ~= nil) then
 			warn("BONK: You've specified an 'easeEnter' and/or 'easeExit' argument for a transition of type 'Noble.Transition.Type.MIX'. This will have no effect. Use 'ease' instead, or specify a transition of type 'Noble.Transition.Type.COVER'.")
 		end
-		self.ease = __arguments.ease or self.ease or Ease.linear
+
 		self.oldSceneScreenshot = Utilities.screenshot()
+
 	elseif (self._type == Noble.Transition.Type.COVER) then
 
 		self._sequenceStartValue = self._sequenceStartValue or 0
@@ -50,13 +53,14 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 		if (ease) then
 			self.easeEnter = self.easeEnter or Ease.enter(ease) or ease
 			self.easeExit = self.easeExit or Ease.exit(ease) or ease
-			if (Ease.enter(ease) or Ease.exit(ease) == nil) then
+			if (Ease.enter(ease) == nil or Ease.exit(ease) == nil) then
 				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't in the form of 'Ease.inOutXxxx' or an 'Ease.outInXxxx'. As a result, this value will be used for both 'easeEnter' and 'easeExit'. Did you mean to do that?")
 			end
 		else
-			self.easeEnter = self.easeEnter or __arguments.easeEnter or Ease.linear
-			self.easeExit = self.easeExit or __arguments.easeExit or Ease.linear
+			self.easeEnter = __arguments.easeEnter or self.easeEnter or Ease.linear
+			self.easeExit = __arguments.easeExit or self.easeExit or Ease.linear
 		end
+
 	end
 
 	self:setCustomArguments(__arguments)

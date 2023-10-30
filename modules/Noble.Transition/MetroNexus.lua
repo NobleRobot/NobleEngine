@@ -9,10 +9,6 @@ transition._type = Noble.Transition.Type.COVER
 transition._sequenceResumeValue = 0
 transition._sequenceCompleteValue = 1
 
--- Override default arguments
-transition.easeEnter = Ease.linear
-transition.easeExit = Ease.linear
-
 -- "Static" variables
 local panels
 
@@ -27,6 +23,10 @@ function transition:setCustomArguments(__arguments)
 			Graphics.image.new(80,240, Graphics.kColorWhite)
 		}
 	end
+
+	-- Override ease arguments
+	self.easeEnter = Ease.linear
+	self.easeExit = Ease.linear
 
 	-- Warnings
 	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then

@@ -8,10 +8,6 @@ transition.name = "Widget Satchel"
 transition._type = Noble.Transition.Type.COVER
 transition._sequenceCompleteValue = 2
 
--- Override default arguments
-transition.easeEnter = Ease.outCubit
-transition.easeExit = Ease.inCubit
-
 -- "Static" variables
 local panels
 
@@ -43,6 +39,10 @@ function transition:setCustomArguments(__arguments)
 		Graphics.unlockFocus()
 	end
 
+	-- Override ease arguments
+	self.easeEnter = Ease.outCubic
+	self.easeExit = Ease.inCubic
+
 	-- Warnings
 	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then
 		warn("BONK: 'Noble.Transition.WidgetSatchel' does not support custom ease values.")
@@ -52,7 +52,7 @@ end
 
 function transition:draw()
 	local progress = self.sequence:get()
-	if (not self.midpointReached) then
+	if (not self.midpointReached ) then
 		panels[1]:draw(0, -48 + (progress * (48*1)) )
 		panels[2]:draw(0, -48 + (progress * (48*2)) )
 		panels[3]:draw(0, -48 + (progress * (48*3)) )
