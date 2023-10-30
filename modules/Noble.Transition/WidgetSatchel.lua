@@ -4,19 +4,18 @@ class("WidgetSatchel", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.WidgetSatchel
 transition.name = "Widget Satchel"
 
-transition.type = Noble.Transition.Type.COVER
+-- Properties
+transition._type = Noble.Transition.Type.COVER
 transition._sequenceCompleteValue = 2
 
+-- Override default arguments
+transition.easeEnter = Ease.outCubit
+transition.easeExit = Ease.inCubit
+
+-- "Static" variables
 local panels
 
 function transition:setCustomArguments(__arguments)
-
-	if (__arguments.easeIn or __arguments.easeIn or __arguments.ease) then
-		warn("BONK: 'Noble.Transition.WidgetSatchel' does not support custom 'ease' values.")
-	end
-
-	self.easeIn = Ease.outCubit
-	self.easeOut = Ease.inCubit
 
 	if (panels == nil) then
 		panels = {
@@ -42,6 +41,11 @@ function transition:setCustomArguments(__arguments)
 			Graphics.setDitherPattern(0.8, Graphics.image.kDitherTypeHorizontalLine)
 			Graphics.fillRect(0,0,400,48)
 		Graphics.unlockFocus()
+	end
+
+	-- Warnings
+	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then
+		warn("BONK: 'Noble.Transition.WidgetSatchel' does not support custom ease values.")
 	end
 
 end

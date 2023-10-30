@@ -41,7 +41,8 @@ import 'libraries/noble/libraries/Signal'
 import 'libraries/noble/libraries/Sequence'
 
 -- Noble libraries, modules, and classes.
-import 'libraries/noble/utilities/Utilities'
+import 'libraries/noble/utilities/Utilities.lua'
+import 'libraries/noble/utilities/Ease.lua' -- Extensions to the Ease library
 import 'libraries/noble/modules/Noble.Animation.lua'
 import 'libraries/noble/modules/Noble.Bonk.lua'
 import 'libraries/noble/modules/Noble.GameData.lua'
@@ -53,15 +54,7 @@ import 'libraries/noble/modules/Noble.Menu.lua'
 import 'libraries/noble/modules/NobleScene.lua'
 import 'libraries/noble/modules/NobleSprite.lua'
 
---- Check to see if the game is transitioning between scenes.
--- Useful to control game logic that lives outside of a scene's `update()` method.
--- @field bool
-Noble.isTransitioning = false
-
---- Show/hide the Playdate SDK's FPS counter.
--- @field bool
-Noble.showFPS = false;
-
+local isTransitioning = false
 local currentScene = nil
 local engineInitialized = false
 
@@ -190,9 +183,6 @@ end
 
 -- Transition stuff
 --
-local transitionSequence = nil
-local previousSceneScreenCapture = nil
-
 local currentTransition = nil
 local queuedScene = nil
 
@@ -207,7 +197,7 @@ local queuedScene = nil
 -- @see NobleScene
 -- @see Noble.TransitionType
 function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __transitionArguments)
-	if (Noble.isTransitioning) then
+	if (isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
 		return -- Let's get otta here!
@@ -218,6 +208,7 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 	end
 
 	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
+
 	currentTransition = (__transitionType or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,
 		__holdTime or configuration.defaultTransitionHoldTime,
@@ -225,93 +216,32 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 	)
 end
 
-local function executeTransition()
-	Noble.isTransitioning = true
 
-	Noble.Input.setHandler(nil)						-- Disable user input. (This happens after self:ext() so exit() can query input)
+-- These methods are triggered during an transition
 
+local function transitionStartHandler()
+	isTransitioning = true
 	if (currentScene ~= nil) then
-		currentScene:exit()							-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
+		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
-
-	local onMidpoint = function()
-		currentTransition.midpointReached = true
-		if (currentScene ~= nil) then
-			currentScene:finish()
-			currentScene = nil							-- Allows current scene to be garbage collected.
-		end
-		currentScene = queuedScene						-- New scene's update loop begins.
-		queuedScene = nil								-- Reset!
-		if (currentTransition.onMidpoint ~= nil) then
-			currentTransition:onMidpoint()				-- If this transition has any custom code to run here, run it.
-		end
-		currentScene:enter()							-- The new scene runs its "hello" code.
-	end
-
-	local onHoldTimeElapsed = function()
-		currentTransition.holdTimeElapsed = true
-		if (currentTransition.onHoldTimeElapsed ~= nil) then
-			currentTransition:onHoldTimeElapsed()
-		end
-	end
-
-	local onComplete = function()
-		Noble.isTransitioning = false		-- Reset
-		if (currentTransition.onComplete ~= nil) then
-			currentTransition:onComplete()	-- If this transition has any custom code to run here, run it.
-		end
-		currentScene:start()				-- The new scene is now active.
-		currentTransition = nil				-- Clear the transition variable.
-	end
-
-	local type = currentTransition.type
-	local duration = currentTransition.duration
-	local durationIn = currentTransition.durationIn
-	local durationOut = currentTransition.durationOut
-	local holdTime = currentTransition.holdTime
-	local startValue = currentTransition._sequenceStartValue
-	local midpointValue = currentTransition._sequenceMidpointValue
-	local resumeValue = currentTransition._sequenceResumeValue
-	local completeValue = currentTransition._sequenceCompleteValue
-
-	if (type == Noble.Transition.Type.CUT) then
-		onMidpoint()
-		onComplete()
-	elseif (type == Noble.Transition.Type.COVER) then
-		currentTransition.sequence = Sequence.new()
-			:from(startValue)
-			:to(midpointValue, durationIn-(holdTime/2), currentTransition.easeIn)
-			:callback(onMidpoint)
-			:sleep(holdTime)
-			:callback(onHoldTimeElapsed)
-			:to(resumeValue, 0)
-			:to(completeValue, durationOut-(holdTime/2), currentTransition.easeOut)
-			:callback(onComplete)
-			:start()
-	elseif (type == Noble.Transition.Type.MIX) then
-		onMidpoint()
-		onHoldTimeElapsed()
-		currentTransition.sequence = Sequence.new()
-			:from(startValue)
-			:to(completeValue, duration, currentTransition.ease)
-			:callback(onComplete)
-			:start()
-	end
-
+	Noble.Input.setHandler(nil)			-- Disable user input.
+	currentTransition:execute()
 end
 
-local transitionCanvas = Graphics.image.new(400, 240)
+function Noble.transitionMidpointHandler()
+	if (currentScene ~= nil) then
+		currentScene:finish()
+		currentScene = nil				-- Allows current scene to be garbage collected.
+	end
+	currentScene = queuedScene			-- New scene's update loop begins.
+	queuedScene = nil
+	currentScene:enter()				-- The new scene runs its "hello" code.
+end
 
-local function transitionUpdate()
-	transitionCanvas:clear(Graphics.kColorClear)
-
-	Graphics.pushContext(transitionCanvas)
-	currentTransition:draw()
-	Graphics.popContext()
-
-	Graphics.setImageDrawMode(currentTransition.drawMode)
-	transitionCanvas:drawIgnoringOffset(0, 0)
-	Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
+function Noble.transitionCompleteHandler()
+	isTransitioning = false				-- Reset
+	currentTransition = nil				-- Clear the transition variable.
+	currentScene:start()				-- The new scene is now active.
 end
 
 --- Get the current scene object
@@ -326,8 +256,21 @@ function Noble.currentSceneName()
 	return currentScene.name
 end
 
+--- Check to see if the game is transitioning between scenes.
+-- Useful to control game logic that lives outside of a scene's `update()` method.
+-- @treturn bool
+function Noble.isTransitioning()
+	return isTransitioning
+end
+
+--- Show/hide the Playdate SDK's FPS counter.
+-- @field bool
+Noble.showFPS = false;
+
 local crankIndicatorActive = false
 local crankIndicatorForced = false
+
+local transitionCanvas = Graphics.image.new(400, 240)
 
 -- Game loop
 --
@@ -338,7 +281,7 @@ function playdate.update()
 
 	-- Here we check to see if a transition currently in progress needs screenshots of the new scene.
 	-- If so, we route drawing for this frame into a new context.
-	if (Noble.isTransitioning and currentTransition.captureScreenshotsDuringTransition) then
+	if (isTransitioning and currentTransition._captureScreenshotsDuringTransition) then
 		currentTransition.newSceneScreenshot = Graphics.image.new(400, 240)
 		Graphics.pushContext(currentTransition.newSceneScreenshot)
 	end
@@ -349,11 +292,19 @@ function playdate.update()
 		currentScene:update()			-- Scene-specific update code.
 	end
 
-	if (Noble.isTransitioning) then
-		if (currentTransition.captureScreenshotsDuringTransition) then
+	if (isTransitioning) then
+		if (currentTransition._captureScreenshotsDuringTransition) then
 			Graphics.popContext()
 		end
-		transitionUpdate()
+		transitionCanvas:clear(Graphics.kColorClear)
+
+		Graphics.pushContext(transitionCanvas)
+		currentTransition:draw()
+		Graphics.popContext()
+
+		Graphics.setImageDrawMode(currentTransition.drawMode)
+		transitionCanvas:drawIgnoringOffset(0, 0)
+		Graphics.setImageDrawMode(Graphics.kDrawModeCopy)
 	end
 
 	-- We want to draw the crank indicator and FPS display last
@@ -375,8 +326,8 @@ function playdate.update()
 	end
 
 	-- Once this frame is complete, we can check to see if it's time to start transitioning to a new scene.
-	if (not Noble.isTransitioning and currentTransition ~= nil) then
-		executeTransition()
+	if (not isTransitioning and currentTransition ~= nil) then
+		transitionStartHandler()
 	end
 end
 

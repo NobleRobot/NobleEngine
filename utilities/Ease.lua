@@ -1,0 +1,22 @@
+Ease.components = {
+	[Ease.inOutQuad]	= {		enter = Ease.inQuad,		exit = Ease.outQuad		},
+	[Ease.inOutCubic]	= {		enter = Ease.inCubic,		exit = Ease.outCubic	},
+	[Ease.inOutQuart]	= {		enter = Ease.inQuart,		exit = Ease.outQuart	},
+	[Ease.inOutQuint]	= {		enter = Ease.inQuint,		exit = Ease.outQuint	},
+	[Ease.inOutSine]	= {		enter = Ease.inSine,		exit = Ease.outSine		},
+	[Ease.inOutExpo]	= {		enter = Ease.inExpo,		exit = Ease.outExpo		},
+	[Ease.inOutCirc]	= {		enter = Ease.inCirc,		exit = Ease.outCirc		},
+	[Ease.inOutElastic]	= {		enter = Ease.inElastic,		exit = Ease.outElastic	},
+	[Ease.inOutBack]	= {		enter = Ease.inBack,		exit = Ease.outBack		},
+	[Ease.inOutBounce]	= {		enter = Ease.inBounce,		exit = Ease.outBounce	},
+	[Ease.outInQuad]	= { 	enter = Ease.outQuad,		exit = Ease.inQuad		},
+	[Ease.outInCubic]	= { 	enter = Ease.outCubic,		exit = Ease.inCubic		},
+	[Ease.outInQuart]	= { 	enter = Ease.outQuart,		exit = Ease.inQuart		},
+	[Ease.outInQuint]	= { 	enter = Ease.outQuint,		exit = Ease.inQuint		},
+	[Ease.outInSine]	= { 	enter = Ease.outSine,		exit = Ease.inSine		},
+	[Ease.outInExpo]	= { 	enter = Ease.outExpo,		exit = Ease.inExpo		},
+	[Ease.outInCirc]	= { 	enter = Ease.outCirc,		exit = Ease.inCirc		},
+	[Ease.outInElastic]	= { 	enter = Ease.outElastic,	exit = Ease.inElastic	},
+	[Ease.outInBack]	= { 	enter = Ease.outBack,		exit = Ease.inBack		},
+	[Ease.outInBounce]	= { 	enter = Ease.outBounce,		exit = Ease.inBounce	}
+}

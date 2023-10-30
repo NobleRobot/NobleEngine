@@ -1,8 +1,9 @@
 class("Dip", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.Dip
-
 transition.name = "Dip"
-transition.type = Noble.Transition.Type.COVER
+
+-- Properties
+transition._type = Noble.Transition.Type.COVER
 
 function transition:setCustomArguments(__arguments)
 	self.dither = __arguments.dither or Graphics.image.kDitherTypeBayer4x4
@@ -12,6 +13,5 @@ function transition:setCustomArguments(__arguments)
 end
 
 function transition:draw()
-	transition.super.draw(self)
 	self.panelImage:drawFaded(self.x, self.y, self.sequence:get(), self.dither)
 end

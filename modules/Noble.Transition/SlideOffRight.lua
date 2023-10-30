@@ -2,7 +2,6 @@
 
 class("SlideOffRight", nil, Noble.Transition).extends(Noble.Transition.SlideOff)
 local transition = Noble.Transition.SlideOffRight
-
 transition.name = "Slide Off (Right)"
 
 function transition:setCustomArguments(__arguments)

@@ -6,85 +6,40 @@ Noble.Transition.Type.CUT = "Cut"
 Noble.Transition.Type.COVER = "Cover"
 Noble.Transition.Type.MIX = "Mix"
 
-local inOutQuad		= {	easeIn = Ease.inQuad,		easeOut = Ease.outQuad		}
-local inOutCubic	= {	easeIn = Ease.inCubic,		easeOut = Ease.outCubic		}
-local inOutQuart	= {	easeIn = Ease.inQuart,		easeOut = Ease.outQuart		}
-local inOutQuint	= {	easeIn = Ease.inQuint,		easeOut = Ease.outQuint		}
-local inOutSine		= {	easeIn = Ease.inSine,		easeOut = Ease.outSine		}
-local inOutExpo		= {	easeIn = Ease.inExpo,		easeOut = Ease.outExpo		}
-local inOutCirc		= {	easeIn = Ease.inCirc,		easeOut = Ease.outCirc		}
-local inOutElastic	= {	easeIn = Ease.inElastic,	easeOut = Ease.outElastic	}
-local inOutBack		= {	easeIn = Ease.inBack,		easeOut = Ease.outBack		}
-local inOutBounce	= {	easeIn = Ease.inBounce,		easeOut = Ease.outBounce	}
-
-local outInQuad		= { easeOut = Ease.inQuad,		easeIn = Ease.outQuad		}
-local outInCubic	= { easeOut = Ease.inCubic,		easeIn = Ease.outCubic		}
-local outInQuart	= { easeOut = Ease.inQuart,		easeIn = Ease.outQuart		}
-local outInQuint	= { easeOut = Ease.inQuint,		easeIn = Ease.outQuint		}
-local outInSine		= { easeOut = Ease.inSine,		easeIn = Ease.outSine		}
-local outInExpo		= { easeOut = Ease.inExpo,		easeIn = Ease.outExpo		}
-local outInCirc		= { easeOut = Ease.inCirc,		easeIn = Ease.outCirc		}
-local outInElastic	= { easeOut = Ease.inElastic,	easeIn = Ease.outElastic	}
-local outInBack		= { easeOut = Ease.inBack,		easeIn = Ease.outBack		}
-local outInBounce	= { easeOut = Ease.inBounce,	easeIn = Ease.outBounce		}
-
-local eases	= {
-	[Ease.inOutQuad] = inOutQuad,
-	[Ease.inOutCubic] = inOutCubic,
-	[Ease.inOutQuart] = inOutQuart,
-	[Ease.inOutQuint] = inOutQuint,
-	[Ease.inOutSine] = inOutSine,
-	[Ease.inOutExpo] = inOutExpo,
-	[Ease.inOutCirc] = inOutCirc,
-	[Ease.inOutElastic] = inOutElastic,
-	[Ease.inOutBack] = inOutBack,
-	[Ease.inOutBounce] = inOutBounce,
-	[Ease.outInQuad] = outInQuad,
-	[Ease.outInCubic] = outInCubic,
-	[Ease.outInQuart] = outInQuart,
-	[Ease.outInQuint] = outInQuint,
-	[Ease.outInSine] = outInSine,
-	[Ease.outInExpo] = outInExpo,
-	[Ease.outInCirc] = outInCirc,
-	[Ease.outInElastic] = outInElastic,
-	[Ease.outInBack] = outInBack,
-	[Ease.outInBounce] = outInBounce
-}
-
 function Noble.Transition:init(__duration, __holdTime, __arguments)
 
 	self.duration = __duration
 	self.holdTime = __holdTime
 
-	self.durationIn = __arguments.durationIn or self.duration/2
-	self.durationOut = __arguments.durationOut or self.duration/2
+	self.durationEnter = __arguments.durationEnter or self.duration/2
+	self.durationExit = __arguments.durationExit or self.duration/2
 
-	if (__arguments.durationIn and not __arguments.durationOut) then
-		warn("Soft-BONK: You've specified 'durationIn' but not 'durationOut' for this transition. Thus, 'durationOut' will be half the value of 'duration'. Did you intend to do that?")
-	elseif (__arguments.durationOut and not __arguments.durationIn) then
-		warn("Soft-BONK: You've specified 'durationOut' but not 'durationIn' for this transition. Thus, 'durationIn' will be half the value of 'duration'. Did you intend to do that?")
+	if (__arguments.durationEnter and not __arguments.durationExit) then
+		warn("Soft-BONK: You've specified 'durationEnter' but not 'durationExit' for this transition. Thus, 'durationExit' will be half the value of 'duration'. Did you intend to do that?")
+	elseif (__arguments.durationExit and not __arguments.durationEnter) then
+		warn("Soft-BONK: You've specified 'durationExit' but not 'durationEnter' for this transition. Thus, 'durationEnter' will be half the value of 'duration'. Did you intend to do that?")
 	end
 
 	self.sequence = nil
 
-	self.captureScreenshotsDuringTransition = self.captureScreenshotsDuringTransition or false
+	self._captureScreenshotsDuringTransition = self._captureScreenshotsDuringTransition or false
 
-	self.midpointReached = false
+	self.midpointReached  = false
 	self.holdTimeElapsed = false
 
 	-- Arguments
 	self.drawMode = __arguments.drawMode or self.drawMode or Graphics.kDrawModeCopy
 
-	if (self.type == Noble.Transition.Type.MIX) then
+	if (self._type == Noble.Transition.Type.MIX) then
 		self._sequenceStartValue = self._sequenceStartValue or 0
 		self._sequenceCompleteValue = self._sequenceCompleteValue or 1
 
-		if ((__arguments.easeIn or __arguments.easeOut) ~= nil) then
-			warn("BONK: You've specified an 'easeIn' and/or 'easeOut' argument for a transition of type 'Noble.Transition.Type.MIX'. This will have no effect. Use 'ease' instead, or specify a transition of type 'Noble.Transition.Type.COVER'.")
+		if ((__arguments.easeEnter or __arguments.easeExit) ~= nil) then
+			warn("BONK: You've specified an 'easeEnter' and/or 'easeExit' argument for a transition of type 'Noble.Transition.Type.MIX'. This will have no effect. Use 'ease' instead, or specify a transition of type 'Noble.Transition.Type.COVER'.")
 		end
 		self.ease = __arguments.ease or self.ease or Ease.linear
 		self.oldSceneScreenshot = Utilities.screenshot()
-	elseif (self.type == Noble.Transition.Type.COVER) then
+	elseif (self._type == Noble.Transition.Type.COVER) then
 
 		self._sequenceStartValue = self._sequenceStartValue or 0
 		self._sequenceMidpointValue = self._sequenceMidpointValue or 1
@@ -93,54 +48,96 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 
 		local ease = __arguments.ease or self.ease
 		if (ease) then
-			self.easeIn = self.easeIn or (eases[ease] or {}).easeIn or ease
-			self.easeOut = self.eastOut or (eases[ease] or {}).easeOut or ease
-			if (eases[ease] == nil and ease ~= Ease.linear) then
-				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't 'inOutXxxx' or 'outInXxxx'. Did you mean to do that?")
+			self.easeEnter = self.easeEnter or (Ease.components[ease] or {}).easeEnter or ease
+			self.easeExit = self.easeExit or (Ease.components[ease] or {}).easeExit or ease
+			if (Ease.components[ease] == nil and ease ~= Ease.linear) then
+				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't an 'Ease.inOutXxxx' or 'Ease.outInXxxx'. Did you mean to do that?")
 			end
 		else
-			self.easeIn = __arguments.easeIn or self.easeIn or Ease.linear
-			self.easeOut = __arguments.easeOut or self.easeOut or Ease.linear
+			self.easeEnter = self.easeEnter or __arguments.easeEnter or Ease.linear
+			self.easeExit = self.easeExit or __arguments.easeExit or Ease.linear
 		end
 	end
 
-	-- setDefaultCustomArgumentValues()??
 	self:setCustomArguments(__arguments)
 
 end
 
-function Noble.Transition:setCustomArguments(__arguments) end
+function Noble.Transition:execute()
 
+	local onMidpoint = function()
+		Noble.transitionMidpointHandler()
+		self.midpointReached = true
+		self.onMidpoint()				-- If this transition has any custom code to run here, run it.
+	end
+
+	local onHoldTimeElapsed = function()
+		self.holdTimeElapsed = true
+		self:onHoldTimeElapsed()
+	end
+
+	local onComplete = function()
+		self:onComplete()				-- If this transition has any custom code to run here, run it.
+		Noble.transitionCompleteHandler()
+	end
+
+	local type = self._type
+	local holdTime = self.holdTime
+
+	if (type == Noble.Transition.Type.CUT) then
+		onMidpoint()
+		onComplete()
+	elseif (type == Noble.Transition.Type.COVER) then
+		self.sequence = Sequence.new()
+			:from(self._sequenceStartValue)
+			:to(self._sequenceMidpointValue, self.durationEnter-(holdTime/2), self.easeEnter)
+			:callback(onMidpoint)
+			:sleep(holdTime)
+			:callback(onHoldTimeElapsed)
+			:to(self._sequenceResumeValue, 0)
+			:to(self._sequenceCompleteValue, self.durationExit-(holdTime/2), self.easeExit)
+			:callback(onComplete)
+			:start()
+	elseif (type == Noble.Transition.Type.MIX) then
+		onMidpoint()
+		onHoldTimeElapsed()
+		self.sequence = Sequence.new()
+			:from(self._sequenceStartValue)
+			:to(self._sequenceCompleteValue, self.duration, self.ease)
+			:callback(onComplete)
+			:start()
+	end
+
+end
+
+function Noble.Transition:setCustomArguments(__arguments) end
 function Noble.Transition:onMidpoint() end
 function Noble.Transition:onHoldTimeElapsed() end
 function Noble.Transition:onComplete() end
-
 function Noble.Transition:draw() end
-
 
 -- Noble Engine built-in transitions.
 import 'libraries/noble/modules/Noble.Transition/Cut.lua'
 --
 import 'libraries/noble/modules/Noble.Transition/CrossDissolve.lua'
-import 'libraries/noble/modules/Noble.Transition/Imagetable.lua'
-import 'libraries/noble/modules/Noble.Transition/ImagetableMask.lua'
---
 import 'libraries/noble/modules/Noble.Transition/Dip.lua'
 import 'libraries/noble/modules/Noble.Transition/DipToBlack.lua'
 import 'libraries/noble/modules/Noble.Transition/DipToWhite.lua'
+--
+import 'libraries/noble/modules/Noble.Transition/Imagetable.lua'
+import 'libraries/noble/modules/Noble.Transition/ImagetableMask.lua'
+import 'libraries/noble/modules/Noble.Transition/Spotlight.lua'
 --
 import 'libraries/noble/modules/Noble.Transition/SlideOff.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOffLeft.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOffRight.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOffUp.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOffDown.lua'
---
 import 'libraries/noble/modules/Noble.Transition/SlideOn.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOnLeft.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOnRight.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOnUp.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOnDown.lua'
-import 'libraries/noble/modules/Noble.Transition/Spotlight.lua'
 --
 import 'libraries/noble/modules/Noble.Transition/MetroNexus.lua'
 import 'libraries/noble/modules/Noble.Transition/WidgetSatchel.lua'

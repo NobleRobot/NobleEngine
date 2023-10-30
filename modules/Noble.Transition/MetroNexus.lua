@@ -4,20 +4,19 @@ class("MetroNexus", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.MetroNexus
 transition.name = "Metro Nexus"
 
-transition.type = Noble.Transition.Type.COVER
+-- Properties
+transition._type = Noble.Transition.Type.COVER
+transition._sequenceResumeValue = 0
+transition._sequenceCompleteValue = 1
 
+-- Override default arguments
+transition.easeEnter = Ease.linear
+transition.easeExit = Ease.linear
+
+-- "Static" variables
 local panels
 
 function transition:setCustomArguments(__arguments)
-
-	if (__arguments.easeIn or __arguments.easeIn or __arguments.ease) then
-		warn("BONK: 'Noble.Transition.MetroNexus' does not support custom 'ease' values.")
-	end
-
-	self._sequenceResumeValue = 0
-	self._sequenceCompleteValue = 1
-	self.easeIn = Ease.linear
-	self.easeOut = Ease.linear
 
 	if (panels == nil) then
 		panels = {
@@ -27,6 +26,11 @@ function transition:setCustomArguments(__arguments)
 			Graphics.image.new(80,240, Graphics.kColorWhite),
 			Graphics.image.new(80,240, Graphics.kColorWhite)
 		}
+	end
+
+	-- Warnings
+	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then
+		warn("BONK: 'Noble.Transition.MetroNexus' does not support custom ease values.")
 	end
 
 end

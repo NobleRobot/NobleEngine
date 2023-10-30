@@ -2,7 +2,6 @@
 
 class("DipToBlack", nil, Noble.Transition).extends(Noble.Transition.Dip)
 local transition = Noble.Transition.DipToBlack
-
 transition.name = "Dip to Black"
 
 local panel = Graphics.image.new(400, 240, Graphics.kColorBlack)
