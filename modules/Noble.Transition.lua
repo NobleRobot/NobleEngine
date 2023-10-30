@@ -48,10 +48,10 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 
 		local ease = __arguments.ease or self.ease
 		if (ease) then
-			self.easeEnter = self.easeEnter or (Ease.components[ease] or {}).easeEnter or ease
-			self.easeExit = self.easeExit or (Ease.components[ease] or {}).easeExit or ease
-			if (Ease.components[ease] == nil and ease ~= Ease.linear) then
-				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't an 'Ease.inOutXxxx' or 'Ease.outInXxxx'. Did you mean to do that?")
+			self.easeEnter = self.easeEnter or Ease.enter(ease) or ease
+			self.easeExit = self.easeExit or Ease.exit(ease) or ease
+			if (Ease.enter(ease) or Ease.exit(ease) == nil) then
+				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't in the form of 'Ease.inOutXxxx' or an 'Ease.outInXxxx'. As a result, this value will be used for both 'easeEnter' and 'easeExit'. Did you mean to do that?")
 			end
 		else
 			self.easeEnter = self.easeEnter or __arguments.easeEnter or Ease.linear
