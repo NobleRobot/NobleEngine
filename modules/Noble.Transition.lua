@@ -68,7 +68,7 @@ function Noble.Transition:execute()
 	local onMidpoint = function()
 		Noble.transitionMidpointHandler()
 		self.midpointReached = true
-		self.onMidpoint()				-- If this transition has any custom code to run here, run it.
+		self:onMidpoint()				-- If this transition has any custom code to run here, run it.
 	end
 
 	local onHoldTimeElapsed = function()
