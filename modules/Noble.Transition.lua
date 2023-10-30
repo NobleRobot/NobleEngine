@@ -127,6 +127,7 @@ import 'libraries/noble/modules/Noble.Transition/DipToWhite.lua'
 import 'libraries/noble/modules/Noble.Transition/Imagetable.lua'
 import 'libraries/noble/modules/Noble.Transition/ImagetableMask.lua'
 import 'libraries/noble/modules/Noble.Transition/Spotlight.lua'
+import 'libraries/noble/modules/Noble.Transition/SpotlightMask.lua'
 --
 import 'libraries/noble/modules/Noble.Transition/SlideOff.lua'
 import 'libraries/noble/modules/Noble.Transition/SlideOffLeft.lua'

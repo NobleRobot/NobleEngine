@@ -149,6 +149,9 @@ function math.sign(__value)
 	return (__value >= 0 and 1) or -1
 end
 
+function math.lerp(a, b, t)
+	return a + (b - a) * t
+end
 
 -- New array/table methods
 --
