@@ -219,13 +219,12 @@ end
 
 -- These methods are triggered during an transition
 
-local function transitionStartHandler()
+function Noble.transitionStartHandler()
 	isTransitioning = true
 	if (currentScene ~= nil) then
 		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 	Noble.Input.setHandler(nil)			-- Disable user input.
-	currentTransition:execute()
 end
 
 function Noble.transitionMidpointHandler()
@@ -327,7 +326,7 @@ function playdate.update()
 
 	-- Once this frame is complete, we can check to see if it's time to start transitioning to a new scene.
 	if (not isTransitioning and currentTransition ~= nil) then
-		transitionStartHandler()
+		currentTransition:execute()
 	end
 end
 

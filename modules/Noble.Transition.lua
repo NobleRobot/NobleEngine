@@ -69,6 +69,11 @@ end
 
 function Noble.Transition:execute()
 
+	local onStart = function()
+		Noble.transitionStartHandler()
+		self:onStart()					-- If this transition has any custom code to run here, run it.
+	end
+
 	local onMidpoint = function()
 		Noble.transitionMidpointHandler()
 		self.midpointReached = true
@@ -89,9 +94,12 @@ function Noble.Transition:execute()
 	local holdTime = self.holdTime
 
 	if (type == Noble.Transition.Type.CUT) then
+		onStart()
 		onMidpoint()
+		onHoldTimeElapsed()
 		onComplete()
 	elseif (type == Noble.Transition.Type.COVER) then
+		onStart()
 		self.sequence = Sequence.new()
 			:from(self._sequenceStartValue)
 			:to(self._sequenceMidpointValue, self.durationEnter-(holdTime/2), self.easeEnter)
@@ -103,6 +111,7 @@ function Noble.Transition:execute()
 			:callback(onComplete)
 			:start()
 	elseif (type == Noble.Transition.Type.MIX) then
+		onStart()
 		onMidpoint()
 		onHoldTimeElapsed()
 		self.sequence = Sequence.new()
@@ -115,10 +124,14 @@ function Noble.Transition:execute()
 end
 
 function Noble.Transition:setCustomArguments(__arguments) end
+
+function Noble.Transition:onStart() end
 function Noble.Transition:onMidpoint() end
 function Noble.Transition:onHoldTimeElapsed() end
 function Noble.Transition:onComplete() end
+
 function Noble.Transition:draw() end
+
 
 -- Noble Engine built-in transitions.
 import 'libraries/noble/modules/Noble.Transition/Cut.lua'
