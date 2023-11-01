@@ -97,12 +97,17 @@ function NobleSprite:init(__view, __viewIsSpritesheet, __singleState, __singleSt
 
 end
 
+function NobleSprite:update()
+	if (self.animation ~= nil) then
+		self:markDirty()
+	end
+end
+
 function NobleSprite:draw(__x, __y)
 	if (self.animation ~= nil) then
 		local x = __x or 0
 		local y = __y or 0
 		self.animation:draw(x, y)
-		self:markDirty()
 	end
 end
 
