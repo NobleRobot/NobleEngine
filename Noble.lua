@@ -132,9 +132,8 @@ end
 --- Miscellaneous Noble Engine configuration options / default values.
 -- This table cannot be edited directly. Use `Noble.getConfig` and `Noble.setConfig`.
 -- @table configuration
--- @number[opt=1] defaultTransitionDuration When running `Noble.transition` if the scene transition duration is unspecified, it will take this long in seconds.
--- @number[opt=0.2] defaultTransitionHoldTime When running `Noble.transition` (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
--- @tparam[opt=Noble.TransitionType.CROSS_DISSOLVE] Noble.TransitionType defaultTransitionType When running `Noble.transition` if the transition type is unspecified, it will use this one.
+-- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition defaultTransition When running `Noble.transition` if the transition is unspecified, it will use this one.
+-- @number[opt=1.5] defaultTransitionDuration When running `Noble.transition` if the scene transition duration is unspecified, it will take this long in seconds.
 -- @bool[opt=false] enableDebugBonkChecking Noble Engine-specific errors are called "Bonks." You can set this to true during development in order to check for more of them. However, it uses resources, so you will probably want to turn it off before release.
 -- @bool[opt=true] alwaysRedraw This sets the Playdate SDK method `playdate.graphics.sprite.setAlwaysRedraw`. See the Playdate SDK for details on how this function works, and the reasons you might want to set it as true or false for your project.
 -- @see Noble.getConfig
