@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Transition</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Transition.setDefaultProperties">.setDefaultProperties</a></li>
+							<li><a href="#Noble.Transition:setProperties">:setProperties</a></li>
+							<li><a href="#Noble.Transition:onStart">:onStart</a></li>
+							<li><a href="#Noble.Transition:onMidpoint">:onMidpoint</a></li>
+							<li><a href="#Noble.Transition:onHoldTimeElapsed">:onHoldTimeElapsed</a></li>
+							<li><a href="#Noble.Transition:onComplete">:onComplete</a></li>
+							<li><a href="#Noble.Transition:draw">:draw</a></li>
+					</ul>
+					<h3>Tables</h3>
+					<ul>
+							<li><a href="#Noble.Transition.defaultProperties">.defaultProperties</a></li>
+					</ul>
+					<h3>Fields</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Type.CUT">.Type.CUT</a></li>
+							<li><a href="#Noble.Transition.Type.COVER">.Type.COVER</a></li>
+							<li><a href="#Noble.Transition.Type.MIX">.Type.MIX</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.CrossDissolve Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.Dip Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.SlideOff Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.SlideOn Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.Spotlight Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+					<h3>modules.Noble.Transition.SpotlightMask Functions</h3>
+					<ul>
+							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><span class="selected">Noble.Transition</span></li>
+								<li><a href="../modules/modules.Noble.Transition.Imagetable.html">modules.Noble.Transition.Imagetable</a></li>
+								<li><a href="../modules/modules.Noble.Transition.ImagetableMask.html">modules.Noble.Transition.ImagetableMask</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Transition</h1>
+		<p>An abstract class from which transition types are extended.</p>
+		<p>
+
+</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.setDefaultProperties"></a>
+						<span class="item-name">Noble.Transition.setDefaultProperties(__transition, __properties)<span>
+					</dt>
+					<dd>
+						Use this to modify multiple default properties of a transition.  Having default properties avoids having to set them every time a transition is called.
+ Properties added here are merged with the existing default properties table. Overwrites only happen when a new value is set.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__transition</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__properties</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.defaultProperties">Noble.Transition.defaultProperties</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.Transition.CrossDissolve, {
+	dither = Graphics.image.kDitherTypeDiagonalLine
+	ease = Ease.outQuint
+})
+Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.Transition.SpotlightMask, {
+	x = <span class="number">325</span>,
+	y = <span class="number">95</span>,
+	invert = <span class="keyword">true</span>
+})</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:setProperties"></a>
+						<span class="item-name">Noble.Transition:setProperties(__arguments)<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition in order to set properties from user arguments given in <code>Noble.transition()</code>.  See existing transitions for implementation examples.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__arguments</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.html#transition">Noble.transition</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onStart"></a>
+						<span class="item-name">Noble.Transition:onStart()<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition in order to run custom code when the transition starts.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onMidpoint"></a>
+						<span class="item-name">Noble.Transition:onMidpoint()<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition in order to run custom code when the transition reaches its midpoint.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onHoldTimeElapsed"></a>
+						<span class="item-name">Noble.Transition:onHoldTimeElapsed()<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onComplete"></a>
+						<span class="item-name">Noble.Transition:onComplete()<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition in order to run custom code when the transition completes.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:draw"></a>
+						<span class="item-name">Noble.Transition:draw()<span>
+					</dt>
+					<dd>
+						Implement this in a custom transition to draw the transition.  This runs once per frame while the transition is running. See existing transitions for implementation examples.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.defaultProperties<span>
+					</dt>
+					<dd>
+						A transition may have unique properties that can be set by the user when invoked.  This table holds the default values for those properties.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Type.CUT"></a>
+						<span class="item-name">Noble.Transition.Type.CUT<span>
+					</dt>
+					<dd>
+						A transition type where no time at all passes between scenes.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition.Type.COVER"></a>
+						<span class="item-name">Noble.Transition.Type.COVER<span>
+					</dt>
+					<dd>
+						A transition type that has an "Enter" phase and an "Exit" phase.  The new scene does not become active until the Enter phase is complete. A "holdTime" value determines how long to wait after the Enter phase completes before starting the Exit phase.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition.Type.MIX"></a>
+						<span class="item-name">Noble.Transition.Type.MIX<span>
+					</dt>
+					<dd>
+						A transition type that takes a screenshot of the exiting scene and activates the new scene before beginning the transition, allowing for both scenes to appear to be visible during the transition.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_CrossDissolve_Functions"></a>modules.Noble.Transition.CrossDissolve Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">dither</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_Dip_Functions"></a>modules.Noble.Transition.Dip Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">ease</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">dither</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">panelImage</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_SlideOff_Functions"></a>modules.Noble.Transition.SlideOff Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotation</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_SlideOn_Functions"></a>modules.Noble.Transition.SlideOn Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotation</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_Spotlight_Functions"></a>modules.Noble.Transition.Spotlight Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeEnter</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeExit</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">panelImage</span>
+														<br/>
+														Defined as a local var below
+													</li>
+													<li><span class="parameter">dither</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnter</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnter</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnterStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnterStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnterEnd</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnterEnd</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExit</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExit</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExitStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExitStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExitEnd</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExitEnd</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="modules_Noble_Transition_SpotlightMask_Functions"></a>modules.Noble.Transition.SpotlightMask Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "transition.defaultProperties"></a>
+						<span class="item-name">transition.defaultProperties<span>
+					</dt>
+					<dd>
+						Transition properties.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">panelImage</span>
+														<br/>
+														Defined as a local var below
+													</li>
+													<li><span class="parameter">dither</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yStart</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnd</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnd</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">invert</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+
