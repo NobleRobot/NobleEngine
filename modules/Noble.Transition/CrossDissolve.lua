@@ -1,5 +1,4 @@
 --- A simple cross-fade.
--- @module CrossDissolve
 -- @submodule Noble.Transition
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition)
