@@ -32,7 +32,7 @@
 			<h2>$(module.name)</h2>
 			<ul>
 #				for kind, items in module.kinds() do
-#					kind = kind:gsub("modules.", ""):gsub(" Functions", ""):gsub(".", "\u{200B}.")
+#					kind = kind:gsub("modules.", ""):gsub(" Functions", ""):gsub("%.", "\u{200B}.")
 					<h3>$(kind)</h3>
 					<ul>
 #						for item in items() do
