@@ -53,27 +53,27 @@
 					</ul>
 					<h3>modules.Noble.Transition.Imagetable Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.Imagetable.defaultProperties">.Imagetable.defaultProperties</a></li>
 					</ul>
 					<h3>modules.Noble.Transition.ImagetableMask Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.ImagetableMask.defaultProperties">.ImagetableMask.defaultProperties</a></li>
 					</ul>
 					<h3>modules.Noble.Transition.SlideOff Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.SlideOff.defaultProperties">.SlideOff.defaultProperties</a></li>
 					</ul>
 					<h3>modules.Noble.Transition.SlideOn Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.SlideOn.defaultProperties">.SlideOn.defaultProperties</a></li>
 					</ul>
 					<h3>modules.Noble.Transition.Spotlight Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.Spotlight.defaultProperties">.Spotlight.defaultProperties</a></li>
 					</ul>
 					<h3>modules.Noble.Transition.SpotlightMask Functions</h3>
 					<ul>
-							<li><a href="#transition.defaultProperties">transition.defaultProperties</a></li>
+							<li><a href="#Noble.Transition.SpotlightMask.defaultProperties">.SpotlightMask.defaultProperties</a></li>
 					</ul>
 			</ul>
 		</div>
@@ -386,15 +386,14 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 							<ul class="parameters">
 													<li><span class="parameter">holdTime</span>
 															<span class="types"><span class="type">number</span></span>
-															<span class="default">= <span class="value">0</span> (default)</span>
+															<span class="default">= <span class="value">0.25</span> (default)</span>
 														<br/>
 
 
 
 													</li>
-													<li><span class="parameter">ease</span>
-															<span class="types"><span class="type">Ease</span></span>
-															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
+													<li><span class="parameter">panelImage</span>
+															<span class="types"><span class="type">Graphics.image</span></span>
 														<br/>
 
 
@@ -408,8 +407,9 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 													</li>
-													<li><span class="parameter">panelImage</span>
-															<span class="types"><span class="type">Graphics.image</span></span>
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
 														<br/>
 
 
@@ -435,11 +435,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -448,105 +443,136 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.Imagetable.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Imagetable.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
 													<li><span class="parameter">holdTime</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">imagetable</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">imagetableEnter</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">imagetableExit</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">reverse</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">reverseEnter</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">reverseExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">flipX</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">flipY</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">flipXEnter</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">flipYEnter</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">flipXExit</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">flipYExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotate</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetableEnter</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverseEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotateEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetableExit</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverseExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotateExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
@@ -556,11 +582,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -569,51 +590,136 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.ImagetableMask.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.ImagetableMask.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
 													<li><span class="parameter">imagetable</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">reverse</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">flipX</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">flipY</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotate</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
 
 													</li>
-													<li><span class="parameter">hasTransparency</span>
+													<li><span class="parameter">imagetableEnter</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
 														<br/>
 
 
 
 													</li>
-													<li><span class="parameter">invert</span>
+													<li><span class="parameter">reverseEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotateEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetableExit</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverseExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotateExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
@@ -623,11 +729,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -636,33 +737,43 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.SlideOff.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOff.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
 													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotation</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
@@ -672,11 +783,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -685,33 +791,43 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.SlideOn.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOn.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
 													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">rotation</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
 														<br/>
 
 
@@ -721,11 +837,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -734,121 +845,170 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.Spotlight.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Spotlight.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
 													<li><span class="parameter">holdTime</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">easeEnter</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">easeExit</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0.25</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">panelImage</span>
+															<span class="types"><span class="type">Graphics.image</span></span>
 														<br/>
-														Defined as a local var below
+
+
+
 													</li>
 													<li><span class="parameter">dither</span>
+															<span class="types"><span class="type">Graphics.image.kDither</span></span>
+															<span class="default">= <span class="value">Graphics.image.kDitherTypeBayer4x4</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">200</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">120</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeEnter</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xEnter</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yEnter</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xEnterStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yEnterStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xEnterEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yEnterEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeEnter</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xExit</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yExit</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xExitStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yExitStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xExitEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yExitEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
@@ -858,11 +1018,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
@@ -871,67 +1026,75 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 			<!--  -->
 			<dl class="function">
 					<dt>
-						<a name = "transition.defaultProperties"></a>
-						<span class="item-name">transition.defaultProperties<span>
+						<a name = "Noble.Transition.SpotlightMask.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SpotlightMask.defaultProperties<span>
 					</dt>
 					<dd>
-						Transition properties.
+
+
+
 
 								<h3>Fields</h3>
 							<ul class="parameters">
 													<li><span class="parameter">ease</span>
-														<br/>
-
-
-
-													</li>
-													<li><span class="parameter">panelImage</span>
-														<br/>
-														Defined as a local var below
-													</li>
-													<li><span class="parameter">dither</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outQuad</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">200</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">120</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">xEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">yEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
 														<br/>
 
 
 
 													</li>
 													<li><span class="parameter">invert</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
 														<br/>
 
 
@@ -941,11 +1104,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 
 
-							<h3>See</h3>
-							<ul>
-									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a></li>
-							</ul>
 
 
 					</dd>
