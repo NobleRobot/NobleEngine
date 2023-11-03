@@ -8,9 +8,10 @@ transition.name = "Cross Dissolve"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.CrossDissolve.defaultProperties
+-- @tparam[opt=Ease.outCubic] Ease ease
+-- @tparam[opt=Graphics.image.kDitherTypeBayer4x4] Graphics.image.kDither dither
 transition.defaultProperties = {
 	ease = Ease.outCubic,
 	dither = Graphics.image.kDitherTypeBayer4x4
