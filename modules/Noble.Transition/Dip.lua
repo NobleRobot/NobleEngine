@@ -20,7 +20,6 @@ transition._type = Noble.Transition.Type.COVER
 -- @number[opt=0] y
 -- @see Noble.transition
 -- @see Noble.Transition.setDefaultProperties
--- @section Properties
 transition.defaultProperties = {
 	holdTime = 0,
 	ease = Ease.outInQuad,
