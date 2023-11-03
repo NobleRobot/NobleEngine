@@ -160,23 +160,23 @@ function Noble.Transition:execute()
 
 end
 
---- Implement this in a custom transition in order to set properties from user arguments given in `Noble.transition()`. See existing transitions for implementation examples.
+--- *Do not call this directly.* Implement this in a custom transition in order to set properties from user arguments given in `Noble.transition()`. See existing transitions for implementation examples.
 -- @see Noble.transition
 function Noble.Transition:setProperties(__arguments) end
 
---- Implement this in a custom transition in order to run custom code when the transition starts. Default transitions in Noble Engine do not use this.
+--- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition starts. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onStart() end
 
---- Implement this in a custom transition in order to run custom code when the transition reaches its midpoint. Default transitions in Noble Engine do not use this.
+--- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition reaches its midpoint. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onMidpoint() end
 
---- Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed. Default transitions in Noble Engine do not use this.
+--- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onHoldTimeElapsed() end
 
---- Implement this in a custom transition in order to run custom code when the transition completes. Default transitions in Noble Engine do not use this.
+--- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition completes. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onComplete() end
 
---- Implement this in a custom transition to draw the transition. This runs once per frame while the transition is running. See existing transitions for implementation examples.
+--- *Do not call this directly.* Implement this in a custom transition to draw the transition. This runs once per frame while the transition is running. See existing transitions for implementation examples.
 function Noble.Transition:draw() end
 
 

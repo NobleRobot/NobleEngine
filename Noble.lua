@@ -77,6 +77,18 @@ local configuration = Utilities.copy(defaultConfiguration)
 -- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
 -- @tparam table[optional] __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
 -- @tparam table[optional] __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
+-- @usage
+-- Noble.new(TitleScreen, 2, Noble.Transition.DipToWhite,
+-- 	{
+-- 		holdTime = 0,
+-- 		ease = Ease.outInQuad
+-- 	},
+--	{
+-- 		defaultTransition = Noble.Transition.Imagetable,
+-- 		defaultTransitionDuration = 1.75,
+-- 		enableDebugBonkChecking = true,
+-- 	}
+-- )
 -- @see NobleScene
 -- @see Noble.Transition
 -- @see setConfig
@@ -191,13 +203,30 @@ local queuedScene = nil
 --- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
 --- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
--- @number[opt=1] __duration The length of the transition, in seconds.
--- @number[opt=0.2] __holdDuration For `DIP` transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
--- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.TransitionType __transitionType If a transition duration is set, use this transition type.
+-- @number[opt=1.5] __duration The length of the transition, in seconds.
+-- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
+-- @table[opt={}] __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
+-- @usage
+-- Noble.transition(Level2, 1, Noble.Transition.CrossDissolve, {
+-- 	dither = Graphics.image.kDitherTypeDiagonalLine
+-- 	ease = Ease.outQuint
+-- })
+-- --
+-- Noble.transition(Level2, 1, Noble.Transition.DipToBlack, {
+-- 	holdTime = 0.5,
+-- 	ease = Ease.outInElastic
+-- })
+-- --
+-- Noble.transition(Level2, 1, Noble.Transition.SlideOff, {
+-- 	x = 400,
+-- 	y = 150
+-- 	rotation = 45
+-- })
 -- @see Noble.isTransitioning
 -- @see NobleScene
--- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __transitionType, __transitionProperties)
+-- @see Noble.Transition
+-- @see Noble.Transition.defaultProperties
+function Noble.transition(NewScene, __duration, __transition, __transitionProperties)
 	if (isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -210,7 +239,7 @@ function Noble.transition(NewScene, __duration, __transitionType, __transitionPr
 
 	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
 
-	currentTransition = (__transitionType or configuration.defaultTransition)(
+	currentTransition = (__transition or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,
 		__transitionProperties or {}
 	)
