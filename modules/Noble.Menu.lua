@@ -375,7 +375,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--		menu:select("Play Game", true)
 	--		menu:deactivate()
 	--	end
-	function menu:select(__menuItem, __force)
+    function menu:select(__menuItem, __force)
 		if (self:isActive() or __force) then
 			if (type(__menuItem) == 'number') then
 				if (__menuItem < 1) then
@@ -461,8 +461,6 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			end
 		end
 
-		print(__itemName)
-		print(displayName)
 		self:updateWidths(__itemName, displayName)
 	end
 
