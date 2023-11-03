@@ -9,13 +9,18 @@ transition.name = "Spotlight Mask"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.SpotlightMask.defaultProperties
+-- @tparam[opt=Ease.outQuad] Ease ease
+-- @number[opt=200] x
+-- @number[opt=120] y
+-- @number[opt=nil] xStart
+-- @number[opt=nil] yStart
+-- @number[opt=nil] xEnd
+-- @number[opt=nil] yEnd
+-- @bool[opt=false] invert
 transition.defaultProperties = {
 	ease = Ease.outQuad,
-	panelImage = nil, -- Defined as a local var below
-	dither = Graphics.image.kDitherTypeBayer4x4,
 	x = 200,
 	y = 120,
 	xStart = nil,

@@ -13,9 +13,12 @@ transition._sequenceStartValue = 1
 transition._sequenceCompleteValue = 0
 transition._captureScreenshotsDuringTransition = true
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.SlideOn.defaultProperties
+-- @tparam[opt=Ease.outInQuad] Ease ease
+-- @number[opt=0] x
+-- @number[opt=0] y
+-- @number[opt=0] rotation
 transition.defaultProperties = {
 	ease = Ease.outQuart,
 	x = 0,

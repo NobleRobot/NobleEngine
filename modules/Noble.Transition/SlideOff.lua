@@ -8,9 +8,12 @@ transition.name = "Slide Off"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.SlideOff.defaultProperties
+-- @tparam[opt=Ease.outInQuad] Ease ease
+-- @number[opt=0] x
+-- @number[opt=0] y
+-- @number[opt=0] rotation
 transition.defaultProperties = {
 	ease = Ease.inQuart,
 	x = 0,

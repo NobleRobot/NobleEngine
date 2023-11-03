@@ -12,16 +12,14 @@ transition._type = Noble.Transition.Type.COVER
 
 ---
 -- @table Noble.Transition.Dip.defaultProperties
--- @number[opt=0] holdTime
--- @tparam[opt=Ease.outInQuad] Ease ease
--- @tparam[opt=Graphics.image.kDitherTypeBayer4x4] Graphics.image.kDither dither
+-- @number[opt=0.25] holdTime
 -- @tparam Graphics.image panelImage
+-- @tparam[opt=Graphics.image.kDitherTypeBayer4x4] Graphics.image.kDither dither
+-- @tparam[opt=Ease.outInQuad] Ease ease
 -- @number[opt=0] x
 -- @number[opt=0] y
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
 transition.defaultProperties = {
-	holdTime = 0,
+	holdTime = 0.25,
 	ease = Ease.outInQuad,
 	dither = Graphics.image.kDitherTypeBayer4x4,
 	panelImage = nil,

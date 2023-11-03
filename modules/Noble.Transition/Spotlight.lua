@@ -9,23 +9,43 @@ transition.name = "Spotlight"
 -- Type
 transition._type = Noble.Transition.Type.COVER
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.Spotlight.defaultProperties
+-- @number[opt=0.25] holdTime
+-- @tparam Graphics.image panelImage
+-- @tparam[opt=Graphics.image.kDitherTypeBayer4x4] Graphics.image.kDither dither
+-- @tparam[opt=Ease.outInQuad] Ease ease
+-- @number[opt=200] x
+-- @number[opt=120] y
+-- @tparam[opt=nil] Ease easeEnter
+-- @number[opt=nil] xEnter
+-- @number[opt=nil] yEnter
+-- @number[opt=nil] xEnterStart
+-- @number[opt=nil] yEnterStart
+-- @number[opt=nil] xEnterEnd
+-- @number[opt=nil] yEnterEnd
+-- @tparam[opt=nil] Ease easeEnter
+-- @number[opt=nil] xExit
+-- @number[opt=nil] yExit
+-- @number[opt=nil] xExitStart
+-- @number[opt=nil] yExitStart
+-- @number[opt=nil] xExitEnd
+-- @number[opt=nil] yExitEnd
 transition.defaultProperties = {
 	holdTime = 0.25,
-	easeEnter = Ease.outQuad,
-	easeExit = Ease.inQuad,
-	panelImage = nil, -- Defined as a local var below
+	panelImage = nil,
 	dither = Graphics.image.kDitherTypeBayer4x4,
+	ease = Ease.outInQuad,
 	x = 200,
 	y = 120,
+	easeEnter = nil,
 	xEnter = nil,
 	yEnter = nil,
 	xEnterStart = nil,
 	yEnterStart = nil,
 	xEnterEnd = nil,
 	yEnterEnd = nil,
+	easeExit = nil,
 	xExit = nil,
 	yExit = nil,
 	xExitStart = nil,

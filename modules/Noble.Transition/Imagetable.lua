@@ -12,9 +12,24 @@ transition._type = Noble.Transition.Type.COVER
 transition.easeEnter = Ease.linear
 transition.easeExit = Ease.linear
 
---- Transition properties.
--- @see Noble.transition
--- @see Noble.Transition.setDefaultProperties
+---
+-- @table Noble.Transition.Imagetable.defaultProperties
+-- @number[opt=0] holdTime
+-- @tparam Graphics.imagetable imagetable
+-- @bool[opt=false] reverse
+-- @bool[opt=false] flipX
+-- @bool[opt=false] flipY
+-- @bool[opt=false] rotate
+-- @tparam Graphics.imagetable imagetableEnter
+-- @bool[opt=nil] reverseEnter
+-- @bool[opt=nil] flipXEnter
+-- @bool[opt=nil] flipYEnter
+-- @bool[opt=nil] rotateEnter
+-- @tparam Graphics.imagetable imagetableExit
+-- @bool[opt=nil] reverseExit
+-- @bool[opt=nil] flipXExit
+-- @bool[opt=nil] flipYExit
+-- @bool[opt=nil] rotateExit
 transition.defaultProperties = {
 	holdTime = 0,
 	imagetable = nil,
