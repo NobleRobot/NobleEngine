@@ -1,4 +1,4 @@
--- A wipe transition using an animated mask in the form of an imagetable.
+--- A wipe transition using an animated mask in the form of an imagetable.
 -- @submodule Noble.Transition
 
 class("ImagetableMask", nil, Noble.Transition).extends(Noble.Transition)

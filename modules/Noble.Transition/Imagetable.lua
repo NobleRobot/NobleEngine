@@ -1,4 +1,4 @@
--- A dip-style transition using one or two imagetables.
+--- A dip-style transition using one or two imagetables.
 -- @submodule Noble.Transition
 
 class("Imagetable", nil, Noble.Transition).extends(Noble.Transition)
