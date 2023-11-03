@@ -14,6 +14,7 @@ transition._type = Noble.Transition.Type.COVER
 -- @section Properties
 
 --- Transition properties.
+-- @table Noble.Transition.Dip.defaultProperties
 -- @see Noble.transition
 -- @see Noble.Transition.setDefaultProperties
 transition.defaultProperties = {
