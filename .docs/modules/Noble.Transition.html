@@ -173,7 +173,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:setProperties(__arguments)<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition in order to set properties from user arguments given in <code>Noble.transition()</code>.  See existing transitions for implementation examples.
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to set properties from user arguments given in <code>Noble.transition()</code>.  See existing transitions for implementation examples.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -189,7 +189,6 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 
 							<h3>See</h3>
 							<ul>
-									<a href="../modules/Noble.html#transition">Noble.transition</a>
 							</ul>
 
 
@@ -199,7 +198,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:onStart()<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition in order to run custom code when the transition starts.  Default transitions in Noble Engine do not use this.
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition starts.  Default transitions in Noble Engine do not use this.
 
 
 
@@ -212,7 +211,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:onMidpoint()<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition in order to run custom code when the transition reaches its midpoint.  Default transitions in Noble Engine do not use this.
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition reaches its midpoint.  Default transitions in Noble Engine do not use this.
 
 
 
@@ -225,7 +224,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:onHoldTimeElapsed()<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed.  Default transitions in Noble Engine do not use this.
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed.  Default transitions in Noble Engine do not use this.
 
 
 
@@ -238,7 +237,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:onComplete()<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition in order to run custom code when the transition completes.  Default transitions in Noble Engine do not use this.
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition completes.  Default transitions in Noble Engine do not use this.
 
 
 
@@ -251,7 +250,7 @@ Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.T
 						<span class="item-name">Noble.Transition:draw()<span>
 					</dt>
 					<dd>
-						Implement this in a custom transition to draw the transition.  This runs once per frame while the transition is running. See existing transitions for implementation examples.
+						<em>Do not call this directly.</em> Implement this in a custom transition to draw the transition.  This runs once per frame while the transition is running. See existing transitions for implementation examples.
 
 
 
