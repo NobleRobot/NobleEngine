@@ -74,16 +74,19 @@ local configuration = Utilities.copy(defaultConfiguration)
 --- Engine initialization. Run this once in your main.lua file to begin your game.
 -- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
 -- @number[opt=0] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
--- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
--- @tparam table[optional] __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
--- @tparam table[optional] __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
+-- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
+-- @tparam[opt={}] table __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
+-- @tparam[opt={}] table __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
 -- @usage
--- Noble.new(TitleScreen, 2, Noble.Transition.DipToWhite,
+-- Noble.new(
+-- 	TitleScreen,
+-- 	2,
+-- 	Noble.Transition.DipToWhite,
 -- 	{
 -- 		holdTime = 0,
 -- 		ease = Ease.outInQuad
 -- 	},
---	{
+-- 	{
 -- 		defaultTransition = Noble.Transition.Imagetable,
 -- 		defaultTransitionDuration = 1.75,
 -- 		enableDebugBonkChecking = true,
@@ -205,7 +208,7 @@ local queuedScene = nil
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1.5] __duration The length of the transition, in seconds.
 -- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
--- @table[opt={}] __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
+-- @tparam[opt={}] table __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
 -- @usage
 -- Noble.transition(Level2, 1, Noble.Transition.CrossDissolve, {
 -- 	dither = Graphics.image.kDitherTypeDiagonalLine
