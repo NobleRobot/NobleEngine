@@ -1,4 +1,4 @@
---- A simple cross-fade.
+---
 -- @submodule Noble.Transition
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition)
@@ -8,7 +8,7 @@ transition.name = "Cross Dissolve"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
----
+--- A simple cross-fade.
 -- @table Noble.Transition.CrossDissolve.defaultProperties
 -- @tparam[opt=Ease.outCubic] Ease ease
 -- @tparam[opt=Graphics.image.kDitherTypeBayer4x4] Graphics.image.kDither dither

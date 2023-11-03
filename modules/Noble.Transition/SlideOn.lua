@@ -1,4 +1,4 @@
---- The next scene slides on the screen, covering up the previous scene.
+---
 -- @submodule Noble.Transition
 
 class("SlideOn", nil, Noble.Transition).extends(Noble.Transition)
@@ -13,7 +13,7 @@ transition._sequenceStartValue = 1
 transition._sequenceCompleteValue = 0
 transition._captureScreenshotsDuringTransition = true
 
----
+--- The next scene slides on the screen, covering up the previous scene.
 -- @table Noble.Transition.SlideOn.defaultProperties
 -- @tparam[opt=Ease.outInQuad] Ease ease
 -- @number[opt=0] x

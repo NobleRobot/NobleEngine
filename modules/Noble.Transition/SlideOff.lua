@@ -1,4 +1,4 @@
---- The previous scene slides off the screen, revealing the next scene.
+---
 -- @submodule Noble.Transition
 
 class("SlideOff", nil, Noble.Transition).extends(Noble.Transition)
@@ -8,7 +8,7 @@ transition.name = "Slide Off"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
----
+--- The previous scene slides off the screen, revealing the next scene.
 -- @table Noble.Transition.SlideOff.defaultProperties
 -- @tparam[opt=Ease.outInQuad] Ease ease
 -- @number[opt=0] x

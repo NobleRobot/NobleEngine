@@ -1,4 +1,4 @@
---- A "cascade" wipe transition, taken from "Metro Nexus" by Noble Robot.
+---
 -- @submodule Noble.Transition
 
 class("MetroNexus", nil, Noble.Transition).extends(Noble.Transition)
@@ -13,6 +13,10 @@ transition._sequenceResumeValue = 0
 transition._sequenceCompleteValue = 1
 transition.easeEnter = Ease.linear
 transition.easeExit = Ease.linear
+
+--- A "cascade" wipe transition, taken from "Metro Nexus" by Noble Robot.
+-- This transition has no properties.
+-- @table Noble.Transition.MetroNexus.defaultProperties
 
 -- "Static" variables
 local panels

@@ -1,5 +1,4 @@
---- A spotlight in-out transition.
--- @see Noble.Transition.SpotlightMask
+---
 -- @submodule Noble.Transition
 
 class("Spotlight", nil, Noble.Transition).extends(Noble.Transition)
@@ -9,7 +8,8 @@ transition.name = "Spotlight"
 -- Type
 transition._type = Noble.Transition.Type.COVER
 
----
+--- A spotlight in-out transition.
+-- @see Noble.Transition.SpotlightMask.defaultProperties
 -- @table Noble.Transition.Spotlight.defaultProperties
 -- @number[opt=0.25] holdTime
 -- @tparam Graphics.image panelImage

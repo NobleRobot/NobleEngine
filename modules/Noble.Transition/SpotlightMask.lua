@@ -1,5 +1,4 @@
---- A circle wipe transition.
--- @see Noble.Transition.Spotlight
+---
 -- @submodule Noble.Transition
 
 class("SpotlightMask", nil, Noble.Transition).extends(Noble.Transition)
@@ -9,7 +8,8 @@ transition.name = "Spotlight Mask"
 -- Type
 transition._type = Noble.Transition.Type.MIX
 
----
+--- A circle wipe transition.
+-- @see Noble.Transition.Spotlight.defaultProperties
 -- @table Noble.Transition.SpotlightMask.defaultProperties
 -- @tparam[opt=Ease.outQuad] Ease ease
 -- @number[opt=200] x

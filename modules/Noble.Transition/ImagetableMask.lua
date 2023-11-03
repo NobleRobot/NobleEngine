@@ -1,4 +1,4 @@
---- A wipe transition using an animated mask in the form of an imagetable.
+---
 -- @submodule Noble.Transition
 
 class("ImagetableMask", nil, Noble.Transition).extends(Noble.Transition)
@@ -11,24 +11,16 @@ transition._type = Noble.Transition.Type.MIX
 -- Overrides
 transition.ease = Ease.linear
 
----
+--- A wipe transition using an animated mask in the form of an imagetable.
 -- @table Noble.Transition.ImagetableMask.defaultProperties
 -- @number[opt=0] holdTime
 -- @tparam Graphics.imagetable imagetable
--- @bool[opt=false] reverse
+-- @bool[opt=false] reverse Set `true` to play the imagetable's frames in reverse order.
 -- @bool[opt=false] flipX
 -- @bool[opt=false] flipY
--- @bool[opt=false] rotate
--- @tparam Graphics.imagetable imagetableEnter
--- @bool[opt=nil] reverseEnter
--- @bool[opt=nil] flipXEnter
--- @bool[opt=nil] flipYEnter
--- @bool[opt=nil] rotateEnter
--- @tparam Graphics.imagetable imagetableExit
--- @bool[opt=nil] reverseExit
--- @bool[opt=nil] flipXExit
--- @bool[opt=nil] flipYExit
--- @bool[opt=nil] rotateExit
+-- @bool[opt=false] rotate Set as `true` to rotate the image 180-degrees
+-- @bool[opt=true] hasTransparency Set as `true` if the imagetable asset has transparent pixels. Set as `false` if the image uses white pixels for transparency.
+-- @bool[opt=false] invert Set as `true` to invert the image mask.
 transition.defaultProperties = {
 	imagetable = Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionEnter"),
 	reverse = false,

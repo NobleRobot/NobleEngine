@@ -1,4 +1,4 @@
---- A dip-style transition using one or two imagetables.
+---
 -- @submodule Noble.Transition
 
 class("Imagetable", nil, Noble.Transition).extends(Noble.Transition)
@@ -12,7 +12,7 @@ transition._type = Noble.Transition.Type.COVER
 transition.easeEnter = Ease.linear
 transition.easeExit = Ease.linear
 
----
+--- A dip-style transition using one or two imagetables.
 -- @table Noble.Transition.Imagetable.defaultProperties
 -- @number[opt=0] holdTime
 -- @tparam Graphics.imagetable imagetable

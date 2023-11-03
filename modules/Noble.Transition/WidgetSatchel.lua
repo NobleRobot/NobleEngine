@@ -1,4 +1,4 @@
---- An "accordion" transition, taken from "Widget Satchel" by Noble Robot.
+---
 -- @submodule Noble.Transition
 
 class("WidgetSatchel", nil, Noble.Transition).extends(Noble.Transition)
@@ -12,6 +12,10 @@ transition._type = Noble.Transition.Type.COVER
 transition._sequenceCompleteValue = 2
 transition.easeEnter = Ease.outCubic
 transition.easeExit = Ease.inCubic
+
+--- An "accordion" transition, taken from "Widget Satchel" by Noble Robot.
+-- This transition has no properties.
+-- @table Noble.Transition.MetroNexus.defaultProperties
 
 -- "Static" variables
 local panels

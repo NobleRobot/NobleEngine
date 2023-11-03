@@ -1,6 +1,4 @@
---- Fade to an image, then to the next scene.
--- @see Noble.Transition.DipToBlack
--- @see Noble.Transition.DipToWhite
+---
 -- @submodule Noble.Transition
 
 class("Dip", nil, Noble.Transition).extends(Noble.Transition)
@@ -10,7 +8,7 @@ transition.name = "Dip"
 -- Type
 transition._type = Noble.Transition.Type.COVER
 
----
+--- Fade to an image, then to the next scene.
 -- @table Noble.Transition.Dip.defaultProperties
 -- @number[opt=0.25] holdTime
 -- @tparam Graphics.image panelImage

@@ -1,4 +1,4 @@
---- An all-time classic.
+---
 -- @submodule Noble.Transition
 
 class("Cut", nil, Noble.Transition).extends(Noble.Transition)
@@ -7,3 +7,7 @@ transition.name = "Cut"
 
 -- Properties
 transition._type = Noble.Transition.Type.CUT
+
+--- An all-time classic.
+-- This transition has no properties.
+-- @table Noble.Transition.Cut.defaultProperties
