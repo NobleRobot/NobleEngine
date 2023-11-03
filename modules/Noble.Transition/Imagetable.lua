@@ -13,6 +13,7 @@ transition.easeEnter = Ease.linear
 transition.easeExit = Ease.linear
 
 --- A dip-style transition using one or two imagetables.
+-- @see Noble.Transition.ImagetableMask.defaultProperties
 -- @table Noble.Transition.Imagetable.defaultProperties
 -- @number[opt=0] holdTime
 -- @tparam Graphics.imagetable imagetable

@@ -12,8 +12,8 @@ transition._type = Noble.Transition.Type.MIX
 transition.ease = Ease.linear
 
 --- A wipe transition using an animated mask in the form of an imagetable.
+-- @see Noble.Transition.Imagetable.defaultProperties
 -- @table Noble.Transition.ImagetableMask.defaultProperties
--- @number[opt=0] holdTime
 -- @tparam Graphics.imagetable imagetable
 -- @bool[opt=false] reverse Set `true` to play the imagetable's frames in reverse order.
 -- @bool[opt=false] flipX
