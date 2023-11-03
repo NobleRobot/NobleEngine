@@ -14,22 +14,16 @@ transition._type = Noble.Transition.Type.COVER
 -- @section Properties
 
 --- Transition properties.
--- @table Noble.Transition.Dip.defaultProperties
--- @number [opt=0] holdTime
--- @tparam [opt=Ease.outInQuad] ease
--- @tparam [opt=Graphics.image.kDitherTypeBayer4x4] dither
--- @tparam Graphics.image panelImage
--- @number [opt=0] x
--- @number [opt=0] y
+-- @table Dip.defaultProperties
 -- @see Noble.transition
 -- @see Noble.Transition.setDefaultProperties
 transition.defaultProperties = {
-	holdTime = 0,
-	ease = Ease.outInQuad,
-	dither = Graphics.image.kDitherTypeBayer4x4,
-	panelImage = nil,
-	x = 0,
-	y = 0
+	holdTime = 0,									-- @number[opt=0]
+	ease = Ease.outInQuad,							-- @tparam[opt=Ease.outInQuad]
+	dither = Graphics.image.kDitherTypeBayer4x4,	-- @tparam[opt=Graphics.image.kDitherTypeBayer4x4]
+	panelImage = nil,								-- @tparam Graphics.image
+	x = 0,											-- @number[opt=0]
+	y = 0											-- @number[opt=0]
 }
 
 function transition:setProperties(__arguments)
