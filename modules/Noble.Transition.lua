@@ -1,15 +1,34 @@
+--- An abstract class from which transition types are extended.
+-- @module Noble.Transition
+
 Noble.Transition = {}
 class("Transition", nil, Noble).extends()
 
 Noble.Transition.Type = {}
+
+--- A transition type where no time at all passes between scenes.
+-- @see Noble.Transition.Cut
 Noble.Transition.Type.CUT = "Cut"
+
+--- A transition type that has an "Enter" phase and an "Exit" phase. The new scene does not become active until the Enter phase is complete. A "holdTime" value determines how long to wait after the Enter phase completes before starting the Exit phase.
+-- @see Noble.Transition.Dip
+-- @see Noble.Transition.Imagetable
+-- @see Noble.Transition.Spotlight
 Noble.Transition.Type.COVER = "Cover"
+
+--- A transition type that takes a screenshot of the exiting scene and activates the new scene before beginning the transition, allowing for both scenes to appear to be visible during the transition.
+-- @see Noble.Transition.CrossDissolve
+-- @see Noble.Transition.SlideOff
+-- @see Noble.Transition.ImagetableMask
 Noble.Transition.Type.MIX = "Mix"
 
-function Noble.Transition:init(__duration, __holdTime, __arguments)
+--- A transition may have unique properties that can be set by the user when invoked. This table holds the default values for those properties.
+-- @see setDefaultProperties
+Noble.Transition.defaultProperties = {}
 
-	self.duration = __duration
-	self.holdTime = __holdTime
+function Noble.Transition:init(__duration, __arguments)
+
+	self.duration = __duration or Noble.getConfig().defaultTransitionDuration
 
 	self.durationEnter = __arguments.durationEnter or self.duration/2
 	self.durationExit = __arguments.durationExit or self.duration/2
@@ -27,15 +46,16 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 	self.midpointReached  = false
 	self.holdTimeElapsed = false
 
-	-- Arguments
-	self.drawMode = __arguments.drawMode or self.drawMode or Graphics.kDrawModeCopy
+	self.drawMode = self.drawMode or __arguments.drawMode or Graphics.kDrawModeCopy
+
+	self.holdTime = self.holdTime or __arguments.holdTime or self.defaultProperties.holdTime or 0
 
 	if (self._type == Noble.Transition.Type.MIX) then
 
 		self._sequenceStartValue = self._sequenceStartValue or 0
 		self._sequenceCompleteValue = self._sequenceCompleteValue or 1
 
-		self.ease = __arguments.ease or self.ease or Ease.linear
+		self.ease = self.ease or __arguments.ease or self.defaultProperties.ease or Ease.linear
 		if ((__arguments.easeEnter or __arguments.easeExit) ~= nil) then
 			warn("BONK: You've specified an 'easeEnter' and/or 'easeExit' argument for a transition of type 'Noble.Transition.Type.MIX'. This will have no effect. Use 'ease' instead, or specify a transition of type 'Noble.Transition.Type.COVER'.")
 		end
@@ -49,22 +69,39 @@ function Noble.Transition:init(__duration, __holdTime, __arguments)
 		self._sequenceResumeValue = self._sequenceResumeValue or 1
 		self._sequenceCompleteValue = self._sequenceCompleteValue or 0
 
-		local ease = __arguments.ease or self.ease
+		local ease = self.ease or __arguments.ease or self.defaultProperties.ease or Ease.linear
 		if (ease) then
-			self.easeEnter = self.easeEnter or Ease.enter(ease) or ease
-			self.easeExit = self.easeExit or Ease.exit(ease) or ease
+			self.easeEnter = self.easeEnter or self.defaultProperties.easeEnter or Ease.enter(ease) or ease
+			self.easeExit = self.easeExit or self.defaultProperties.easeExit or Ease.exit(ease) or ease
 			if (Ease.enter(ease) == nil or Ease.exit(ease) == nil) then
 				warn("Soft-BONK: You've specified an 'ease' value for a transition of type 'Noble.Transition.Type.COVER' that isn't in the form of 'Ease.inOutXxxx' or an 'Ease.outInXxxx'. As a result, this value will be used for both 'easeEnter' and 'easeExit'. Did you mean to do that?")
 			end
 		else
-			self.easeEnter = __arguments.easeEnter or self.easeEnter or Ease.linear
-			self.easeExit = __arguments.easeExit or self.easeExit or Ease.linear
+			self.easeEnter = self.easeEnter or __arguments.easeEnter or self.defaultProperties.easeEnter or self.easeEnter or Ease.linear
+			self.easeExit = self.easeExit or __arguments.easeExit or self.defaultProperties.easeExit or self.easeExit or Ease.linear
 		end
 
 	end
 
-	self:setCustomArguments(__arguments)
+	self:setProperties(__arguments)
 
+end
+
+--- Use this to modify multiple default properties of a transition. Having default properties avoids having to set them every time a transition is called.
+-- Properties added here are merged with the existing default properties table. Overwrites only happen when a new value is set.
+-- @usage
+-- Noble.Transition.setDefaultProperties(Noble.Transition.CrossDissolve, {
+-- 	dither = Graphics.image.kDitherTypeDiagonalLine
+-- 	ease = Ease.outQuint
+-- })
+-- Noble.Transition.setDefaultProperties(Noble.Transition.SpotlightMask, {
+-- 	x = 325,
+-- 	y = 95,
+-- 	invert = true
+-- })
+-- @see defaultProperties
+function Noble.Transition.setDefaultProperties(__transition, __properties)
+	table.merge(__transition.defaultProperties, __properties)
 end
 
 function Noble.Transition:execute()
@@ -123,13 +160,23 @@ function Noble.Transition:execute()
 
 end
 
-function Noble.Transition:setCustomArguments(__arguments) end
+--- Implement this in a custom transition in order to set properties from user arguments given in `Noble.transition()`. See existing transitions for implementation examples.
+-- @see Noble.transition
+function Noble.Transition:setProperties(__arguments) end
 
+--- Implement this in a custom transition in order to run custom code when the transition starts. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onStart() end
+
+--- Implement this in a custom transition in order to run custom code when the transition reaches its midpoint. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onMidpoint() end
+
+--- Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onHoldTimeElapsed() end
+
+--- Implement this in a custom transition in order to run custom code when the transition completes. Default transitions in Noble Engine do not use this.
 function Noble.Transition:onComplete() end
 
+--- Implement this in a custom transition to draw the transition. This runs once per frame while the transition is running. See existing transitions for implementation examples.
 function Noble.Transition:draw() end
 
 

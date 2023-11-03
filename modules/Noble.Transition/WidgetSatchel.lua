@@ -1,17 +1,22 @@
---- An "accordion" transition, from "Widget Satchel" by Noble Robot.
+--- An "accordion" transition, taken from "Widget Satchel" by Noble Robot.
+-- @submodule Noble.Transition
 
 class("WidgetSatchel", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.WidgetSatchel
 transition.name = "Widget Satchel"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.COVER
+
+-- Overrides
 transition._sequenceCompleteValue = 2
+transition.easeEnter = Ease.outCubic
+transition.easeExit = Ease.inCubic
 
 -- "Static" variables
 local panels
 
-function transition:setCustomArguments(__arguments)
+function transition:setProperties(__arguments)
 
 	if (panels == nil) then
 		panels = {
@@ -38,10 +43,6 @@ function transition:setCustomArguments(__arguments)
 			Graphics.fillRect(0,0,400,48)
 		Graphics.unlockFocus()
 	end
-
-	-- Override ease arguments
-	self.easeEnter = Ease.outCubic
-	self.easeExit = Ease.inCubic
 
 	-- Warnings
 	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then

@@ -1,25 +1,38 @@
 -- A wipe transition using an animated mask in the form of an imagetable.
+-- @submodule Noble.Transition
 
 class("ImagetableMask", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.ImagetableMask
 transition.name = "Imagetable Mask"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.MIX
 
--- Override default arguments
+-- Overrides
 transition.ease = Ease.linear
 
-function transition:setCustomArguments(__arguments)
+--- Transition properties.
+-- @see Noble.transition
+-- @see Noble.Transition.setDefaultProperties
+transition.defaultProperties = {
+	imagetable = Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionEnter"),
+	reverse = false,
+	flipX = false,
+	flipY = false,
+	rotate = false,
+	hasTransparency = true,
+	invert = false
+}
 
-	-- Arguments
-	self.imagetable = __arguments.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionEnter")
-	self.reverse = __arguments.reverse or false
-	self.flipX = __arguments.flipX or false
-	self.flipY = __arguments.flipY or false
-	self.rotate = __arguments.rotate or false
-	self.hasTransparency = __arguments.hasTransparency or true
-	self.invert = __arguments.invert or false
+function transition:setProperties(__properties)
+
+	self.imagetable = __properties.imagetable or self.defaultProperties.imagetable
+	self.reverse = __properties.reverse or self.defaultProperties.reverse
+	self.flipX = __properties.flipX or self.defaultProperties.flipX
+	self.flipY = __properties.flipY or self.defaultProperties.flipY
+	self.rotate = __properties.rotate or self.defaultProperties.rotate
+	self.hasTransparency = __properties.hasTransparency or self.defaultProperties.hasTransparency
+	self.invert = __properties.invert or self.defaultProperties.invert
 
 	-- "Private" variables
 	self._flipValue = Noble.Transition.Imagetable.getFlipValue(self.rotate, self.flipX, self.flipY)
@@ -35,10 +48,10 @@ function transition:setCustomArguments(__arguments)
 	end
 
 	-- Warnings
-	if (__arguments.imagetableExit ~= nil) then
+	if (__properties.imagetableExit ~= nil) then
 		warn("BONK: You've specified an 'imagetableExit' for an Noble.Transition.ImagetableMask transition. This will have no effect. ")
 	end
-	if ((__arguments.ease or __arguments.easeEnter or __arguments.easeExit) ~= nil) then
+	if ((__properties.ease or __properties.easeEnter or __properties.easeExit) ~= nil) then
 		warn("BONK: You've specified an ease value for an Noble.Transition.ImagetableMask transition. This will have no effect.")
 	end
 

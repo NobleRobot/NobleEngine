@@ -1,18 +1,23 @@
---- A "cascade" wipe transition, from "Metro Nexus" by Noble Robot.
+--- A "cascade" wipe transition, taken from "Metro Nexus" by Noble Robot.
+-- @submodule Noble.Transition
 
 class("MetroNexus", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.MetroNexus
 transition.name = "Metro Nexus"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.COVER
+
+-- Overrides
 transition._sequenceResumeValue = 0
 transition._sequenceCompleteValue = 1
+transition.easeEnter = Ease.linear
+transition.easeExit = Ease.linear
 
 -- "Static" variables
 local panels
 
-function transition:setCustomArguments(__arguments)
+function transition:setProperties(__arguments)
 
 	if (panels == nil) then
 		panels = {
@@ -23,10 +28,6 @@ function transition:setCustomArguments(__arguments)
 			Graphics.image.new(80,240, Graphics.kColorWhite)
 		}
 	end
-
-	-- Override ease arguments
-	self.easeEnter = Ease.linear
-	self.easeExit = Ease.linear
 
 	-- Warnings
 	if (__arguments.easeEnter or __arguments.easeEnter or __arguments.ease) then

@@ -62,9 +62,10 @@ local engineInitialized = false
 --
 
 local defaultConfiguration = {
+	defaultTransition = Noble.Transition.DipToBlack,
 	defaultTransitionDuration = 1.5,
 	defaultTransitionHoldTime = 0.25,
-	defaultTransition = Noble.Transition.DipToBlack,
+	transitionDurationIncludesHoldTime = true,
 	enableDebugBonkChecking = false,
 	alwaysRedraw = true,
 }
@@ -73,12 +74,13 @@ local configuration = Utilities.copy(defaultConfiguration)
 --- Engine initialization. Run this once in your main.lua file to begin your game.
 -- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
 -- @number[opt=0] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
--- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.TransitionType __launcherTransitionType If a transition duration is set, use this transition type.
+-- @tparam[opt=Noble.Transition.CROSS_DISSOLVE] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
+-- @tparam table[optional] __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
 -- @tparam table[optional] __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
 -- @see NobleScene
--- @see Noble.TransitionType
+-- @see Noble.Transition
 -- @see setConfig
-function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDuration, __launcherTransitionHoldTime, __launcherTransitionArguments, __configuration)
+function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransition, __launcherTransitionProperties, __configuration)
 
 	math.randomseed(playdate.getSecondsSinceEpoch()) -- Set a new random seed at runtime.
 
@@ -113,12 +115,11 @@ function Noble.new(StartingScene, __launcherTransition, __launcherTransitionDura
 	-- These values are used if not set.
 	local launcherTransition =			__launcherTransition or defaultConfiguration.defaultTransition
 	local launcherTransitionDuration =	__launcherTransitionDuration or 1.5
-	local launcherTransitionHoldTime =	__launcherTransitionHoldTime or 0
-	local launcherTransitionArguments =	__launcherTransitionArguments or {}
+	local launcherTransitionProperties =__launcherTransitionProperties or {}
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransitionHoldTime, launcherTransition, launcherTransitionArguments)
+	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransition, launcherTransitionProperties)
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -161,6 +162,7 @@ function Noble.setConfig(__configuration)
 	if (__configuration.defaultTransition ~= nil)			then configuration.defaultTransition = __configuration.defaultTransition end
 	if (__configuration.defaultTransitionDuration ~= nil)	then configuration.defaultTransitionDuration = __configuration.defaultTransitionDuration end
 	if (__configuration.defaultTransitionHoldTime ~= nil)	then configuration.defaultTransitionHoldTime = __configuration.defaultTransitionHoldTime end
+	if (__transitionDurationIncludesHoldTime ~= nil)		then configuration.transitionDurationIncludesHoldTime = __configuration.transitionDurationIncludesHoldTime end
 
 	if (__configuration.enableDebugBonkChecking ~= nil)	then
 		configuration.enableDebugBonkChecking = __configuration.enableDebugBonkChecking
@@ -196,7 +198,7 @@ local queuedScene = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.TransitionType
-function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __transitionArguments)
+function Noble.transition(NewScene, __duration, __transitionType, __transitionProperties)
 	if (isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -211,8 +213,7 @@ function Noble.transition(NewScene, __duration, __holdTime, __transitionType, __
 
 	currentTransition = (__transitionType or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,
-		__holdTime or configuration.defaultTransitionHoldTime,
-		__transitionArguments or {}
+		__transitionProperties or {}
 	)
 end
 

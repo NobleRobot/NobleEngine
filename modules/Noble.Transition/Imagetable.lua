@@ -1,35 +1,61 @@
--- A wipe transition using an animated mask in the form of an imagetable.
+-- A dip-style transition using one or two imagetables.
+-- @submodule Noble.Transition
 
 class("Imagetable", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.Imagetable
 transition.name = "Imagetable"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.COVER
 
--- Override default arguments
-transition.ease = Ease.linear
+-- Overrides
+transition.easeEnter = Ease.linear
+transition.easeExit = Ease.linear
 
-function transition:setCustomArguments(__arguments)
+--- Transition properties.
+-- @see Noble.transition
+-- @see Noble.Transition.setDefaultProperties
+transition.defaultProperties = {
+	holdTime = 0,
+	imagetable = nil,
+	imagetableEnter = Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionEnter"),
+	imagetableExit = Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionExit"),
+	reverse = false,
+	reverseEnter = nil,
+	reverseExit = nil,
+	flipX = false,
+	flipY = false,
+	flipXEnter = nil,
+	flipYEnter = nil,
+	flipXExit = nil,
+	flipYExit = nil,
+	rotate = false,
+	rotateEnter = nil,
+	rotateExit = nil,
+}
 
-	self.imagetable = __arguments.imagetable
-	self.imagetableEnter = __arguments.imagetableEnter or self.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionEnter")
-	self.imagetableExit = __arguments.imagetableExit or self.imagetable or Graphics.imagetable.new("libraries/noble/assets/images/BoltTransitionExit")
+function transition:setProperties(__properties)
 
-	self.reverse = __arguments.reverse or false
-	self.reverseEnter = __arguments.reverseEnter or self.reverse
-	self.reverseExit = __arguments.reverseExit or self.reverse
+	self.imagetable = __properties.imagetable or self.defaultProperties.imagetable
+	self.imagetableEnter = __properties.imagetableEnter or self.defaultProperties.imagetableEnter or self.imagetable
+	self.imagetableExit = __properties.imagetableExit or self.defaultProperties.imagetableExit or self.imagetable
 
-	self.flipX = __arguments.flipX or false
-	self.flipY = __arguments.flipY or false
-	self.flipXEnter = __arguments.flipXEnter or self.flipX or false
-	self.flipYEnter = __arguments.flipYEnter or self.flipY or false
-	self.flipXExit = __arguments.flipXExit or self.flipX or false
-	self.flipYExit = __arguments.flipYExit or self.flipY or false
-	self.rotate = __arguments.rotate or false
-	self.rotateEnter = __arguments.rotateEnter or self.rotate or false
-	self.rotateExit = __arguments.rotateExit or self.rotate or false
+	self.reverse = __properties.reverse or self.defaultProperties.reverse
+	self.reverseEnter = __properties.reverseEnter or self.defaultProperties.reverseEnter or self.reverse
+	self.reverseExit = __properties.reverseExit or self.defaultProperties.reverseExit or self.reverse
 
+	self.flipX = __properties.flipX or self.defaultProperties.flipX
+	self.flipY = __properties.flipY or self.defaultProperties.flipY
+	self.flipXEnter = __properties.flipXEnter or self.defaultProperties.flipXEnter or self.flipX
+	self.flipYEnter = __properties.flipYEnter or self.defaultProperties.flipYEnter or self.flipY
+	self.flipXExit = __properties.flipXExit or self.defaultProperties.flipXExit or self.flipX
+	self.flipYExit = __properties.flipYExit or self.defaultProperties.flipYExit or self.flipY
+
+	self.rotate = __properties.rotate or self.defaultProperties.rotate
+	self.rotateEnter = __properties.rotateEnter or self.defaultProperties.rotateEnter or self.rotate
+	self.rotateExit = __properties.rotateExit or self.defaultProperties.rotateExit or self.rotate
+
+	-- "Private" variables
 	self._frameCountEnter = self.imagetableEnter and #self.imagetableEnter or 0
 	self._frameCountExit = self.imagetableExit and #self.imagetableExit or 0
 
@@ -54,7 +80,7 @@ function transition:setCustomArguments(__arguments)
 	end
 
 	-- Warnings
-	if ((__arguments.ease or __arguments.easeEnter or __arguments.easeExit) ~= nil) then
+	if ((__properties.ease or __properties.easeEnter or __properties.easeExit) ~= nil) then
 		warn("BONK: You've specified an ease value for an Noble.Transition.Imagetable transition. This will have no effect.")
 	end
 

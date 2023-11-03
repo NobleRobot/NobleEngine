@@ -1,18 +1,23 @@
 --- A simple cross-fade.
+-- @submodule Noble.Transition
 
 class("CrossDissolve", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.CrossDissolve
 transition.name = "Cross Dissolve"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.MIX
 
--- Override default arguments
-transition.ease = Ease.inOutCubic
+--- Transition properties.
+-- @see Noble.transition
+-- @see Noble.Transition.setDefaultProperties
+transition.defaultProperties = {
+	ease = Ease.outCubic,
+	dither = Graphics.image.kDitherTypeBayer4x4
+}
 
-function transition:setCustomArguments(__arguments)
-	-- Arguments
-	self.dither = __arguments.dither or Graphics.image.kDitherTypeBayer4x4
+function transition:setProperties(__properties)
+	self.dither = __properties.dither or self.defaultProperties.dither
 end
 
 function transition:draw()

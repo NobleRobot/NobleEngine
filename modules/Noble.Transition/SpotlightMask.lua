@@ -1,25 +1,42 @@
+--- A circle wipe transition.
+-- @see Noble.Transition.Spotlight
+-- @submodule Noble.Transition
+
 class("SpotlightMask", nil, Noble.Transition).extends(Noble.Transition)
 local transition = Noble.Transition.SpotlightMask
 transition.name = "Spotlight Mask"
 
--- Properties
+-- Type
 transition._type = Noble.Transition.Type.MIX
 
-function transition:setCustomArguments(__arguments)
-	self.x = __arguments.x or 200
-	self.y = __arguments.y or 120
-	self.xStart = __arguments.xStart or self.x
-	self.xEnd = __arguments.xEnd or self.x
-	self.yStart = __arguments.yStart or self.y
-	self.yEnd = __arguments.yEnd or self.y
+--- Transition properties.
+-- @see Noble.transition
+-- @see Noble.Transition.setDefaultProperties
+transition.defaultProperties = {
+	ease = Ease.outQuad,
+	panelImage = nil, -- Defined as a local var below
+	dither = Graphics.image.kDitherTypeBayer4x4,
+	x = 200,
+	y = 120,
+	xStart = nil,
+	yStart = nil,
+	xEnd = nil,
+	yEnd = nil,
+	invert = false
+}
 
-	self.reverse = __arguments.reverse or false
-	self.invert = __arguments.invert or false
+function transition:setProperties(__arguments)
+	self.x = __arguments.x or self.defaultProperties.x
+	self.y = __arguments.y or self.defaultProperties.y
+	self.xStart = __arguments.xStart or self.defaultProperties.xStart or self.x
+	self.yStart = __arguments.yStart or self.defaultProperties.yStart or self.y
+	self.xEnd = __arguments.xEnd or self.defaultProperties.xEnd or self.x
+	self.yEnd = __arguments.yEnd or self.defaultProperties.yEnd or self.y
 
-	if (self.invert == false) then
-		self.ease = __arguments.ease or Ease.outQuad
-	else
-		self.ease = __arguments.ease or Ease.inQuad
+	self.invert = __arguments.invert or self.defaultProperties.invert
+
+	if (self.invert) then
+		self.ease = Ease.reverse(self.ease)
 	end
 
 	-- "Private" variables
