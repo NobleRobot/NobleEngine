@@ -138,6 +138,7 @@ function NobleScene:enter() end
 --
 function NobleScene:start()
 	Noble.Input.setHandler(self.inputHandler)
+	Graphics.sprite.redrawBackground()
 end
 
 --- Implement to run scene-specific code on every frame while this scene is active.
