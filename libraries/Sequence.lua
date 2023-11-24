@@ -79,10 +79,10 @@ function Sequence.update( pacing )
 		local seq = _runningSequences[index]
 
 		if seq.isRunning == true then
-			seq:updateCallbacks( deltaTime )
-
 			seq.time = seq.time + deltaTime
 			seq.cachedResultTimestamp = nil
+			
+			seq:updateCallbacks( deltaTime )
 
 			if seq:isDone() then
 				seq.isRunning = false
@@ -361,6 +361,8 @@ function Sequence:updateCallbacks( dt )
 		return
 	end
 
+	local previousTime = self.time - dt
+	
 	local callTimeRange = function( clampedStart, clampedEnd)
 		if clampedStart>clampedEnd then
 			clampedStart, clampedEnd = clampedEnd, clampedStart
@@ -377,7 +379,7 @@ function Sequence:updateCallbacks( dt )
 
 	-- most straightforward case: no loop
 	if not self.loopType then
-		local clampedTime = self:getClampedTime( self.time )
+		local clampedTime = self:getClampedTime( previousTime )
 		callTimeRange(clampedTime, clampedTime+dt)
 		return
 	end
@@ -390,7 +392,7 @@ function Sequence:updateCallbacks( dt )
 		callTimeRange(0, self.duration)
 	end
 
-	local clampedTime, isForward = self:getClampedTime( self.time )
+	local clampedTime, isForward = self:getClampedTime( previousTime )
 	local endTime = clampedTime
 	if isForward then
 		endTime = endTime + dt
