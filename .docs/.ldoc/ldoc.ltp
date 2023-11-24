@@ -32,6 +32,7 @@
 			<h2>$(module.name)</h2>
 			<ul>
 #				for kind, items in module.kinds() do
+#					kind = kind:gsub("modules.", ""):gsub(" Functions", ""):gsub("%.", "\u{200B}.")
 					<h3>$(kind)</h3>
 					<ul>
 #						for item in items() do
@@ -119,6 +120,7 @@
 #		for kind, items in module.kinds() do
 #			local kitem = module.kinds:get_item(kind)
 #			local has_description = kitem and ldoc.descript(kitem) ~= ""
+#			kind = kind:gsub("modules.", ""):gsub(" Functions", "")
 			<h2 class="section-header $(has_description and 'has-description')"><a name="$(no_spaces(kind))"></a>$(kind)</h2>
 			<!-- $(M(module.kinds:get_section_description(kind),nil)) -->
 #			if kitem then

@@ -149,9 +149,23 @@ function math.sign(__value)
 	return (__value >= 0 and 1) or -1
 end
 
+function math.lerp(a, b, t)
+	return a + (b - a) * t
+end
 
 -- New array/table methods
 --
+
+function table.merge(__table1, __table2)
+	local mergedTable = {}
+	for k,v in pairs(__table1) do
+		mergedTable[k] = v
+	end
+	for k,v in pairs(__table2) do
+		mergedTable[k] = v
+	end
+	return mergedTable
+end
 
 function table.random(__table)
 	if (type(__table) ~= "table") then return nil end

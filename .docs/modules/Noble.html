@@ -33,6 +33,7 @@
 							<li><a href="#transition">.transition</a></li>
 							<li><a href="#currentScene">.currentScene</a></li>
 							<li><a href="#currentSceneName">.currentSceneName</a></li>
+							<li><a href="#isTransitioning">.isTransitioning</a></li>
 					</ul>
 					<h3>Tables</h3>
 					<ul>
@@ -40,7 +41,6 @@
 					</ul>
 					<h3>Fields</h3>
 					<ul>
-							<li><a href="#isTransitioning">.isTransitioning</a></li>
 							<li><a href="#showFPS">.showFPS</a></li>
 					</ul>
 			</ul>
@@ -59,7 +59,8 @@
 								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
 								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
 								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
-								<li><a href="../modules/Noble.TransitionType.html">Noble.TransitionType</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
 					</ul>
 			</div>
 			<div class="nav-kind">
@@ -94,7 +95,7 @@
 			<dl class="function">
 					<dt>
 						<a name = "new"></a>
-						<span class="item-name">new(StartingScene[, __launcherTransitionDuration=0][, __launcherTransitionType=Noble.Transition.CROSS_DISSOLVE], __configuration)<span>
+						<span class="item-name">new(StartingScene[, __launcherTransitionDuration=0[, __launcherTransition=Noble.Transition.DipToBlack[, __launcherTransitionProperties={}[, __configuration={}]]]])<span>
 					</dt>
 					<dd>
 						Engine initialization.  Run this once in your main.lua file to begin your game.
@@ -112,14 +113,21 @@
 														<br/>
 														 If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 													</li>
-													<li><span class="parameter">__launcherTransitionType</span>
-															<span class="types"><span class="type">Noble.TransitionType</span></span>
-															<span class="default">= <span class="value">Noble.Transition.CROSS_DISSOLVE</span> (default)</span>
+													<li><span class="parameter">__launcherTransition</span>
+															<span class="types"><span class="type">Noble.Transition</span></span>
+															<span class="default">= <span class="value">Noble.Transition.DipToBlack</span> (default)</span>
 														<br/>
 														 If a transition duration is set, use this transition type.
 													</li>
+													<li><span class="parameter">__launcherTransitionProperties</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
+														<br/>
+														 Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
+													</li>
 													<li><span class="parameter">__configuration</span>
-															<span class="types"><span class="type">table[optional]</span></span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
 														<br/>
 														 Provide a table of Noble Engine configuration values. This will run <a href="../modules/Noble.html#setConfig">Noble.setConfig</a> for you at launch.
 													</li>
@@ -130,10 +138,25 @@
 							<h3>See</h3>
 							<ul>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
-									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
+									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
 									<li><a href="../modules/Noble.html#setConfig">setConfig</a></li>
 							</ul>
 
+							<h3>Usage</h3>
+								<pre class="example">Noble.<span class="function-name">new</span>(
+	TitleScreen,
+	<span class="number">2</span>,
+	Noble.Transition.DipToWhite,
+	{
+		holdTime = <span class="number">0</span>,
+		ease = Ease.outInQuad
+	},
+	{
+		defaultTransition = Noble.Transition.Imagetable,
+		defaultTransitionDuration = <span class="number">1.75</span>,
+		enableDebugBonkChecking = <span class="keyword">true</span>,
+	}
+)</pre>
 
 					</dd>
 					<dt>
@@ -230,12 +253,12 @@
 					</dd>
 					<dt>
 						<a name = "transition"></a>
-						<span class="item-name">transition(NewScene[, __duration=1[, __transitionType=Noble.TransitionType.DIP_TO_BLACK[, __holdDuration=0.2]]])<span>
+						<span class="item-name">transition(NewScene[, __duration=1.5[, __transition=Noble.TransitionType.DIP_TO_BLACK[, __transitionProperties={}]]])<span>
 					</dt>
 					<dd>
 						Transition to a new scene (at the end of this frame).
  This method will create a new scene, mark the previous one for garbage collection, and animate between them.
- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transtion begins will be ignored until the transition completes.
+ Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -246,21 +269,21 @@
 													</li>
 													<li><span class="parameter">__duration</span>
 															<span class="types"><span class="type">number</span></span>
-															<span class="default">= <span class="value">1</span> (default)</span>
+															<span class="default">= <span class="value">1.5</span> (default)</span>
 														<br/>
 														 The length of the transition, in seconds.
 													</li>
-													<li><span class="parameter">__transitionType</span>
-															<span class="types"><span class="type">Noble.TransitionType</span></span>
+													<li><span class="parameter">__transition</span>
+															<span class="types"><span class="type">Noble.Transition</span></span>
 															<span class="default">= <span class="value">Noble.TransitionType.DIP_TO_BLACK</span> (default)</span>
 														<br/>
-														 If a transition duration is set, use this transition type.
+														 If a transition duration is set, use this transition type. If not set, it will use the value of <code>configuration.defaultTransition</code>.
 													</li>
-													<li><span class="parameter">__holdDuration</span>
-															<span class="types"><span class="type">number</span></span>
-															<span class="default">= <span class="value">0.2</span> (default)</span>
+													<li><span class="parameter">__transitionProperties</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
 														<br/>
-														 For <code>DIP</code> transitions, the time spent holding at the transition midpoint. Does not increase the total transition duration, but is taken from it. So, don't make it longer than the transition duration.
+														 A table consisting of properties for this transition. Properties not set here will use values that transition's <code>defaultProperties</code> table.
 													</li>
 							</ul>
 
@@ -270,9 +293,26 @@
 							<ul>
 									<li><a href="../modules/Noble.html#isTransitioning">Noble.isTransitioning</a></li>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
-									<li><a href="../modules/Noble.TransitionType.html#">Noble.TransitionType</a></li>
+									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.DipToWhite.defaultProperties">Noble.Transition.defaultProperties</a></li>
 							</ul>
 
+							<h3>Usage</h3>
+								<pre class="example">Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.CrossDissolve, {
+	dither = Graphics.image.kDitherTypeDiagonalLine
+	ease = Ease.outQuint
+})
+<span class="comment">--
+</span>Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.DipToBlack, {
+	holdTime = <span class="number">0.5</span>,
+	ease = Ease.outInElastic
+})
+<span class="comment">--
+</span>Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.SlideOff, {
+	x = <span class="number">400</span>,
+	y = <span class="number">150</span>
+	rotation = <span class="number">45</span>
+})</pre>
 
 					</dd>
 					<dt>
@@ -317,6 +357,28 @@
 
 
 					</dd>
+					<dt>
+						<a name = "isTransitioning"></a>
+						<span class="item-name">isTransitioning()<span>
+					</dt>
+					<dd>
+						Check to see if the game is transitioning between scenes.
+ Useful to control game logic that lives outside of a scene's <code>update()</code> method.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+
+
+
+								</ol>
+
+
+
+
+					</dd>
 			</dl>
 			<h2 class="section-header "><a name="Tables"></a>Tables</h2>
 			<!--  -->
@@ -331,23 +393,17 @@
 
 								<h3>Fields</h3>
 							<ul class="parameters">
+													<li><span class="parameter">defaultTransition</span>
+															<span class="types"><span class="type">Noble.Transition</span></span>
+															<span class="default">= <span class="value">Noble.Transition.DipToBlack</span> (default)</span>
+														<br/>
+														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> if the transition is unspecified, it will use this one.
+													</li>
 													<li><span class="parameter">defaultTransitionDuration</span>
 															<span class="types"><span class="type">number</span></span>
-															<span class="default">= <span class="value">1</span> (default)</span>
+															<span class="default">= <span class="value">1.5</span> (default)</span>
 														<br/>
 														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> if the scene transition duration is unspecified, it will take this long in seconds.
-													</li>
-													<li><span class="parameter">defaultTransitionHoldDuration</span>
-															<span class="types"><span class="type">number</span></span>
-															<span class="default">= <span class="value">0.2</span> (default)</span>
-														<br/>
-														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> (and using a hold-type transition type) if the scene transition hold duration is unspecified, it will take this long in seconds.
-													</li>
-													<li><span class="parameter">defaultTransitionType</span>
-															<span class="types"><span class="type">Noble.TransitionType</span></span>
-															<span class="default">= <span class="value">Noble.TransitionType.CROSS_DISSOLVE</span> (default)</span>
-														<br/>
-														 When running <a href="../modules/Noble.html#transition">Noble.transition</a> if the transition type is unspecified, it will use this one.
 													</li>
 													<li><span class="parameter">enableDebugBonkChecking</span>
 															<span class="types"><span class="type">boolean</span></span>
@@ -378,28 +434,6 @@
 			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
 			<!--  -->
 			<dl class="function">
-					<dt>
-						<a name = "isTransitioning"></a>
-						<span class="item-name">isTransitioning<span>
-					</dt>
-					<dd>
-						Check to see if the game is transitioning between scenes.
- Useful to control game logic that lives outside of a scene's <code>update()</code> method.
-
-							<ul class="parameters">
-													<li><span class="parameter">bool</span>
-														<br/>
-
-
-
-													</li>
-							</ul>
-
-
-
-
-
-					</dd>
 					<dt>
 						<a name = "showFPS"></a>
 						<span class="item-name">showFPS<span>

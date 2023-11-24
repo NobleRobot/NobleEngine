@@ -1,0 +1,1377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Transition</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Transition.setDefaultProperties">.setDefaultProperties</a></li>
+							<li><a href="#Noble.Transition:setProperties">:setProperties</a></li>
+							<li><a href="#Noble.Transition:onStart">:onStart</a></li>
+							<li><a href="#Noble.Transition:onMidpoint">:onMidpoint</a></li>
+							<li><a href="#Noble.Transition:onHoldTimeElapsed">:onHoldTimeElapsed</a></li>
+							<li><a href="#Noble.Transition:onComplete">:onComplete</a></li>
+							<li><a href="#Noble.Transition:draw">:draw</a></li>
+					</ul>
+					<h3>Tables</h3>
+					<ul>
+							<li><a href="#Noble.Transition.defaultProperties">.defaultProperties</a></li>
+					</ul>
+					<h3>Fields</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Type.CUT">.Type.CUT</a></li>
+							<li><a href="#Noble.Transition.Type.COVER">.Type.COVER</a></li>
+							<li><a href="#Noble.Transition.Type.MIX">.Type.MIX</a></li>
+					</ul>
+					<h3>Noble​.Transition​.CrossDissolve</h3>
+					<ul>
+							<li><a href="#Noble.Transition.CrossDissolve.defaultProperties">.CrossDissolve.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.Cut</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Cut.defaultProperties">.Cut.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.Dip</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Dip.defaultProperties">.Dip.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.DipToBlack</h3>
+					<ul>
+							<li><a href="#Noble.Transition.DipToBlack.defaultProperties">.DipToBlack.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.DipToWhite</h3>
+					<ul>
+							<li><a href="#Noble.Transition.DipToWhite.defaultProperties">.DipToWhite.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.Imagetable</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Imagetable.defaultProperties">.Imagetable.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.ImagetableMask</h3>
+					<ul>
+							<li><a href="#Noble.Transition.ImagetableMask.defaultProperties">.ImagetableMask.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.MetroNexus</h3>
+					<ul>
+							<li><a href="#Noble.Transition.MetroNexus.defaultProperties">.MetroNexus.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOff</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOff.defaultProperties">.SlideOff.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOffDown</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOffDown.defaultProperties">.SlideOffDown.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOffLeft</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOffLeft.defaultProperties">.SlideOffLeft.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOffRight</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOffRight.defaultProperties">.SlideOffRight.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOffUp</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOffUp.defaultProperties">.SlideOffUp.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOn</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOn.defaultProperties">.SlideOn.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOnDown</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOnDown.defaultProperties">.SlideOnDown.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOnLeft</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOnLeft.defaultProperties">.SlideOnLeft.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOnRight</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOnRight.defaultProperties">.SlideOnRight.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SlideOnUp</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SlideOnUp.defaultProperties">.SlideOnUp.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.Spotlight</h3>
+					<ul>
+							<li><a href="#Noble.Transition.Spotlight.defaultProperties">.Spotlight.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.SpotlightMask</h3>
+					<ul>
+							<li><a href="#Noble.Transition.SpotlightMask.defaultProperties">.SpotlightMask.defaultProperties</a></li>
+					</ul>
+					<h3>Noble​.Transition​.WidgetSatchel</h3>
+					<ul>
+							<li><a href="#Noble.Transition.MetroNexus.defaultProperties">.MetroNexus.defaultProperties</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><span class="selected">Noble.Transition</span></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Transition</h1>
+		<p>An abstract class from which transition types are extended.</p>
+		<p>
+
+</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.setDefaultProperties"></a>
+						<span class="item-name">Noble.Transition.setDefaultProperties(__transition, __properties)<span>
+					</dt>
+					<dd>
+						Use this to modify multiple default properties of a transition.  Having default properties avoids having to set them every time a transition is called.
+ Properties added here are merged with the existing default properties table. Overwrites only happen when a new value is set.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__transition</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__properties</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.defaultProperties">Noble.Transition.defaultProperties</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.Transition.CrossDissolve, {
+	dither = Graphics.image.kDitherTypeDiagonalLine
+	ease = Ease.outQuint
+})
+Noble.Transition.<span class="function-name">setDefaultProperties</span>(Noble.Transition.SpotlightMask, {
+	x = <span class="number">325</span>,
+	y = <span class="number">95</span>,
+	invert = <span class="keyword">true</span>
+})</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:setProperties"></a>
+						<span class="item-name">Noble.Transition:setProperties(__arguments)<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to set properties from user arguments given in <code>Noble.transition()</code>.  See existing transitions for implementation examples.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__arguments</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.html#transition">Noble.transition</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onStart"></a>
+						<span class="item-name">Noble.Transition:onStart()<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition starts.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onMidpoint"></a>
+						<span class="item-name">Noble.Transition:onMidpoint()<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition reaches its midpoint.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onHoldTimeElapsed"></a>
+						<span class="item-name">Noble.Transition:onHoldTimeElapsed()<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:onComplete"></a>
+						<span class="item-name">Noble.Transition:onComplete()<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition in order to run custom code when the transition completes.  Default transitions in Noble Engine do not use this.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition:draw"></a>
+						<span class="item-name">Noble.Transition:draw()<span>
+					</dt>
+					<dd>
+						<em>Do not call this directly.</em> Implement this in a custom transition to draw the transition.  This runs once per frame while the transition is running. See existing transitions for implementation examples.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Tables"></a>Tables</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.defaultProperties<span>
+					</dt>
+					<dd>
+						A transition may have unique properties that can be set by the user when invoked.  This table holds the default values for those properties.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.setDefaultProperties">Noble.Transition.setDefaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Type.CUT"></a>
+						<span class="item-name">Noble.Transition.Type.CUT<span>
+					</dt>
+					<dd>
+						A transition type where no time at all passes between scenes.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition.Type.COVER"></a>
+						<span class="item-name">Noble.Transition.Type.COVER<span>
+					</dt>
+					<dd>
+						A transition type that has an "Enter" phase and an "Exit" phase.  The new scene does not become active until the Enter phase is complete. A "holdTime" value determines how long to wait after the Enter phase completes before starting the Exit phase.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Transition.Type.MIX"></a>
+						<span class="item-name">Noble.Transition.Type.MIX<span>
+					</dt>
+					<dd>
+						A transition type that takes a screenshot of the exiting scene and activates the new scene before beginning the transition, allowing for both scenes to appear to be visible during the transition.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_CrossDissolve"></a>Noble.Transition.CrossDissolve</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.CrossDissolve.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.CrossDissolve.defaultProperties<span>
+					</dt>
+					<dd>
+						A simple cross-fade.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outCubic</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">dither</span>
+															<span class="types"><span class="type">Graphics.image.kDither</span></span>
+															<span class="default">= <span class="value">Graphics.image.kDitherTypeBayer4x4</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_Cut"></a>Noble.Transition.Cut</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Cut.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Cut.defaultProperties<span>
+					</dt>
+					<dd>
+						An all-time classic.
+ This transition has no properties.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_Dip"></a>Noble.Transition.Dip</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Dip.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Dip.defaultProperties<span>
+					</dt>
+					<dd>
+						Fade to an image, then to the next scene.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0.25</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">panelImage</span>
+															<span class="types"><span class="type">Graphics.image</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">dither</span>
+															<span class="types"><span class="type">Graphics.image.kDither</span></span>
+															<span class="default">= <span class="value">Graphics.image.kDitherTypeBayer4x4</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_DipToBlack"></a>Noble.Transition.DipToBlack</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.DipToBlack.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.DipToBlack.defaultProperties<span>
+					</dt>
+					<dd>
+						Fade to black, then to the next scene.
+ NOTE: The <code>panelImage</code> property is locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.Dip.defaultProperties">Noble.Transition.Dip.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_DipToWhite"></a>Noble.Transition.DipToWhite</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.DipToWhite.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.DipToWhite.defaultProperties<span>
+					</dt>
+					<dd>
+						Fade to white, then to the next scene.
+ NOTE: The <code>panelImage</code> property is locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.Dip.defaultProperties">Noble.Transition.Dip.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_Imagetable"></a>Noble.Transition.Imagetable</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Imagetable.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Imagetable.defaultProperties<span>
+					</dt>
+					<dd>
+						A dip-style transition using one or two imagetables.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetable</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverse</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipX</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipY</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotate</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetableEnter</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverseEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotateEnter</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">imagetableExit</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverseExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipXExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipYExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotateExit</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.ImagetableMask.defaultProperties">Noble.Transition.ImagetableMask.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_ImagetableMask"></a>Noble.Transition.ImagetableMask</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.ImagetableMask.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.ImagetableMask.defaultProperties<span>
+					</dt>
+					<dd>
+						A wipe transition using an animated mask in the form of an imagetable.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">imagetable</span>
+															<span class="types"><span class="type">Graphics.imagetable</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">reverse</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set <code>true</code> to play the imagetable's frames in reverse order.
+													</li>
+													<li><span class="parameter">flipX</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">flipY</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotate</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set as <code>true</code> to rotate the image 180-degrees
+													</li>
+													<li><span class="parameter">hasTransparency</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Set as <code>true</code> if the imagetable asset has transparent pixels. Set as <code>false</code> if the image uses white pixels for transparency.
+													</li>
+													<li><span class="parameter">invert</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set as <code>true</code> to invert the image mask.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.Imagetable.defaultProperties">Noble.Transition.Imagetable.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_MetroNexus"></a>Noble.Transition.MetroNexus</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.MetroNexus.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.MetroNexus.defaultProperties<span>
+					</dt>
+					<dd>
+						A "cascade" wipe transition, taken from "Metro Nexus" by Noble Robot.
+ This transition has no properties.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOff"></a>Noble.Transition.SlideOff</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOff.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOff.defaultProperties<span>
+					</dt>
+					<dd>
+						The previous scene slides off the screen, revealing the next scene.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotation</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOffDown"></a>Noble.Transition.SlideOffDown</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOffDown.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOffDown.defaultProperties<span>
+					</dt>
+					<dd>
+						The previous scene slides off the bottom of the screen, revealing the next scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOff.defaultProperties">Noble.Transition.SlideOff.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOffLeft"></a>Noble.Transition.SlideOffLeft</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOffLeft.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOffLeft.defaultProperties<span>
+					</dt>
+					<dd>
+						The previous scene slides off the left side of the screen, revealing the next scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOff.defaultProperties">Noble.Transition.SlideOff.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOffRight"></a>Noble.Transition.SlideOffRight</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOffRight.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOffRight.defaultProperties<span>
+					</dt>
+					<dd>
+						The previous scene slides off the right side of the screen, revealing the next scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOff.defaultProperties">Noble.Transition.SlideOff.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOffUp"></a>Noble.Transition.SlideOffUp</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOffUp.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOffUp.defaultProperties<span>
+					</dt>
+					<dd>
+						The previous scene slides off the top of the screen, revealing the next scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOff.defaultProperties">Noble.Transition.SlideOff.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOn"></a>Noble.Transition.SlideOn</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOn.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOn.defaultProperties<span>
+					</dt>
+					<dd>
+						The next scene slides on the screen, covering up the previous scene.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">rotation</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOnDown"></a>Noble.Transition.SlideOnDown</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOnDown.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOnDown.defaultProperties<span>
+					</dt>
+					<dd>
+						The next scene slides onto the screen from the top, covering up the previous scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOn.defaultProperties">Noble.Transition.SlideOn.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOnLeft"></a>Noble.Transition.SlideOnLeft</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOnLeft.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOnLeft.defaultProperties<span>
+					</dt>
+					<dd>
+						The next scene slides onto the screen right-to-left, covering up the previous scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOn.defaultProperties">Noble.Transition.SlideOn.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOnRight"></a>Noble.Transition.SlideOnRight</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOnRight.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOnRight.defaultProperties<span>
+					</dt>
+					<dd>
+						The next scene slides onto the screen left-to-right, covering up the previous scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOn.defaultProperties">Noble.Transition.SlideOn.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SlideOnUp"></a>Noble.Transition.SlideOnUp</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SlideOnUp.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SlideOnUp.defaultProperties<span>
+					</dt>
+					<dd>
+						The next scene slides onto the screen from the bottom, covering up the previous scene.
+ NOTE: The <code>x</code>, <code>y</code>, and <code>rotation</code> properties are locked.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SlideOn.defaultProperties">Noble.Transition.SlideOn.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_Spotlight"></a>Noble.Transition.Spotlight</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.Spotlight.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.Spotlight.defaultProperties<span>
+					</dt>
+					<dd>
+						A spotlight in-out transition.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">holdTime</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">0.25</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">panelImage</span>
+															<span class="types"><span class="type">Graphics.image</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">dither</span>
+															<span class="types"><span class="type">Graphics.image.kDither</span></span>
+															<span class="default">= <span class="value">Graphics.image.kDitherTypeBayer4x4</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outInQuad</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">200</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">120</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeEnter</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnter</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnter</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnterStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnterStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnterEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnterEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">easeEnter</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExit</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExit</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExitStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExitStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xExitEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yExitEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.SpotlightMask.defaultProperties">Noble.Transition.SpotlightMask.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_SpotlightMask"></a>Noble.Transition.SpotlightMask</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.SpotlightMask.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.SpotlightMask.defaultProperties<span>
+					</dt>
+					<dd>
+						A circle wipe transition.
+
+								<h3>Fields</h3>
+							<ul class="parameters">
+													<li><span class="parameter">ease</span>
+															<span class="types"><span class="type">Ease</span></span>
+															<span class="default">= <span class="value">Ease.outQuad</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">x</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">200</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">y</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">120</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yStart</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">xEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">yEnd</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">invert</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Transition.html#Noble.Transition.Spotlight.defaultProperties">Noble.Transition.Spotlight.defaultProperties</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Noble_Transition_WidgetSatchel"></a>Noble.Transition.WidgetSatchel</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Transition.MetroNexus.defaultProperties"></a>
+						<span class="item-name">Noble.Transition.MetroNexus.defaultProperties<span>
+					</dt>
+					<dd>
+						An "accordion" transition, taken from "Widget Satchel" by Noble Robot.
+ This transition has no properties.
+
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

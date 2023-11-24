@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Ease</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#enter">enter</a></li>
+							<li><a href="#exit">exit</a></li>
+							<li><a href="#reverse">reverse</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><span class="selected">Ease</span></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Ease</h1>
+		<p>Extensions to <code>playdate.easingFunctions</code>, aliased as <a href="../modules/Ease.html#">Ease</a> in Noble Engine.</p>
+		<p> See the Playdate SDK for a list of easing functions.</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "enter"></a>
+						<span class="item-name">enter(__easingFunction)<span>
+					</dt>
+					<dd>
+						Returns the first half of an "inOut" or "outIn" easing function.
+ Returns <code>nil</code> for any easing function that isn't in the form of <code>Ease.inOutXxxx</code> or <code>Ease.outInXxxx</code>. <code>Ease.linear</code> returns itself.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__easingFunction</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> ease = Ease.outInQuad
+<span class="keyword">local</span> easeEnter = Ease.<span class="function-name">enter</span>(ease)	<span class="comment">-- Returns "Ease.outQuad"</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "exit"></a>
+						<span class="item-name">exit(__easingFunction)<span>
+					</dt>
+					<dd>
+						Returns the second half of an "inOut" or "outIn" easing function.
+ Returns <code>nil</code> for any easing function that isn't in the form of <code>Ease.inOutXxxx</code> or <code>Ease.outInXxxx</code>. <code>Ease.linear</code> returns itself.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__easingFunction</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> ease = Ease.outInQuad
+<span class="keyword">local</span> easeExit = Ease.<span class="function-name">exit</span>(ease)		<span class="comment">-- Returns "Ease.inQuad"</span></pre>
+
+					</dd>
+					<dt>
+						<a name = "reverse"></a>
+						<span class="item-name">reverse(__easingFunction)<span>
+					</dt>
+					<dd>
+						Returns the reverse function of the provided function.
+ Returns <code>nil</code> for any easing function that isn't in the form of <code>Ease.inXxxx</code> or <code>Ease.outXxxx</code>. <code>Ease.linear</code> returns itself.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__easingFunction</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="keyword">local</span> ease = Ease.inQuad
+<span class="keyword">local</span> reverseEase = Ease.<span class="function-name">reverse</span>(ease) <span class="comment">-- Returns "Ease.outQuad"</span></pre>
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+
