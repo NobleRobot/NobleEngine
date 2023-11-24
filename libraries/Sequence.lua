@@ -78,22 +78,35 @@ function Sequence.update( pacing )
 	for index = #_runningSequences, 1, -1 do
 		local seq = _runningSequences[index]
 
-		seq:updateCallbacks( deltaTime )
+		if seq.isRunning == true then
+			seq:updateCallbacks( deltaTime )
 
-		seq.time = seq.time + deltaTime
-		seq.cachedResultTimestamp = nil
+			seq.time = seq.time + deltaTime
+			seq.cachedResultTimestamp = nil
 
-		if seq:isDone() then
+			if seq:isDone() then
+				seq.isRunning = false
+			end
+		end
+
+		if seq.isRunning == false then
 			table.remove(_runningSequences, index)
-			seq.isRunning = false
 		end
 	end
 end
 
 function Sequence.print()
-	print("Sequences running:", #_runningSequences)
-for index, seq in pairs(_runningSequences) do
-		print(" Sequence", index, seq)
+	local count = 0
+	for index, seq in pairs(_runningSequences) do
+		if seq.isRunning then
+			count = count + 1
+		end
+	end
+	print("Sequences running:", count)
+	for index, seq in pairs(_runningSequences) do
+		if seq.isRunning then
+			print(" Sequence", index, seq)
+		end
 	end
 end
 
@@ -435,10 +448,6 @@ function Sequence:addRunning()
 end
 
 function Sequence:removeRunning()
-	local indexInRunningTable = table.indexOfElement(_runningSequences, self)
-	if indexInRunningTable then
-		table.remove(_runningSequences, indexInRunningTable)
-	end
 	self.isRunning = false
 end
 
