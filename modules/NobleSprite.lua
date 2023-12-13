@@ -120,8 +120,8 @@ end
 function NobleSprite:pause()
 	self:setUpdatesEnabled(false)
 	if (self.animation ~= nil) then
-        self:markDirty()
-    end
+		self:markDirty()
+	end
 end
 
 --- This will disable the update loop for this NobleSprite, and also reset its Noble.Animation (if it exists) to the first frame of its current state.
