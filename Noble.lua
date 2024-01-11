@@ -264,9 +264,11 @@ function Noble.transitionMidpointHandler()
 		currentScene:finish()
 		currentScene = nil				-- Allows current scene to be garbage collected.
 	end
-	currentScene = queuedScene			-- New scene's update loop begins.
-	queuedScene = nil
-	currentScene:enter()				-- The new scene runs its "hello" code.
+	if (queuedScene ~= nil) then
+		currentScene = queuedScene			-- New scene's update loop begins.
+		queuedScene = nil
+		currentScene:enter()				-- The new scene runs its "hello" code.
+	end
 end
 
 function Noble.transitionCompleteHandler()
