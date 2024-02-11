@@ -340,7 +340,6 @@ function Sequence:get( time )
 		return 0
 	end
 
-	time = time or self.time
 	if time == nil then
 		time = self.time
 	else
