@@ -274,7 +274,9 @@ end
 function Noble.transitionCompleteHandler()
 	isTransitioning = false				-- Reset
 	currentTransition = nil				-- Clear the transition variable.
-	currentScene:start()				-- The new scene is now active.
+	if (currentScene ~= nil) then
+		currentScene:start()				-- The new scene is now active.
+	end
 end
 
 --- Get the current scene object
