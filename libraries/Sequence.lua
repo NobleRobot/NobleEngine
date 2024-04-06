@@ -320,8 +320,9 @@ function Sequence:getEasingByTime( clampedTime )
 
 		if clampedTime < easing.timestamp then
 			easingIndex = easingIndex - 1
-		elseif clampedTime > (easing.timestamp+easing.duration) then
-			easingIndex = easingIndex + 1
+		elseif clampedTime == (easing.timestamp+easing.duration) and easingIndex < self.easingCount or
+			clampedTime > (easing.timestamp+easing.duration) then
+				easingIndex = easingIndex + 1
 		else
 			self.previousUpdateEasingIndex = easingIndex
 			return easing, easingIndex
@@ -354,8 +355,13 @@ function Sequence:get( time )
 	-- we calculate and cache the result
 	local clampedTime = self:getClampedTime(time)
 	local easing = self:getEasingByTime(clampedTime)
-	local result = easing.fn(clampedTime-easing.timestamp, easing.from, easing.to-easing.from, easing.duration, table.unpack(easing.params or {}))
-
+	local result
+	if easing.duration == 0 then
+		result = easing.to
+	else
+		result = easing.fn(clampedTime-easing.timestamp, easing.from, easing.to-easing.from, easing.duration, table.unpack(easing.params or {}))
+	end
+	
 	-- cache
 	self.cachedResultTimestamp = clampedTime
 	self.cachedResult = result
