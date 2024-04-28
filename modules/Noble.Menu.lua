@@ -308,8 +308,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	local menu = Noble.Menu.new(false)
 	--	menu:activate()
 	function menu:activate()
-		self:select(self.currentItemNumber)
 		active = true
+		self:select(self.currentItemNumber)
 	end
 	--- Deactivate this menu.
 	-- This deselects all menu items, and disables this menu's @{selectPrevious|selectPrevious}, @{selectNext|selectNext}, and @{click|click} methods.
