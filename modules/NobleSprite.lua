@@ -1,5 +1,5 @@
 ---
--- An extention of Playdate's sprite object, incorporating `Noble.Animation` and other Noble Engine features.
+-- An extension of Playdate's sprite object, incorporating `Noble.Animation` and other Noble Engine features.
 -- Use this in place of `playdate.graphics.sprite` in most cases.
 --
 -- `NobleSprite` is a child class of `playdate.graphics.sprite`, so see the Playdate SDK documentation for additional methods and properties.
@@ -13,7 +13,7 @@ class("NobleSprite").extends(Graphics.sprite)
 --- Do not call an "init" method directly. Use `NobleSprite()` (see usage examples).
 -- @string[opt] __view This can be: the path to an image or spritesheet image file, an image object (`Graphics.image`) or an animation object (`Noble.Animation`)
 -- @bool[opt=false] __viewIsSpritesheet Set this to `true` to indicate that `__view` is a spritesheet. Will only be considered if `__view` is a string path to an image.
--- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Anmiation.addState()
+-- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Animation.addState()
 -- @bool[opt=true] __singleStateLoop If using a single state animation, should it loop?
 --
 -- @usage
