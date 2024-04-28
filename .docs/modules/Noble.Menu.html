@@ -687,8 +687,8 @@ menu:<span class="function-name">deactivate</span>()</pre>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example"><span class="keyword">for</span> i = <span class="number">1</span>, #menu.items, <span class="number">1</span> <span class="keyword">do</span>
-	menu.clickHandlers[menu.items[i]]	= <span class="keyword">nil</span> <span class="comment">-- Clears all click handlers, for some reason.
+								<pre class="example"><span class="keyword">for</span> i = <span class="number">1</span>, #menu.itemNames, <span class="number">1</span> <span class="keyword">do</span>
+	menu.clickHandlers[menu.itemNames[i]]	= <span class="keyword">nil</span> <span class="comment">-- Clears all click handlers, for some reason.
 </span><span class="keyword">end</span></pre>
 
 					</dd>
