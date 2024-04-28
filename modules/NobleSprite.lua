@@ -97,12 +97,17 @@ function NobleSprite:init(__view, __viewIsSpritesheet, __singleState, __singleSt
 
 end
 
+function NobleSprite:update()
+	if (self.animation ~= nil) then
+		self:markDirty()
+	end
+end
+
 function NobleSprite:draw(__x, __y)
 	if (self.animation ~= nil) then
 		local x = __x or 0
 		local y = __y or 0
 		self.animation:draw(x, y)
-		self:markDirty()
 	end
 end
 
@@ -114,6 +119,9 @@ end
 --- This will disable the update loop for this NobleSprite, which also causes its Noble.Animation to pause.
 function NobleSprite:pause()
 	self:setUpdatesEnabled(false)
+	if (self.animation ~= nil) then
+		self:markDirty()
+	end
 end
 
 --- This will disable the update loop for this NobleSprite, and also reset its Noble.Animation (if it exists) to the first frame of its current state.
@@ -121,6 +129,7 @@ function NobleSprite:stop()
 	self:setUpdatesEnabled(false)
 	if (self.animation ~= nil) then
 		self.animation.currentFrame = self.animation.current.startFrame
+		self:markDirty()
 	end
 end
 
