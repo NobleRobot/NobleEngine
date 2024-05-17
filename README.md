@@ -4,7 +4,7 @@ Noble Engine
 
 ![](README.gif)
 
-The Playdate SDK is probably the most user-friendly console SDK ever made, but if you're familiar with state/scene-based game engine frameworks like Unity, Flixel, Citrus, or others, you may be looking for a library that can get your game "on its feet,” extend existing APIs, offer new features, or provide more intuative ways to leverage the SDK in your game.
+The Playdate SDK is probably the most user-friendly console SDK ever made, but if you're familiar with state/scene-based game engine frameworks like Unity, Flixel, Citrus, or others, you may be looking for a library that can get your game "on its feet,” extend existing APIs, offer new features, or provide more intuitive ways to leverage the SDK in your game.
 
 If so, you're looking for Noble Engine!
 
@@ -15,21 +15,23 @@ Features
 -   Settings/SaveGame API, supporting up to 1000 save slots and automatic updating of on disk files when you inevitably muck around with your data structure in development.
 -   Boilerplate menu object, with simple way to add/remove items and manage “click” handlers.
 -   Additional input methods, and per-scene \`inputHandler\` logic.
--   Full state manager for sprite animations.
+-   A custom animated sprite object, with a state manager for using multiple imagetables.
 -   New fonts! Including full Japanese katakana character set.
 -   Fully documented code, explaining methods and architecture, and LDoc-generated [documentation pages](https://noblerobot.github.io/NobleEngine).
--   Full project template, with example scenes and launcher assets, to help beginners get started with Playdate development.
--   Random goodies, like a unified text drawing method for normal/aligned/localized text, one-line methods for showing/hiding the crank indicator and the FPS counter, and more.
+-   Full [project template](https://github.com/NobleRobot/NobleEngine-ProjectTemplate), with example scenes and launcher assets, to help beginners get started with Playdate development.
+-   Random goodies, like a unified text drawing method for normal/aligned/localized text, one-line methods for showing/hiding the crank indicator and the FPS counter, and more!
 
 Setup
 -----
 
-### Via Template
-The recommended setup procedure is to clone the [Noble Engine Project Template repository](https://github.com/NobleRobot/NobleEngine-ProjectTemplate) instead of this one. That project is available as a [GitHub Template](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/), which you can use to start your own project if you're hosting it on GitHub, or you can clone or download it manually.
+### Via GitHub Template
+The recommended setup procedure is to copy the [Noble Engine Project Template repository](https://github.com/NobleRobot/NobleEngine-ProjectTemplate) instead of cloning this one. That project is available as a [GitHub Template](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/), which you can use to start your own project if you're hosting it on GitHub, or you can clone/download it manually.
 
 The template repository includes this one as a [git submodule](https://www.atlassian.com/git/tutorials/git-submodule). This way, you can mange your use of Noble Engine independently from your own code.
 
 The project template also includes some usage examples to help you get up to speed on how Noble Engine works.
+
+Complete instructions (for multiple git clients and workflows) are available on [that repository's page](https://github.com/NobleRobot/NobleEngine-ProjectTemplate).
 
 ### Manual setup
 If, instead, you want to download or clone this repository directly in to a new or existing project, simply place it into `libraries/noble/` relative to your `main.lua` file.
@@ -49,7 +51,7 @@ Documentation
 -------------
 Noble Engine is fully documented in code, and has a full set of html pages generated with [LDoc](https://github.com/lunarmodules/LDoc) and styled for legibility, ease-of-use, and playful charm if I do say so myself.
 
-These pages are included in the repository at `docs/index.html` and on [GitHub Pages](https://noblerobot.github.io/NobleEngine).
+These pages are included in the repository itself at `.docs/index.html` and on [GitHub Pages](https://noblerobot.github.io/NobleEngine).
 
 Notes on Style
 --------------
