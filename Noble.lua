@@ -133,11 +133,10 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 	local launcherTransition =			__launcherTransition or defaultConfiguration.defaultTransition
 	local launcherTransitionDuration =	__launcherTransitionDuration or 1.5
 	local launcherTransitionProperties =__launcherTransitionProperties or {}
-	local sceneProperties = __sceneProperties or {}
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransition, launcherTransitionProperties, sceneProperties)
+	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransition, launcherTransitionProperties, __sceneProperties)
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -254,7 +253,8 @@ function Noble.transition(NewScene, __duration, __transition, __transitionProper
 		-- We don't return here because maybe the developer *did* intend to override a previous call to Noble.transition().
 	end
 
-	queuedScene = NewScene(__sceneProperties) -- Creates new scene object. Its init() function runs now.
+	local sceneProperties = __sceneProperties or {}
+	queuedScene = NewScene(sceneProperties) -- Creates new scene object. Its init() function runs now.
 
 	currentTransition = (__transition or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,
