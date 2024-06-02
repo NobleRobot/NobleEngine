@@ -2,12 +2,12 @@
 -- SceneTemplate.lua
 --
 -- Use this as a starting point for your game's scenes.
--- Copy this file to your root "scenes" directory,
--- and rename it.
+-- Copy this file into your project's "scenes" directory,
+-- and then rename it.
 --
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- !!! Rename "SceneTemplate" to your scene's name in these first three lines. !!!
+-- !!! Rename 'SceneTemplate' to your scene's name in these first three lines. !!!
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 SceneTemplate = {}
@@ -18,12 +18,18 @@ local scene = SceneTemplate
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 -- It is recommended that you declare, but don't yet define,
--- your scene-specific varibles and methods here. Use "local" where possible.
+-- your scene-specific variables and methods here. Use "local" where possible.
 --
--- local variable1 = nil	-- local variable
--- scene.variable2 = nil	-- Scene variable.
---							   When accessed outside this file use `SceneTemplate.variable2`.
--- ...
+-- Examples:
+--
+-- local variable1 = nil
+-- "Private" variable. It can only be accessed within this file.
+--
+-- scene.variable2 = nil
+-- "Public" variable.
+-- When accessed outside this file, call it using `SceneTemplate.variable2`.
+-- When accessed inside a method in this file, you may also use `self.variable2`.
+--
 --
 
 -- This is the background color of this scene.
@@ -47,12 +53,17 @@ end
 
 -- When transitioning from another scene, this runs as soon as this
 -- scene needs to be visible (this moment depends on which transition type is used).
+-- This is also the point where this scene becomes the 'currentScene' according to
+-- Noble Engine, and its update loop will begin executing on every frame.
 function scene:enter()
 	scene.super.enter(self)
 	-- Your code here
 end
 
 -- This runs once a transition from another scene is complete.
+-- This scene's input handler will be enabled at this point and
+-- The player will be able to interact with the scene.
+-- Use this method to begin this scene's game logic.
 function scene:start()
 	scene.super.start(self)
 	-- Your code here
@@ -91,7 +102,7 @@ function scene:resume()
 	-- Your code here
 end
 
--- Define the inputHander for this scene here, or use a previously defined inputHandler.
+-- Define the inputHandler for this scene here, or use a previously defined inputHandler.
 
 -- scene.inputHandler = someOtherInputHandler
 -- OR
