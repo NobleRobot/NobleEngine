@@ -1,5 +1,6 @@
 --
--- Sequence library by Nic Magnier
+-- Sequence library created by Nic Magnier
+-- https://github.com/NicMagnier/PlaydateSequence
 --
 
 --[[
