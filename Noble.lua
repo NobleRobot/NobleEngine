@@ -94,7 +94,7 @@ local configuration = Utilities.copy(defaultConfiguration)
 -- 	}
 -- )
 -- @see NobleScene
--- @see Noble.Transition
+-- @see Noble.transition
 -- @see setConfig
 -- @see NobleScene.init
 function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransition, __launcherTransitionProperties, __configuration, __sceneProperties)
@@ -241,7 +241,6 @@ local queuedScene = nil
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.Transition
--- @see Noble.Transition.defaultProperties
 function Noble.transition(NewScene, __duration, __transition, __transitionProperties, __sceneProperties)
 	if (isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
