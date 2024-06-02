@@ -30,15 +30,19 @@ local scene = SceneTemplate
 scene.backgroundColor = Graphics.kColorWhite
 
 -- This runs when your scene's object is created, which is the
--- first thing that happens when transitining away from another scene.
-function scene:init()
+-- first thing that happens when transitioning away from another scene.
+-- Properties passed into this scene via `Noble.transition` or `Noble.new`
+-- should be handled here.
+function scene:init(__sceneProperties)
 	scene.super.init(self)
 
-	-- variable1 = 100
-	-- SceneTemplate.variable2 = "string"
+	-- Your code here, e.g.:
+
+	-- Global.thing = 100
+	-- variable1 = "some text"
+	-- self.variable2 = __sceneProperties.variable2
 	-- ...
 
-	-- Your code here
 end
 
 -- When transitioning from another scene, this runs as soon as this
