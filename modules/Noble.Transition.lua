@@ -50,6 +50,18 @@ function Noble.Transition:init(__duration, __arguments)
 
 	self.holdTime = self.holdTime or __arguments.holdTime or self.defaultProperties.holdTime or 0
 
+	-- If the transition duration is so short that it breaks the sequence, we pad
+	-- out the time so that it takes at least one frame on either side. This is a
+	-- failsafe mostly in place for runtime-calculated transition durations. No one
+	-- would ever set a transition duration that short on purpose... right?
+	local frameDuration = 1/playdate.getFPS()
+	if ((self.durationEnter - self.holdTime/2) < frameDuration) then
+		self.durationEnter = frameDuration + self.holdTime/2 + 0.001
+	end
+	if ((self.durationExit - self.holdTime/2) < frameDuration) then
+		self.durationEnter = frameDuration + self.holdTime/2 + 0.001
+	end
+
 	if (self._type == Noble.Transition.Type.MIX) then
 
 		self._sequenceStartValue = self._sequenceStartValue or 0
@@ -137,14 +149,22 @@ function Noble.Transition:execute()
 		onComplete()
 	elseif (type == Noble.Transition.Type.COVER) then
 		onStart()
+		local durationEnterCalculated = self.durationEnter-(holdTime/2)
+		if (durationEnterCalculated <= 0) then
+			durationEnterCalculated = 0
+		end
+		local durationExitCalculated = self.durationExit-(holdTime/2)
+		if (durationExitCalculated <= 0) then
+			durationExitCalculated = 0
+		end
 		self.sequence = Sequence.new()
 			:from(self._sequenceStartValue)
-			:to(self._sequenceMidpointValue, self.durationEnter-(holdTime/2), self.easeEnter)
+			:to(self._sequenceMidpointValue, durationEnterCalculated, self.easeEnter)
 			:callback(onMidpoint)
 			:sleep(holdTime)
 			:callback(onHoldTimeElapsed)
 			:to(self._sequenceResumeValue, 0)
-			:to(self._sequenceCompleteValue, self.durationExit-(holdTime/2), self.easeExit)
+			:to(self._sequenceCompleteValue, durationExitCalculated, self.easeExit)
 			:callback(onComplete)
 			:start()
 	elseif (type == Noble.Transition.Type.MIX) then
