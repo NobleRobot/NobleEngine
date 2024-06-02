@@ -1,0 +1,617 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Input</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Input.getHandler">.getHandler</a></li>
+							<li><a href="#Noble.Input.setHandler">.setHandler</a></li>
+							<li><a href="#Noble.Input.clearHandler">.clearHandler</a></li>
+							<li><a href="#Noble.Input.setEnabled">.setEnabled</a></li>
+							<li><a href="#Noble.Input.getEnabled">.getEnabled</a></li>
+							<li><a href="#Noble.Input.setCrankIndicatorStatus">.setCrankIndicatorStatus</a></li>
+							<li><a href="#Noble.Input.getCrankIndicatorStatus">.getCrankIndicatorStatus</a></li>
+							<li><a href="#Noble.Input.getOrientation">.getOrientation</a></li>
+					</ul>
+					<h3>Constants
+  </h3>
+					<ul>
+							<li><a href="#Noble.Input.BUTTON_A">.BUTTON_A</a></li>
+							<li><a href="#Noble.Input.BUTTON_B">.BUTTON_B</a></li>
+							<li><a href="#Noble.Input.BUTTON_MENU">.BUTTON_MENU</a></li>
+							<li><a href="#Noble.Input.DPAD">.DPAD</a></li>
+							<li><a href="#Noble.Input.DPAD_HORIZONTAL">.DPAD_HORIZONTAL</a></li>
+							<li><a href="#Noble.Input.DPAD_VERTICAL">.DPAD_VERTICAL</a></li>
+							<li><a href="#Noble.Input.DPAD_UP">.DPAD_UP</a></li>
+							<li><a href="#Noble.Input.DPAD_DOWN">.DPAD_DOWN</a></li>
+							<li><a href="#Noble.Input.DPAD_LEFT">.DPAD_LEFT</a></li>
+							<li><a href="#Noble.Input.DPAD_RIGHT">.DPAD_RIGHT</a></li>
+							<li><a href="#Noble.Input.CRANK">.CRANK</a></li>
+							<li><a href="#Noble.Input.CRANK_FORWARD">.CRANK_FORWARD</a></li>
+							<li><a href="#Noble.Input.CRANK_REVERSE">.CRANK_REVERSE</a></li>
+							<li><a href="#Noble.Input.CRANK_DOCK">.CRANK_DOCK</a></li>
+							<li><a href="#Noble.Input.CRANK_UNDOCK">.CRANK_UNDOCK</a></li>
+							<li><a href="#Noble.Input.ORIENTATION_UP">.ORIENTATION_UP</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><span class="selected">Noble.Input</span></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Input</h1>
+		<p>A complete encapsulation of the Playdate's input system.</p>
+		<p> The Playdate SDK gives developers multiple ways to manage input. Noble Engine's approach revolves around the SDK's "inputHandlers," extending them to include additional input methods, and pull in other hardware functions that the SDK puts elsewhere. See usage below for the full list of supported methods.
+ <br><br>By default, Noble Engine assumes each scene will have an inputManager assigned to it. So, for example, you can define one inputManager for menu screens and another for gameplay scenes in your <code>main.lua</code>, and then in each scene, set which one that scene uses. You can instead define a unique inputHandler in each scene.
+ <br><br>You may also create and manage inputManagers within and outside of scenes. When a NobleScene is loaded, its inputHandler will become active, thus, inputHandlers do not carry across scenes, and all input is suspended during scene transitions. An advanced use-case is to leave a scene's inputHandler as nil, and manage it separately.
+ <br><br><strong>NOTE:</strong> While the Playdate SDK allows you to stack as many inputHandlers as you want, Noble Engine assumes only one <em>active</em> inputHandler at a time. You may still manually call <code>playdate.inputHandlers.push()</code> and <code>playdate.inputHandlers.pop()</code> yourself, but Noble Engine will not know about it and it may cause unexpected behavior.
+ <br><br>In addition, you may directly query button status using the SDK's methods for that, but it is not advised to use that as the primary way to manage input for Noble Engine projects, because much of Noble.Input's functionality will not apply.</p>
+			<h3>See</h3>
+			<ul>
+					<a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a>
+			</ul>
+			<h3>Usage</h3>
+				<pre class="example">local myInputHandler = {
+	AButtonDown = function() end,	-- Fires once when button is pressed down.
+	AButtonHold = function() end,	-- Fires each frame while a button is held (Noble Engine implementation).
+	AButtonHeld = function() end,	-- Fires once after button is held for 1 second (available for A and B).
+	AButtonUp = function() end,		-- Fires once when button is released.
+	BButtonDown = function() end,
+	BButtonHold = function() end,
+	BButtonHeld = function() end,
+	BButtonUp = function() end,
+	downButtonDown = function() end,
+	downButtonHold = function() end,
+	downButtonUp = function() end,
+	leftButtonDown = function() end,
+	leftButtonHold = function() end,
+	leftButtonUp = function() end,
+	rightButtonDown = function() end,
+	rightButtonHold = function() end,
+	rightButtonUp = function() end,
+	upButtonDown = function() end,
+	upButtonHold = function() end
+	upButtonUp = function() end,
+
+	cranked = function(change, acceleratedChange) end,	-- See Playdate SDK.
+	crankDocked = function() end,						-- Noble Engine implementation.
+	crankUndocked = function() end,						-- Noble Engine implementation.
+
+	orientationChanged = function() end					-- Noble Engine implementation.
+}
+</pre>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Input.getHandler"></a>
+						<span class="item-name">Noble.Input.getHandler()<span>
+					</dt>
+					<dd>
+						Get the currently active input handler.  Returns nil if none are active.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">table</span></span>
+										A table of callbacks which handle input events.
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.setHandler"></a>
+						<span class="item-name">Noble.Input.setHandler([__inputHandler=nil])<span>
+					</dt>
+					<dd>
+						Use this to change the active inputHandler.
+ <br><br>Enter <code>nil</code> to disable input. Use <a href="../modules/Noble.Input.html#Noble.Input.setEnabled">Noble.Input.setEnabled</a> to disable/enable input without losing track of the current inputHandler.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__inputHandler</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">nil</span> (default)</span>
+														<br/>
+														 A table of callbacks which handle input events.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../classes/NobleScene.html#noblescene.inputHandler">NobleScene.inputHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">Noble.Input.clearHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.setEnabled">Noble.Input.setEnabled</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.clearHandler"></a>
+						<span class="item-name">Noble.Input.clearHandler()<span>
+					</dt>
+					<dd>
+						A helper function that calls Noble.Input.setHandler() with no argument.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Input.html#Noble.Input.setHandler">Noble.Input.setHandler</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.setEnabled"></a>
+						<span class="item-name">Noble.Input.setEnabled(__value)<span>
+					</dt>
+					<dd>
+						Enable and disable user input without dealing with inputHanders.
+ The Playdate SDK requires removing all inputHanders to halt user input, so while the currentHandler is cleared when <code>false</code> is passed to this method,
+ it is cached so it can be later re-enabled by passing <code>true</code> it.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__value</span>
+															<span class="types"><span class="type">boolean</span></span>
+														<br/>
+														 Set to false to halt input. Set to true to resume accepting input.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.getHandler">Noble.Input.getHandler</a></li>
+									<li><a href="../modules/Noble.Input.html#Noble.Input.clearHandler">Noble.Input.clearHandler</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.getEnabled"></a>
+						<span class="item-name">Noble.Input.getEnabled()<span>
+					</dt>
+					<dd>
+						Checks to see that there is an active inputHandler
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">bool</span></span>
+										Returns true if the input system is enabled. Returns false if <code>setEnabled(false)</code> was used, or if currentHandler is <code>nil</code>.
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.setCrankIndicatorStatus"></a>
+						<span class="item-name">Noble.Input.setCrankIndicatorStatus(__active[, __evenWhenUndocked=false])<span>
+					</dt>
+					<dd>
+						Enable/disable on-screen system crank indicator. </p>
+
+<p> <strong>NOTE: The indicator will only ever show if the crank is docked, unless <code>__evenWhenUndocked</code> is true.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__active</span>
+															<span class="types"><span class="type">boolean</span></span>
+														<br/>
+														 Set true to start showing the on-screen crank indicator. Set false to stop showing it.
+													</li>
+													<li><span class="parameter">__evenWhenUndocked</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set true to show the crank indicator even if the crank is already undocked (<code>__active</code> must also be true).
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.getCrankIndicatorStatus"></a>
+						<span class="item-name">Noble.Input.getCrankIndicatorStatus()<span>
+					</dt>
+					<dd>
+						Checks whether the system crank indicator status.  Returns a tuple.
+
+
+							<h3>Returns</h3>
+								<ol>
+										<li>
+											<span class="types"><span class="type">bool</span></span>
+										Is the crank indicator active?</li>
+										<li>
+											<span class="types"><span class="type">bool</span></span>
+										Is the crank indicator being forced when active, even when the crank is undocked?</li>
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Input.html#Noble.Input.setCrankIndicatorStatus">Noble.Input.setCrankIndicatorStatus</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.getOrientation"></a>
+						<span class="item-name">Noble.Input.getOrientation([__getStoredValues=false])<span>
+					</dt>
+					<dd>
+						Checks the current display orientation of the device.  Returns a tuple.
+ If the accelerometer is not currently enabled, this method will turn it on, return current values, and then turn it off.
+ If you are trying to get raw accelerometer values rather than the display orientation, you may want to use <code>playdate.readAccelerometer()</code> instead.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__getStoredValues</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If true, this method will simply return the most recently stored values, rather than use the accelerometer to check for new ones.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+										<li>
+											<span class="types"><span class="type">str</span></span>
+										The named orientation of the device (a pseudo enum Noble.Input.ORIENTATION_XX)</li>
+										<li>
+											<span class="types"><span class="type">list</span></span>
+										Accelerometer values, where list[1] is x, list[2] is y and list[3] is z</li>
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Input.html#Noble.Input.ORIENTATION_UP">Noble.Input.ORIENTATION_UP</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header has-description"><a name="Constants"></a>Constants
+  </h2>
+			<!--  -->
+					<div class="section-description">
+						 A set of constants referencing device inputs, stored as strings. Can be used for querying button input,
+ but are mainly for on-screen prompts or other elements where a string literal is useful, such as a filename, GameData value, or localization key.
+ For faster performance, use the ones that exist in the Playdate SDK (i.e.: <code>playdate.kButtonA</code>), which are stored as binary numbers.
+					</div>
+					<h3>Usage</h3>
+					<pre class="example"><span class="keyword">function</span> <span class="function-name">newPrompt</span>(__input, __promptString)
+	<span class="comment">-- ...
+</span>	<span class="keyword">local</span> icon = Graphics.image.<span class="function-name">new</span>(<span class="string">"assets/images/UI/Icon_"</span> .. __input)
+	<span class="comment">-- ...
+</span><span class="keyword">end</span>
+
+promptMove = <span class="function-name">newPrompt</span>(Noble.Input.DPAD_HORIZONTAL, <span class="string">"Move!"</span>)				<span class="comment">-- assets/images/UI/Icon_dPadHorizontal.png"
+</span>promptJump = <span class="function-name">newPrompt</span>(Noble.Input.BUTTON_A, <span class="string">"Jump!"</span>) 						<span class="comment">-- assets/images/UI/Icon_buttonA.png"
+</span>promptCharge = <span class="function-name">newPrompt</span>(Noble.Input.CRANK_FORWARD, <span class="string">"Charge the battery!"</span>)	<span class="comment">-- assets/images/UI/Icon_crankForward.png"</span></pre>
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Input.BUTTON_A"></a>
+						<span class="item-name">Noble.Input.BUTTON_A<span>
+					</dt>
+					<dd>
+						<code>&quot;buttonA&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.BUTTON_B"></a>
+						<span class="item-name">Noble.Input.BUTTON_B<span>
+					</dt>
+					<dd>
+						<code>&quot;buttonB&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.BUTTON_MENU"></a>
+						<span class="item-name">Noble.Input.BUTTON_MENU<span>
+					</dt>
+					<dd>
+						The system menu button. </p>
+
+<p> <code>&quot;buttonMenu&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD"></a>
+						<span class="item-name">Noble.Input.DPAD<span>
+					</dt>
+					<dd>
+						Referencing the D-pad component itself, rather than an input. </p>
+
+<p> <code>&quot;dPad&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_HORIZONTAL"></a>
+						<span class="item-name">Noble.Input.DPAD_HORIZONTAL<span>
+					</dt>
+					<dd>
+						Referencing the left and right input D-pad inputs. </p>
+
+<p> <code>&quot;dPadHorizontal&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_VERTICAL"></a>
+						<span class="item-name">Noble.Input.DPAD_VERTICAL<span>
+					</dt>
+					<dd>
+						Referencing the up and down input D-pad inputs. </p>
+
+<p> <code>&quot;dPadVertical&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_UP"></a>
+						<span class="item-name">Noble.Input.DPAD_UP<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadUp&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_DOWN"></a>
+						<span class="item-name">Noble.Input.DPAD_DOWN<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadDown&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_LEFT"></a>
+						<span class="item-name">Noble.Input.DPAD_LEFT<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadLeft&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.DPAD_RIGHT"></a>
+						<span class="item-name">Noble.Input.DPAD_RIGHT<span>
+					</dt>
+					<dd>
+						<code>&quot;dPadRight&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK"></a>
+						<span class="item-name">Noble.Input.CRANK<span>
+					</dt>
+					<dd>
+						Referencing the crank component itself, rather than an input. </p>
+
+<p> <code>&quot;crank&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_FORWARD"></a>
+						<span class="item-name">Noble.Input.CRANK_FORWARD<span>
+					</dt>
+					<dd>
+						AKA: Clockwise.  See Playdate SDK.</p>
+
+<p> <code>&quot;crankForward&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_REVERSE"></a>
+						<span class="item-name">Noble.Input.CRANK_REVERSE<span>
+					</dt>
+					<dd>
+						AKA: Anticlockwise.  See Playdate SDK.</p>
+
+<p> <code>&quot;crankReverse&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_DOCK"></a>
+						<span class="item-name">Noble.Input.CRANK_DOCK<span>
+					</dt>
+					<dd>
+						Referencing the action of docking the crank. </p>
+
+<p> <code>&quot;crankDock&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.CRANK_UNDOCK"></a>
+						<span class="item-name">Noble.Input.CRANK_UNDOCK<span>
+					</dt>
+					<dd>
+						Referencing the action of undocking the crank. </p>
+
+<p> <code>&quot;crankUndock&quot;</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Input.ORIENTATION_UP"></a>
+						<span class="item-name">Noble.Input.ORIENTATION_UP<span>
+					</dt>
+					<dd>
+						Referencing the display orientations. </p>
+
+<p> <code>&quot;orientationUp&quot;</code>
+
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

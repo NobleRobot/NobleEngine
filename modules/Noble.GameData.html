@@ -1,0 +1,550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.GameData</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.GameData.setup">.setup</a></li>
+							<li><a href="#Noble.GameData.get">.get</a></li>
+							<li><a href="#Noble.GameData.set">.set</a></li>
+							<li><a href="#Noble.GameData.reset">.reset</a></li>
+							<li><a href="#Noble.GameData.resetAll">.resetAll</a></li>
+							<li><a href="#Noble.GameData.addSlot">.addSlot</a></li>
+							<li><a href="#Noble.GameData.deleteSlot">.deleteSlot</a></li>
+							<li><a href="#Noble.GameData.deleteAllSlots">.deleteAllSlots</a></li>
+							<li><a href="#Noble.GameData.getTimestamp">.getTimestamp</a></li>
+							<li><a href="#Noble.GameData.getNumberOfSlots">.getNumberOfSlots</a></li>
+							<li><a href="#Noble.GameData.getCurrentSlot">.getCurrentSlot</a></li>
+							<li><a href="#Noble.GameData.save">.save</a></li>
+							<li><a href="#Noble.GameData.saveAll">.saveAll</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><span class="selected">Noble.GameData</span></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.GameData</h1>
+		<p>Operations for game data / save slots.</p>
+		<p>
+
+</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.GameData.setup"></a>
+						<span class="item-name">Noble.GameData.setup(__keyValuePairs[, __numberOfSlots=1[, __saveToDisk=true[, __modifyExistingOnKeyChange=true]]])<span>
+					</dt>
+					<dd>
+						Sets up the GameDatas (save slots) for your game, and/or loads any existing GameDatas from disk.
+ You can only run this once, ideally in your main.lua before you load your first scene.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__keyValuePairs</span>
+															<span class="types"><span class="type">table</span></span>
+														<br/>
+														 All the data items for a saved game, and their default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
+													</li>
+													<li><span class="parameter">__numberOfSlots</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 If you want multiple save slots, enter an integer here. You can add additional slots later.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves your default values immediately to disk.
+													</li>
+													<li><span class="parameter">__modifyExistingOnKeyChange</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Updates the existing gameData objects on disk if you make changes to your keys (not values) during development or when updating your game.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">Noble.GameData.deleteSlot</a></li>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">setup</span>(
+	{
+		name = <span class="string">""</span>,
+		checkpointReached = <span class="number">0</span>,
+		score = <span class="number">0</span>
+	},
+	<span class="number">3</span>,
+	<span class="keyword">true</span>,
+	<span class="keyword">true</span>
+)
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game A"</span>, <span class="number">1</span>)
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game B"</span>, <span class="number">2</span>)
+Noble.GameData.<span class="function-name">set</span>(<span class="string">"name"</span>, <span class="string">"Game C"</span>, <span class="number">3</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.get"></a>
+						<span class="item-name">Noble.GameData.get(__dataItemName[, __gameDataSlot])<span>
+					</dt>
+					<dd>
+						Returns the value of the requested data item.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__dataItemName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the data item.
+													</li>
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">any</span></span>
+
+
+
+								</ol>
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">get</span>(<span class="string">"equippedItem"</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">get</span>(<span class="string">"equippedItem"</span>, <span class="number">2</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.set"></a>
+						<span class="item-name">Noble.GameData.set(__dataItemName, __value[, __gameDataSlot[, __saveToDisk=true[, __updateTimestamp=true]]])<span>
+					</dt>
+					<dd>
+						Set the value of a GameData item.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__dataItemName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the data item.
+													</li>
+													<li><span class="parameter">__value</span>
+															<span class="types"><span class="type">any</span></span>
+														<br/>
+														 The data item's new value
+													</li>
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+													</li>
+													<li><span class="parameter">__updateTimestamp</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Sets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">set</span>(<span class="string">"score"</span>, <span class="number">74205</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">set</span>(<span class="string">"score"</span>, Noble.GameData.<span class="function-name">get</span>(<span class="string">"score"</span>) + <span class="number">100</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.reset"></a>
+						<span class="item-name">Noble.GameData.reset(__dataItemName[, __gameDataSlot[, __saveToDisk=true[, __updateTimestamp=true]]])<span>
+					</dt>
+					<dd>
+						Reset a GameData item to its default value, defined in <a href="../modules/Noble.GameData.html#Noble.GameData.setup">setup</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__dataItemName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the data item.
+													</li>
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+													</li>
+													<li><span class="parameter">__updateTimestamp</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.resetAll"></a>
+						<span class="item-name">Noble.GameData.resetAll([__gameDataSlot[, __saveToDisk=true[, __updateTimestamp=true]]])<span>
+					</dt>
+					<dd>
+						Reset all values in a GameData slot to the default values, defined in <a href="../modules/Noble.GameData.html#Noble.GameData.setup">setup</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+													</li>
+													<li><span class="parameter">__updateTimestamp</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.addSlot"></a>
+						<span class="item-name">Noble.GameData.addSlot([__numberToAdd=1[, __saveToDisk=true]])<span>
+					</dt>
+					<dd>
+						Add a save slot to your game.  This is useful for games which have arbitrary save slots, or encourage save scumming.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__numberToAdd</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="default">= <span class="value">1</span> (default)</span>
+														<br/>
+														 What it says on the tin.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">addSlot</span>()</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">addSlot</span>(<span class="number">10</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.deleteSlot"></a>
+						<span class="item-name">Noble.GameData.deleteSlot(__gameDataSlot[, __collapseGameDatas=true])<span>
+					</dt>
+					<dd>
+						Deletes a GameData from disk if its save slot is greater than the default number established in <a href="../modules/Noble.GameData.html#Noble.GameData.setup">setup</a>.
+ Otherwise, resets all data items to default values using <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a>.</p>
+
+<p> Generally, you won't need this unless you've added save slots using <a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a>. In other cases, use <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+														<br/>
+														 The slot holding the GameData to delete. Unlike other methods that take this argument, this is not optional.
+													</li>
+													<li><span class="parameter">__collapseGameDatas</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Re-sorts the gameDatas table (and renames existing JSON files on disk) to fill the gap left by the deleted GameData.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteAllSlots">Noble.GameData.deleteAllSlots</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">Noble.GameData.resetAll</a></li>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">deleteSlot</span>(<span class="number">6</span>)</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">deleteSlot</span>(<span class="number">15</span>, <span class="keyword">false</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.deleteAllSlots"></a>
+						<span class="item-name">Noble.GameData.deleteAllSlots()<span>
+					</dt>
+					<dd>
+						Deletes all GameDatas from disk, except for the number specified in setup, which are reset to default values.
+ Use this to clear all data as if you were running setup again.
+ Generally, you don't need this unless you've added save slots using <a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">addSlot</a>. In other cases, use <a href="../modules/Noble.GameData.html#Noble.GameData.resetAll">resetAll</a> on each slot.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.deleteSlot">Noble.GameData.deleteSlot</a></li>
+									<li><a href="../modules/Noble.GameData.html#Noble.GameData.addSlot">Noble.GameData.addSlot</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.getTimestamp"></a>
+						<span class="item-name">Noble.GameData.getTimestamp(__gameDataSlot)<span>
+					</dt>
+					<dd>
+						Returns the timestamp of the requested GameData, as a tuple (local time, GMT time).  The timestamp is updated
+ See Playdate SDK for details on how a time object is formatted. <strong>NOTE: Timestamps are stored internally in GMT.</strong>
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+														<br/>
+														 The GameData slot to get the timestamp of. Unlike other methods that take this argument, this is not optional.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+										<li>
+											<span class="types"><span class="type">table</span></span>
+										Local time</li>
+										<li>
+											<span class="types"><span class="type">table</span></span>
+										GMT time</li>
+								</ol>
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">getTimestamp</span>(<span class="number">1</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.getNumberOfSlots"></a>
+						<span class="item-name">Noble.GameData.getNumberOfSlots()<span>
+					</dt>
+					<dd>
+						Returns the current number of GameData slots.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">int</span></span>
+
+
+
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.getCurrentSlot"></a>
+						<span class="item-name">Noble.GameData.getCurrentSlot()<span>
+					</dt>
+					<dd>
+						Returns the number of the current GameData slot.
+
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">int</span></span>
+
+
+
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.save"></a>
+						<span class="item-name">Noble.GameData.save([__gameDataSlot])<span>
+					</dt>
+					<dd>
+						Saves a single GameData to disk.  If you want to save all GameDatas, use <a href="../modules/Noble.GameData.html#Noble.GameData.saveAll">saveAll</a> instead.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__gameDataSlot</span>
+															<span class="types"><span class="type">integer</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.saveAll">Noble.GameData.saveAll</a>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.GameData.<span class="function-name">save</span>()</pre>
+								<pre class="example">Noble.GameData.<span class="function-name">save</span>(<span class="number">3</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.GameData.saveAll"></a>
+						<span class="item-name">Noble.GameData.saveAll()<span>
+					</dt>
+					<dd>
+						Save all GameDatas to disk.  If you only have one, or want to save a specific one, use <a href="../modules/Noble.GameData.html#Noble.GameData.save">save</a> instead.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.GameData.html#Noble.GameData.save">Noble.GameData.save</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

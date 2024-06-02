@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Settings</h2>
+			<ul>
+					<h3>Functions</h3>
+					<ul>
+							<li><a href="#Noble.Settings.setup">.setup</a></li>
+							<li><a href="#Noble.Settings.get">.get</a></li>
+							<li><a href="#Noble.Settings.set">.set</a></li>
+							<li><a href="#Noble.Settings.reset">.reset</a></li>
+							<li><a href="#Noble.Settings.resetSome">.resetSome</a></li>
+							<li><a href="#Noble.Settings.resetAll">.resetAll</a></li>
+							<li><a href="#Noble.Settings.save">.save</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><span class="selected">Noble.Settings</span></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Settings</h1>
+		<p>Operations for game settings / stats.</p>
+		<p>
+
+</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Functions"></a>Functions</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Settings.setup"></a>
+						<span class="item-name">Noble.Settings.setup(__keyValuePairs[, __saveToDisk=true[, __modifyExistingOnKeyChange=true]])<span>
+					</dt>
+					<dd>
+						Sets up the settings for your game.  You can only run this once, and you must run it before using other <a href="../modules/Noble.Settings.html#">Noble.Settings</a> functions. It is recommended to place it in your main.lua, before <code>Noble.new()</code>.</p>
+
+<p> <strong>NOTE:</strong> You will <em>not</em> be able to add new keys via the <a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a> method. This means you need to specify the keys and default values of all of the settings in your game at setup.
+ If you need to add keys that are not known during setup, it is probably not a setting and you should consider using <a href="../modules/Noble.GameData.html#">Noble.GameData</a> instead.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__keyValuePairs</span>
+															<span class="types"><span class="type">table</span></span>
+														<br/>
+														 table. Your game's settings, and thier default values, as key/value pairs. <strong>NOTE:</strong> Do not use "nil" as a value.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves your default values immediatly to disk.
+													</li>
+													<li><span class="parameter">__modifyExistingOnKeyChange</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Updates the existing settings object on disk if you make changes to your settings keys (not values) during development or when updating your game.
+													</li>
+							</ul>
+
+
+
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.Settings.<span class="function-name">setup</span>({
+	difficulty = <span class="string">"normal"</span>,
+	music = <span class="keyword">true</span>,
+	sfx = <span class="keyword">true</span>,
+	players = <span class="number">2</span>,
+	highScore = <span class="number">0</span>	<span class="comment">-- You can store persistant stats here, too!
+</span>})</pre>
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.get"></a>
+						<span class="item-name">Noble.Settings.get(__settingName)<span>
+					</dt>
+					<dd>
+						Get the value of a setting.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__settingName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the setting.
+													</li>
+							</ul>
+
+							<h3>Returns</h3>
+								<ol>
+
+											<span class="types"><span class="type">any</span></span>
+										The value of the requested setting.
+								</ol>
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.set"></a>
+						<span class="item-name">Noble.Settings.set(__settingName, __value[, __saveToDisk=true])<span>
+					</dt>
+					<dd>
+						Set the value of a setting. </p>
+
+<p> <strong>NOTE:</strong> If __settingName is not a key in the __keyValuePairs dictionary given to the <a href="../modules/Noble.Settings.html#Noble.Settings.setup">setup</a> method it will not be added to the Settings.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__settingName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the setting.
+													</li>
+													<li><span class="parameter">__value</span>
+															<span class="types"><span class="type">any</span></span>
+														<br/>
+														 The setting's new value
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.setup">Noble.Settings.setup</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.get">Noble.Settings.get</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.reset"></a>
+						<span class="item-name">Noble.Settings.reset(__settingName[, __saveToDisk=true])<span>
+					</dt>
+					<dd>
+						Resets the value of a setting to its default value defined in <code>setup()</code>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__settingName</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 The name of the setting.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">Noble.Settings.resetSome</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.resetSome"></a>
+						<span class="item-name">Noble.Settings.resetSome(__settingNames[, __saveToDisk=true])<span>
+					</dt>
+					<dd>
+						Resets the value of multiple settings to thier default value defined in <code>setup()</code>.  This is useful if you are storing persistant stats like high scores in <a href="../modules/Noble.Settings.html">Settings</a> and want the player to be able to reset them seperately.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__settingNames</span>
+															<span class="types"><span class="type">table</span></span>
+														<br/>
+														 The names of the settings, in an array-style table.
+													</li>
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.resetAll"></a>
+						<span class="item-name">Noble.Settings.resetAll([__saveToDisk=true])<span>
+					</dt>
+					<dd>
+						Resets all settings to thier default values defined in <code>setup()</code>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__saveToDisk</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 Saves to disk immediately. Set to false if you prefer to manually save (via a confirm button, etc).
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetSome">Noble.Settings.resetSome</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.save">Noble.Settings.save</a></li>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Settings.save"></a>
+						<span class="item-name">Noble.Settings.save()<span>
+					</dt>
+					<dd>
+						Saves settings to disk.
+ You don't need to call this unless you set <code>__saveToDisk</code> as false when setting or resetting a setting (say that five times fast!).
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.set">Noble.Settings.set</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.reset">Noble.Settings.reset</a></li>
+									<li><a href="../modules/Noble.Settings.html#Noble.Settings.resetAll">Noble.Settings.resetAll</a></li>
+							</ul>
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>NobleSprite</h2>
+			<ul>
+					<h3>Fields</h3>
+					<ul>
+							<li><a href="#self.animation">self.animation</a></li>
+					</ul>
+					<h3>Methods</h3>
+					<ul>
+							<li><a href="#noblesprite:init">noblesprite:init</a></li>
+							<li><a href="#noblesprite:play">noblesprite:play</a></li>
+							<li><a href="#noblesprite:pause">noblesprite:pause</a></li>
+							<li><a href="#noblesprite:stop">noblesprite:stop</a></li>
+							<li><a href="#noblesprite:add">noblesprite:add</a></li>
+							<li><a href="#noblesprite:remove">noblesprite:remove</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><span class="selected">NobleSprite</span></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><a href="../modules/Noble.Text.html">Noble.Text</a></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>NobleSprite</h1>
+		<p>An extension of Playdate's sprite object, incorporating <a href="../modules/Noble.Animation.html#">Noble.Animation</a> and other Noble Engine features.</p>
+		<p> Use this in place of <code>playdate.graphics.sprite</code> in most cases.</p>
+
+<p> <a href="../classes/NobleSprite.html#">NobleSprite</a> is a child class of <code>playdate.graphics.sprite</code>, so see the Playdate SDK documentation for additional methods and properties.</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Fields"></a>Fields</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "self.animation"></a>
+						<span class="item-name">self.animation<span>
+					</dt>
+					<dd>
+						The animation for this NobleSprite.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../modules/Noble.Animation.html#Noble.Animation.new">Noble.Animation.new</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Methods"></a>Methods</h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "noblesprite:init"></a>
+						<span class="item-name">noblesprite:init([__view[, __viewIsSpritesheet=false[, __singleState=false[, __singleStateLoop=true]]]])<span>
+					</dt>
+					<dd>
+						Do not call an "init" method directly.  Use <code>NobleSprite()</code> (see usage examples).
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__view</span>
+															<span class="types"><span class="type">string</span></span>
+															<span class="optional">(optional)</span>
+														<br/>
+														 This can be: the path to an image or spritesheet image file, an image object (<code>Graphics.image</code>) or an animation object (<a href="../modules/Noble.Animation.html#">Noble.Animation</a>)
+													</li>
+													<li><span class="parameter">__viewIsSpritesheet</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 Set this to <code>true</code> to indicate that <code>__view</code> is a spritesheet. Will only be considered if <code>__view</code> is a string path to an image.
+													</li>
+													<li><span class="parameter">__singleState</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If this sprite has just one animation, set this to true. It saves you from having to use Noble.Animation.addState()
+													</li>
+													<li><span class="parameter">__singleStateLoop</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">true</span> (default)</span>
+														<br/>
+														 If using a single state animation, should it loop?
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Animation.html#animation:addState">Noble.Animation:addState</a></li>
+									<li><a href="../modules/Noble.Animation.html#Noble.Animation.new">Noble.Animation.new</a></li>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example"><span class="comment">-- Provide a spritesheet image file to create a new <a href="../modules/Noble.Animation.html#">Noble.Animation</a> for a NobleSprite's view.
+</span>myNobleSprite = <span class="function-name">NobleSprite</span>(<span class="string">"path/to/spritesheet"</span>, <span class="keyword">true</span>)</pre>
+								<pre class="example"><span class="comment">-- Provide an image file to create a new <code>Graphics.image</code> for a NobleSprite's view.
+</span>myNobleSprite = <span class="function-name">NobleSprite</span>(<span class="string">"path/to/image"</span>)</pre>
+								<pre class="example"><span class="comment">-- Use an existing <a href="../modules/Noble.Animation.html#">Noble.Animation</a> for a NobleSprite's view.
+</span>	<span class="keyword">local</span> myAnimation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"path/to/spritesheet"</span>)
+ myAnimation:<span class="function-name">addState</span>(<span class="string">"default"</span>, <span class="number">1</span>, animation.imageTable:<span class="function-name">getLength</span>(), <span class="keyword">nil</span>, <span class="keyword">true</span>)
+myNobleSprite = <span class="function-name">NobleSprite</span>(myAnimation)</pre>
+								<pre class="example"><span class="comment">-- Use an existing <code>Graphics.image</code> object for a NobleSprite's view.
+</span> <span class="keyword">local</span> myImage = Graphics.image.<span class="function-name">new</span>(<span class="string">"path/to/image"</span>)
+myNobleSprite = <span class="function-name">NobleSprite</span>(myImage)</pre>
+								<pre class="example"><span class="comment">-- Extending NobleSprite.
+</span>
+<span class="comment">-- MyCustomSprite.lua
+</span>MyCustomSprite = {}
+<span class="function-name">class</span>(<span class="string">"MyCustomSprite"</span>).<span class="function-name">extends</span>(NobleSprite)
+
+<span class="keyword">function</span> MyCustomSprite:<span class="function-name">init</span>(__x, __y, __anotherFunArgument)
+	MyCustomSprite.super.<span class="function-name">init</span>(self, <span class="string">"path/to/spritesheet"</span>, <span class="keyword">true</span>)
+	<span class="comment">-- Etc. etc.
+</span><span class="keyword">end</span>
+
+<span class="comment">-- MyNobleScene.lua
+</span>myNobleSprite = <span class="function-name">MyCustomSprite</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="string">"Fun!"</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:play"></a>
+						<span class="item-name">noblesprite:play()<span>
+					</dt>
+					<dd>
+						This will enable the update loop for this NobleSprite, which also causes its Noble.Animation to play.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:pause"></a>
+						<span class="item-name">noblesprite:pause()<span>
+					</dt>
+					<dd>
+						This will disable the update loop for this NobleSprite, which also causes its Noble.Animation to pause.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:stop"></a>
+						<span class="item-name">noblesprite:stop()<span>
+					</dt>
+					<dd>
+						This will disable the update loop for this NobleSprite, and also reset its Noble.Animation (if it exists) to the first frame of its current state.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:add"></a>
+						<span class="item-name">noblesprite:add(__x, __y)<span>
+					</dt>
+					<dd>
+						Use this to add this NobleSprite to your scene.  This replaces <code>playdate.graphics.sprite:add()</code> to allow NobleSprites to be tracked by the current NobleScene.</p>
+
+<p> To add a <code>playdate.graphics.sprite</code> to a scene, use <code>NobleScene:addSprite(__sprite)</code>.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__x</span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__y</span>
+														<br/>
+
+
+
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#noblescene:addSprite">NobleScene:addSprite</a>
+							</ul>
+
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:remove"></a>
+						<span class="item-name">noblesprite:remove()<span>
+					</dt>
+					<dd>
+						Use this to remove this NobleSprite from your scene.  This replaces <code>playdate.graphics.sprite:remove()</code> to allow NobleSprites to be tracked by the current NobleScene.</p>
+
+<p> To remove a <code>playdate.graphics.sprite</code> from a scene, use <code>NobleScene:removeSprite(__sprite)</code>.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<a href="../classes/NobleScene.html#noblescene:removeSprite">NobleScene:removeSprite</a>
+							</ul>
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+

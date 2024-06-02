@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Noble Engine API reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="container">
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+	<a href="../index.html"><div class="logo">
+		<h1>Noble Engine</h1>
+	</div></a>
+
+		<div class="nav-module">
+			<h2>Noble.Text</h2>
+			<ul>
+					<h3>Constants </h3>
+					<ul>
+							<li><a href="#Noble.Text.ALIGN_LEFT">.ALIGN_LEFT</a></li>
+							<li><a href="#Noble.Text.ALIGN_RIGHT">.ALIGN_RIGHT</a></li>
+							<li><a href="#Noble.Text.ALIGN_CENTER">.ALIGN_CENTER</a></li>
+					</ul>
+					<h3>Fonts </h3>
+					<ul>
+							<li><a href="#Noble.Text.FONT_SYSTEM">.FONT_SYSTEM</a></li>
+							<li><a href="#Noble.Text.FONT_SMALL">.FONT_SMALL</a></li>
+							<li><a href="#Noble.Text.FONT_MEDIUM">.FONT_MEDIUM</a></li>
+							<li><a href="#Noble.Text.FONT_LARGE">.FONT_LARGE</a></li>
+					</ul>
+					<h3>Functions </h3>
+					<ul>
+							<li><a href="#Noble.Text.getCurrentFont">.getCurrentFont</a></li>
+							<li><a href="#Noble.Text.setFont">.setFont</a></li>
+							<li><a href="#Noble.Text.draw">.draw</a></li>
+					</ul>
+			</ul>
+		</div>
+
+
+	<div class="nav-modules">
+			<div class="nav-kind">
+					<h3>Modules</h3>
+					<ul>
+								<li><a href="../modules/Noble.html">Noble</a></li>
+								<li><a href="../modules/Noble.Animation.html">Noble.Animation</a></li>
+								<li><a href="../modules/Noble.Bonk.html">Noble.Bonk</a></li>
+								<li><a href="../modules/Noble.GameData.html">Noble.GameData</a></li>
+								<li><a href="../modules/Noble.Input.html">Noble.Input</a></li>
+								<li><a href="../modules/Noble.Menu.html">Noble.Menu</a></li>
+								<li><a href="../modules/Noble.Settings.html">Noble.Settings</a></li>
+								<li><span class="selected">Noble.Text</span></li>
+								<li><a href="../modules/Noble.Transition.html">Noble.Transition</a></li>
+								<li><a href="../modules/Ease.html">Ease</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Classes</h3>
+					<ul>
+								<li><a href="../classes/NobleScene.html">NobleScene</a></li>
+								<li><a href="../classes/NobleSprite.html">NobleSprite</a></li>
+					</ul>
+			</div>
+			<div class="nav-kind">
+					<h3>Examples</h3>
+					<ul>
+								<li><a href="../examples/SceneTemplate.lua.html">SceneTemplate.lua</a></li>
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+<div id="content">
+
+		<h1>Noble.Text</h1>
+		<p>Text and font handling.</p>
+		<p>
+
+</p>
+
+		<hr/>
+
+			<h2 class="section-header "><a name="Constants"></a>Constants </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Text.ALIGN_LEFT"></a>
+						<span class="item-name">Noble.Text.ALIGN_LEFT<span>
+					</dt>
+					<dd>
+						An alternate way to call Playdate SDK's <code>kTextAlignment.left</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.ALIGN_RIGHT"></a>
+						<span class="item-name">Noble.Text.ALIGN_RIGHT<span>
+					</dt>
+					<dd>
+						An alternate way to call Playdate SDK's <code>kTextAlignment.right</code>
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.ALIGN_CENTER"></a>
+						<span class="item-name">Noble.Text.ALIGN_CENTER<span>
+					</dt>
+					<dd>
+						An alternate way to call Playdate SDK's <code>kTextAlignment.center</code>
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header has-description"><a name="Fonts"></a>Fonts </h2>
+			<!--  -->
+					<div class="section-description">
+						 You can use these fonts in your project, or override them with your own if you wish.
+					</div>
+					<h3>Usage</h3>
+					<pre class="example">Noble.Text.FONT_SMALL = Graphics.font.<span class="function-name">new</span>(<span class="string">"assets/fonts/MySmallFont"</span>)
+Noble.Text.<span class="function-name">setFont</span>(Noble.Text.FONT_SMALL)</pre>
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Text.FONT_SYSTEM"></a>
+						<span class="item-name">Noble.Text.FONT_SYSTEM<span>
+					</dt>
+					<dd>
+						The Playdate system font.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.FONT_SMALL"></a>
+						<span class="item-name">Noble.Text.FONT_SMALL<span>
+					</dt>
+					<dd>
+						<strong>Noble Sans</strong>: A sans-serif 8×9 font, with English and Japanese-Kana character sets.
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.FONT_MEDIUM"></a>
+						<span class="item-name">Noble.Text.FONT_MEDIUM<span>
+					</dt>
+					<dd>
+						<strong>Noble Slab</strong>: (This font is not ready yet!)
+
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.FONT_LARGE"></a>
+						<span class="item-name">Noble.Text.FONT_LARGE<span>
+					</dt>
+					<dd>
+						<strong>Satchel Roughed</strong>: A sans-serif 17×14 rounded font, with an English character set.
+
+
+
+
+
+
+					</dd>
+			</dl>
+			<h2 class="section-header "><a name="Functions"></a>Functions </h2>
+			<!--  -->
+			<dl class="function">
+					<dt>
+						<a name = "Noble.Text.getCurrentFont"></a>
+						<span class="item-name">Noble.Text.getCurrentFont()<span>
+					</dt>
+					<dd>
+
+
+
+
+
+							<h3>Returns</h3>
+								<ol>
+
+										The currently set font.
+								</ol>
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.setFont"></a>
+						<span class="item-name">Noble.Text.setFont(__font, __variant)<span>
+					</dt>
+					<dd>
+						Set the current font
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__font</span>
+														<br/>
+														 any
+													</li>
+													<li><span class="parameter">__variant</span>
+														<br/>
+														 any
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+					<dt>
+						<a name = "Noble.Text.draw"></a>
+						<span class="item-name">Noble.Text.draw(__string, __x, __y[, __alignment=Noble.Text.ALIGN_LEFT[, __localized=false[, __font=Noble.Text.getCurrentFont()]]])<span>
+					</dt>
+					<dd>
+						Abstracts multiple <code>playdate.text</code> drawing functions into one.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__string</span>
+															<span class="types"><span class="type">string</span></span>
+														<br/>
+														 Display text or localization key.
+													</li>
+													<li><span class="parameter">__x</span>
+															<span class="types"><span class="type">number</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__y</span>
+															<span class="types"><span class="type">number</span></span>
+														<br/>
+
+
+
+													</li>
+													<li><span class="parameter">__alignment</span>
+															<span class="default">= <span class="value">Noble.Text.ALIGN_LEFT</span> (default)</span>
+														<br/>
+														 Left, right, or center!
+													</li>
+													<li><span class="parameter">__localized</span>
+															<span class="types"><span class="type">boolean</span></span>
+															<span class="default">= <span class="value">false</span> (default)</span>
+														<br/>
+														 If true, <code>__string</code> is a localization key rather than display text.
+													</li>
+													<li><span class="parameter">__font</span>
+															<span class="default">= <span class="value">Noble.Text.getCurrentFont()</span> (default)</span>
+														<br/>
+														 A font to use. If not set, the <code>currentFont</code> is used. If set, the <code>currentFont</code> is not updated.
+													</li>
+							</ul>
+
+
+
+
+
+					</dd>
+			</dl>
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<span><a href="https://github.com/NobleRobot/NobleEngine">Noble Engine</a> by Mark LaCroix, <a href="https://noblerobot.com">Noble Robot</a></span>
+	<span style="float:right;">
+		Documentation created using <a href="https://github.com/stevedonovan/LDoc">LDoc 1.5.0</a>.
+	</span>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
+
