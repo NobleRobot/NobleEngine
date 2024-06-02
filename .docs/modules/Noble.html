@@ -95,7 +95,7 @@
 			<dl class="function">
 					<dt>
 						<a name = "new"></a>
-						<span class="item-name">new(StartingScene[, __launcherTransitionDuration=1.5[, __launcherTransition=Noble.Transition.DipToBlack[, __launcherTransitionProperties={}[, __configuration={}]]]])<span>
+						<span class="item-name">new(StartingScene[, __launcherTransitionDuration=1.5[, __launcherTransition=Noble.Transition.DipToBlack[, __launcherTransitionProperties={}[, __configuration={}[, __sceneProperties={}]]]]])<span>
 					</dt>
 					<dd>
 						Engine initialization.  Run this once in your main.lua file to begin your game.
@@ -131,6 +131,12 @@
 														<br/>
 														 Provide a table of Noble Engine configuration values. This will run <a href="../modules/Noble.html#setConfig">Noble.setConfig</a> for you at launch.
 													</li>
+													<li><span class="parameter">__sceneProperties</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
+														<br/>
+														 A table consisting of user-defined properties which are passed into and handled by the new scene's init() method.
+													</li>
 							</ul>
 
 
@@ -140,6 +146,7 @@
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
 									<li><a href="../modules/Noble.html#setConfig">setConfig</a></li>
+									<li><a href="../classes/NobleScene.html#noblescene:init">NobleScene.init</a></li>
 							</ul>
 
 							<h3>Usage</h3>
@@ -253,7 +260,7 @@
 					</dd>
 					<dt>
 						<a name = "transition"></a>
-						<span class="item-name">transition(NewScene[, __duration=1.5[, __transition=Noble.TransitionType.DIP_TO_BLACK[, __transitionProperties={}]]])<span>
+						<span class="item-name">transition(NewScene[, __duration=1.5[, __transition=Noble.TransitionType.DIP_TO_BLACK[, __transitionProperties={}[, __sceneProperties={}]]]])<span>
 					</dt>
 					<dd>
 						Transition to a new scene (at the end of this frame).
@@ -285,6 +292,12 @@
 														<br/>
 														 A table consisting of properties for this transition. Properties not set here will use values that transition's <code>defaultProperties</code> table.
 													</li>
+													<li><span class="parameter">__sceneProperties</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
+														<br/>
+														 A table consisting of user-defined properties which are passed into and handled by the new scene's init() method.
+													</li>
 							</ul>
 
 
@@ -294,25 +307,35 @@
 									<li><a href="../modules/Noble.html#isTransitioning">Noble.isTransitioning</a></li>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
-									<li><a href="../modules/Noble.Transition.html#Noble.Transition.SlideOffLeft.defaultProperties">Noble.Transition.defaultProperties</a></li>
+									<li><a href="../modules/Noble.Transition.html#Noble.Transition.defaultProperties">Noble.Transition.defaultProperties</a></li>
 							</ul>
 
 							<h3>Usage</h3>
-								<pre class="example">Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.CrossDissolve, {
-	dither = Graphics.image.kDitherTypeDiagonalLine
-	ease = Ease.outQuint
-})
+								<pre class="example">Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.CrossDissolve,
+	{
+		dither = Graphics.image.kDitherTypeDiagonalLine
+		ease = Ease.outQuint
+	}
+)
 <span class="comment">--
-</span>Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.DipToBlack, {
-	holdTime = <span class="number">0.5</span>,
-	ease = Ease.outInElastic
-})
+</span>Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.DipToBlack,
+	{
+		holdTime = <span class="number">0.5</span>,
+		ease = Ease.outInElastic
+	}
+)
 <span class="comment">--
-</span>Noble.<span class="function-name">transition</span>(Level2, <span class="number">1</span>, Noble.Transition.SlideOff, {
-	x = <span class="number">400</span>,
-	y = <span class="number">150</span>
-	rotation = <span class="number">45</span>
-})</pre>
+</span>Noble.<span class="function-name">transition</span>(Level, <span class="number">1</span>, Noble.Transition.SlideOff,
+	{
+		x = <span class="number">400</span>,
+		y = <span class="number">150</span>
+		rotation = <span class="number">45</span>
+	},
+	{
+		levelName = <span class="string">"Level Two: The Second Level!"</span>
+		levelData = <span class="string">"levels/level2.json"</span>,
+	}
+)</pre>
 
 					</dd>
 					<dt>
