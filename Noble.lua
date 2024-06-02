@@ -73,7 +73,7 @@ local configuration = Utilities.copy(defaultConfiguration)
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
 -- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
--- @number[opt=0] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
+-- @number[opt=1.5] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 -- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
 -- @tparam[opt={}] table __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
 -- @tparam[opt={}] table __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
