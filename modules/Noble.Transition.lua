@@ -130,7 +130,7 @@ function Noble.Transition:execute()
 	local type = self._type
 	local holdTime = self.holdTime
 
-	if (type == Noble.Transition.Type.CUT) then
+	if (type == Noble.Transition.Type.CUT or self.duration <= 0) then
 		onStart()
 		onMidpoint()
 		onHoldTimeElapsed()
