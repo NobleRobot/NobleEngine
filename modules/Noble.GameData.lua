@@ -207,6 +207,49 @@ function Noble.GameData.resetAll(__gameDataSlot, __saveToDisk, __updateTimestamp
 	if (saveToDisk) then Noble.GameData.save(currentSlot) end
 end
 
+--- Reset a GameData item to its disk value, defined by the last save.
+-- @string __dataItemName The name of the data item.
+-- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+-- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+-- @bool[opt=true] __updateTimestamp Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+-- @see save
+function Noble.GameData.resetFromDisk(__dataItemName, __gameDataSlot, __saveToDisk, __updateTimestamp)
+	currentSlot = __gameDataSlot or currentSlot
+	if (exists(currentSlot, __dataItemName)) then
+		local gameData = Datastore.read("Game" .. currentSlot)
+		if gameData == nil then
+			error("BONK: No GameData found on disk.")
+			return
+		end
+		gameDatas[currentSlot].data[__dataItemName] = gameData.data[__dataItemName]
+		local setTimestamp = Utilities.handleOptionalBoolean(__updateTimestamp, true)
+		if (setTimestamp) then updateTimestamp(gameDatas[currentSlot]) end
+		local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
+		if (saveToDisk) then Noble.GameData.save(currentSlot) end
+	end
+end
+
+--- Reset all values in a GameData slot to their disk values, defined by the last save.
+-- @int[opt] __gameDataSlot If set, uses a specific GameData slot. If not, uses the most recently touched GameData slot.
+-- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
+-- @bool[opt=true] __updateTimestamp Resets the timestamp of this GameData to the current time. Leave false to retain existing timestamp.
+-- @see save
+function Noble.GameData.resetAllFromDisk(__gameDataSlot, __saveToDisk, __updateTimestamp)
+	currentSlot = __gameDataSlot or currentSlot
+	local gameData = Datastore.read("Game" .. currentSlot)
+	if gameData == nil then
+		error("BONK: No GameData found on disk.")
+		return
+	end
+	for key, _ in pairs(gameDatas[currentSlot].data) do
+		gameDatas[currentSlot].data[key] = gameData.data[key]
+	end
+	local setTimestamp = Utilities.handleOptionalBoolean(__updateTimestamp, true)
+	if (setTimestamp) then updateTimestamp(gameDatas[currentSlot]) end
+	local saveToDisk = Utilities.handleOptionalBoolean(__saveToDisk, true)
+	if (saveToDisk) then Noble.GameData.save(currentSlot) end
+end
+
 --- Add a save slot to your game. This is useful for games which have arbitrary save slots, or encourage save scumming.
 -- @int[opt=1] __numberToAdd What it says on the tin.
 -- @bool[opt=true] __saveToDisk Saves to disk immediately. Set to false if you prefer to manually save (via a checkpoint or menu).
