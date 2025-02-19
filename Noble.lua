@@ -209,7 +209,7 @@ local queuedScene = nil
 --- Additional calls to this method within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
 -- @tparam NobleScene NewScene The scene to transition to. Pass the scene's class, not an instance of the scene. You always transition from `Noble.currentScene`
 -- @number[opt=1.5] __duration The length of the transition, in seconds.
--- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
+-- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
 -- @tparam[opt={}] table __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
 -- @tparam[opt={}] table __sceneProperties A table consisting of user-defined properties which are passed into and handled by the new scene's init() method.
 -- @usage
