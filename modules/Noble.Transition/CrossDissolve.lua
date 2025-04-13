@@ -17,10 +17,18 @@ transition.defaultProperties = {
 	dither = Graphics.image.kDitherTypeBayer4x4
 }
 
+transition.tilePattern = Graphics.image.new(8, 8, Graphics.kColorBlack)
+
 function transition:setProperties(__properties)
 	self.dither = __properties.dither or self.defaultProperties.dither
+	self.oldSceneScreenshot:addMask(true)
 end
 
 function transition:draw()
-	self.oldSceneScreenshot:drawFaded(0, 0, 1 - self.sequence:get(), self.dither)
+	self.oldSceneScreenshot:clearMask(1)
+	Graphics.lockFocus(self.oldSceneScreenshot:getMaskImage())
+	self.tilePattern:fadedImage(self.sequence:get(), self.dither)
+		:drawTiled(0, 0, 400, 240)
+	Graphics.unlockFocus()
+	self.oldSceneScreenshot:draw(0, 0)
 end
