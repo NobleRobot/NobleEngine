@@ -205,6 +205,7 @@ import 'libraries/noble/modules/Noble.Transition/Cut.lua'
 --
 import 'libraries/noble/modules/Noble.Transition/CrossDissolve.lua'
 import 'libraries/noble/modules/Noble.Transition/Dip.lua'
+import 'libraries/noble/modules/Noble.Transition/DipTile.lua'
 import 'libraries/noble/modules/Noble.Transition/DipToBlack.lua'
 import 'libraries/noble/modules/Noble.Transition/DipToWhite.lua'
 --

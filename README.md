@@ -61,7 +61,7 @@ In general, Lua best-practices are followed, but in some cases code style and na
 
 -   Methods and variables are **camelCase**.
 -   “Class” names are **TitleCase**, and Lua “modules” are treated as nested classes, thus `Noble.Text` instead of `noble.text`.
--   Constants, such as `Noble.TransitionType.DIP_TO_BLACK`, are **ALL_CAPS_SNAKE_CASE**
+-   Constants, such as `Noble.Transition.Type.CUT`, are **ALL_CAPS_SNAKE_CASE**
 -   Argument names are prefixed with a **double-underscore**, as in `__displayName`. This mostly impacts documentation legibility. I’m very sorry but it couldn’t be helped. 😆
 -   Names are verbose by default; no abbreviations. This includes aliases for Playdate packages, so `playdate.graphics` is aliased as `Graphics`, instead of `gfx`.
 
