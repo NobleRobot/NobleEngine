@@ -330,11 +330,11 @@ function playdate.update()
 		Graphics.pushContext(currentTransition.newSceneScreenshot)
 	end
 
-	Graphics.sprite.update()			-- Let's draw our sprites (and backgrounds).
-
 	if (currentScene ~= nil) then
 		currentScene:update()			-- Scene-specific update code.
 	end
+
+	Graphics.sprite.update()			-- Let's draw our sprites (and backgrounds).
 
 	if (isTransitioning) then
 		if (currentTransition._captureScreenshotsDuringTransition) then
