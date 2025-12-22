@@ -136,8 +136,8 @@ end
 -- To add a `playdate.graphics.sprite` to a scene, use `NobleScene:addSprite(__sprite)`.
 -- @see NobleScene:addSprite
 function NobleSprite:add(__x, __y)
-	local x = __x or 0
-	local y = __y or 0
+	local x = __x or self.x
+	local y = __y or self.y
 	self:moveTo(x, y)
 	Noble.currentScene():addSprite(self)
 end
