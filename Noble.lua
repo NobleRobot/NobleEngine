@@ -73,10 +73,11 @@ local configuration = Utilities.copy(defaultConfiguration)
 
 --- Engine initialization. Run this once in your main.lua file to begin your game.
 -- @tparam NobleScene StartingScene This is the scene your game begins with, such as a title screen, loading screen, splash screen, etc. **NOTE: Pass the scene's class name, not an instance of the scene.**
--- @number[opt=0] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
+-- @number[opt=1.5] __launcherTransitionDuration If you want to transition from the final frame of your launch image sequence, enter a duration in seconds here.
 -- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition __launcherTransition If a transition duration is set, use this transition type.
 -- @tparam[opt={}] table __launcherTransitionProperties Provide a table of properties to apply to the launcher transition. See the documentation for the transition you're using for a list of available properties.
 -- @tparam[opt={}] table __configuration Provide a table of Noble Engine configuration values. This will run `Noble.setConfig` for you at launch.
+-- @tparam[opt={}] table __sceneProperties A table consisting of user-defined properties which are passed into and handled by the new scene's init() method.
 -- @usage
 -- Noble.new(
 -- 	TitleScreen,
@@ -93,9 +94,10 @@ local configuration = Utilities.copy(defaultConfiguration)
 -- 	}
 -- )
 -- @see NobleScene
--- @see Noble.Transition
+-- @see Noble.transition
 -- @see setConfig
-function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransition, __launcherTransitionProperties, __configuration)
+-- @see NobleScene.init
+function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransition, __launcherTransitionProperties, __configuration, __sceneProperties)
 
 	math.randomseed(playdate.getSecondsSinceEpoch()) -- Set a new random seed at runtime.
 
@@ -134,7 +136,7 @@ function Noble.new(StartingScene, __launcherTransitionDuration, __launcherTransi
 
 	-- Now that everything is set, let's-a go!
 	engineInitialized = true
-	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransition, launcherTransitionProperties)
+	Noble.transition(StartingScene, launcherTransitionDuration, launcherTransition, launcherTransitionProperties, __sceneProperties)
 end
 
 --- This checks to see if `Noble.new` has been run. It is used internally to ward off bonks.
@@ -209,27 +211,37 @@ local queuedScene = nil
 -- @number[opt=1.5] __duration The length of the transition, in seconds.
 -- @tparam[opt=Noble.TransitionType.DIP_TO_BLACK] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
 -- @tparam[opt={}] table __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
+-- @tparam[opt={}] table __sceneProperties A table consisting of user-defined properties which are passed into and handled by the new scene's init() method.
 -- @usage
--- Noble.transition(Level2, 1, Noble.Transition.CrossDissolve, {
--- 	dither = Graphics.image.kDitherTypeDiagonalLine
--- 	ease = Ease.outQuint
--- })
+-- Noble.transition(Level2, 1, Noble.Transition.CrossDissolve,
+-- 	{
+-- 		dither = Graphics.image.kDitherTypeDiagonalLine
+-- 		ease = Ease.outQuint
+-- 	}
+-- )
 -- --
--- Noble.transition(Level2, 1, Noble.Transition.DipToBlack, {
--- 	holdTime = 0.5,
--- 	ease = Ease.outInElastic
--- })
+-- Noble.transition(Level2, 1, Noble.Transition.DipToBlack,
+-- 	{
+-- 		holdTime = 0.5,
+-- 		ease = Ease.outInElastic
+-- 	}
+-- )
 -- --
--- Noble.transition(Level2, 1, Noble.Transition.SlideOff, {
--- 	x = 400,
--- 	y = 150
--- 	rotation = 45
--- })
+-- Noble.transition(Level, 1, Noble.Transition.SlideOff,
+-- 	{
+-- 		x = 400,
+-- 		y = 150
+-- 		rotation = 45
+-- 	},
+-- 	{
+-- 		levelName = "Level Two: The Second Level!"
+-- 		levelData = "levels/level2.json",
+-- 	}
+-- )
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.Transition
--- @see Noble.Transition.defaultProperties
-function Noble.transition(NewScene, __duration, __transition, __transitionProperties)
+function Noble.transition(NewScene, __duration, __transition, __transitionProperties, __sceneProperties)
 	if (isTransitioning) then
 		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
 		warn("BONK: You can't start a transition in the middle of another transition, silly!")
@@ -240,7 +252,8 @@ function Noble.transition(NewScene, __duration, __transition, __transitionProper
 		-- We don't return here because maybe the developer *did* intend to override a previous call to Noble.transition().
 	end
 
-	queuedScene = NewScene()	-- Creates new scene object. Its init() function runs now.
+	local sceneProperties = __sceneProperties or {}
+	queuedScene = NewScene(sceneProperties) -- Creates new scene object. Its init() function runs now.
 
 	currentTransition = (__transition or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,

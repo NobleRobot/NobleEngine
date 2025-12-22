@@ -85,8 +85,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	-- <strong>You cannot add or remove menu items by modifying this table</strong>.
 	-- It is meant as a <strong>read-only</strong> table, provided for convenience when iterating, etc. Modifying its values may break other methods.
 	-- @usage
-	--	for i = 1, #menu.items, 1 do
-	--		menu.clickHandlers[menu.items[i]]	= nil -- Clears all click handlers, for some reason.
+	--	for i = 1, #menu.itemNames, 1 do
+	--		menu.clickHandlers[menu.itemNames[i]]	= nil -- Clears all click handlers, for some reason.
 	--	end
 	-- @see addItem
 	menu.itemNames = {}
@@ -308,8 +308,8 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--	local menu = Noble.Menu.new(false)
 	--	menu:activate()
 	function menu:activate()
-		self:select(self.currentItemNumber)
 		active = true
+		self:select(self.currentItemNumber)
 	end
 	--- Deactivate this menu.
 	-- This deselects all menu items, and disables this menu's @{selectPrevious|selectPrevious}, @{selectNext|selectNext}, and @{click|click} methods.

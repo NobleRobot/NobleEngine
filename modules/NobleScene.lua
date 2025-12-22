@@ -113,7 +113,7 @@ end
 --		--[Your code here]--
 --	end
 --
-function NobleScene:init()
+function NobleScene:init(__sceneProperties)
 	self.name = self.className
 	self.sprites = {}
 end
