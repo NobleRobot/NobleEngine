@@ -215,6 +215,16 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 
 		self:setNumberOfRows(#self.itemNames)
 
+		-- If there is no current item (i.e. this item was added to an empty menu),
+		-- this item becomes the current one, so that click() works on it.
+		if (self.currentItemName == nil) then
+			self.currentItemNumber = 1
+			self.currentItemName = self.itemNames[1]
+			if (self:isActive()) then
+				self:setSelectedRow(1)
+			end
+		end
+
 	end
 
 	-- Internal method.
@@ -277,7 +287,14 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 			end
 		end
 
-		self:setNumberOfRows(#self.itemNames)
+		if (#self.itemNames == 0) then
+			-- The menu is now empty. A gridview section must contain at least one row,
+			-- so we leave the row count alone and clear the current selection instead.
+			self.currentItemNumber = 1
+			self.currentItemName = nil
+		else
+			self:setNumberOfRows(#self.itemNames)
+		end
 
 		-- Update width
 		local width = 0
@@ -474,6 +491,7 @@ function Noble.Menu.new(__activate, __alignment, __localized, __color, __padding
 	--		menu:draw(50, 100)
 	--	end
 	function menu:draw(__x, __y)
+		if (#self.itemNames == 0) then return end
 		local xAdjustment = 0
 		if (self.alignment == Noble.Text.ALIGN_CENTER) then
 			xAdjustment = self.width/2
