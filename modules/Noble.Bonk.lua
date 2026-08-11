@@ -21,6 +21,10 @@ function Noble.Bonk.enableDebugBonkChecking()
 			debugBonks.update = playdate.update
 			debugBonks.pause = playdate.gameWillPause
 			debugBonks.resume = playdate.gameWillResume
+			debugBonks.terminate = playdate.gameWillTerminate
+			debugBonks.sleep = playdate.deviceWillSleep
+			debugBonks.lock = playdate.deviceWillLock
+			debugBonks.unlock = playdate.deviceDidUnlock
 			debugBonks.crankDocked = playdate.crankDocked
 			debugBonks.crankUndocked = playdate.crankUndocked
 			bonksAreSetup = true
@@ -97,6 +101,18 @@ function Noble.Bonk.checkDebugBonks()
 	end
 	if (playdate.gameWillResume ~= debugBonks.resume) then
 		error("BONK: Don't manually define playdate.gameWillResume(). Put resume code in your scenes' resume() methods instead.")
+	end
+	if (playdate.gameWillTerminate ~= debugBonks.terminate) then
+		error("BONK: Don't manually define playdate.gameWillTerminate(). Put termination code in your scenes' gameWillTerminate() methods instead.")
+	end
+	if (playdate.deviceWillSleep ~= debugBonks.sleep) then
+		error("BONK: Don't manually define playdate.deviceWillSleep(). Put sleep code in your scenes' deviceWillSleep() methods instead.")
+	end
+	if (playdate.deviceWillLock ~= debugBonks.lock) then
+		error("BONK: Don't manually define playdate.deviceWillLock(). Put lock code in your scenes' deviceWillLock() methods instead.")
+	end
+	if (playdate.deviceDidUnlock ~= debugBonks.unlock) then
+		error("BONK: Don't manually define playdate.deviceDidUnlock(). Put unlock code in your scenes' deviceDidUnlock() methods instead.")
 	end
 	if (Graphics.sprite.getAlwaysRedraw() == false) then
 		error("BONK: Don't use Graphics.sprite.setAlwaysRedraw(false) unless you know what you're doing...")

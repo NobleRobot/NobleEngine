@@ -240,3 +240,44 @@ function NobleScene:pause() end
 --		--[Your code here]--
 --	end
 function NobleScene:resume() end
+
+--- `gameWillTerminate()` / `deviceWillSleep()` / `deviceWillLock()` / `deviceDidUnlock()`
+--
+-- Implement any of these in your scene if you want something to happen when the system fires the
+-- matching lifecycle event, such as saving game data when the game is about to close, or playing
+-- an exit animation.
+--
+-- <strong>NOTE: The Playdate OS uses a watchdog timer of roughly 10 seconds for `gameWillTerminate()`,
+-- after which your game is force-closed, so keep your termination code brief.</strong> Also note that
+-- SDK timers do not advance while the device is locked or asleep.
+--
+-- @usage
+--	function YourSceneName:gameWillTerminate()
+--		YourSceneName.super.gameWillTerminate(self)
+--		--[Your code here]--
+--	end
+function NobleScene:gameWillTerminate() end
+
+--- <span></span>
+-- @usage
+--	function YourSceneName:deviceWillSleep()
+--		YourSceneName.super.deviceWillSleep(self)
+--		--[Your code here]--
+--	end
+function NobleScene:deviceWillSleep() end
+
+--- <span></span>
+-- @usage
+--	function YourSceneName:deviceWillLock()
+--		YourSceneName.super.deviceWillLock(self)
+--		--[Your code here]--
+--	end
+function NobleScene:deviceWillLock() end
+
+--- <span></span>
+-- @usage
+--	function YourSceneName:deviceDidUnlock()
+--		YourSceneName.super.deviceDidUnlock(self)
+--		--[Your code here]--
+--	end
+function NobleScene:deviceDidUnlock() end

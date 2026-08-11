@@ -386,3 +386,27 @@ function playdate.gameWillResume()
 		currentScene:resume()
 	end
 end
+
+function playdate.gameWillTerminate()
+	if (currentScene ~= nil) then
+		currentScene:gameWillTerminate()
+	end
+end
+
+function playdate.deviceWillSleep()
+	if (currentScene ~= nil) then
+		currentScene:deviceWillSleep()
+	end
+end
+
+function playdate.deviceWillLock()
+	if (currentScene ~= nil) then
+		currentScene:deviceWillLock()
+	end
+end
+
+function playdate.deviceDidUnlock()
+	if (currentScene ~= nil) then
+		currentScene:deviceDidUnlock()
+	end
+end
