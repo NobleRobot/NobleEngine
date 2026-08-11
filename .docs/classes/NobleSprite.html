@@ -30,6 +30,7 @@
 					<h3>Methods</h3>
 					<ul>
 							<li><a href="#noblesprite:init">noblesprite:init</a></li>
+							<li><a href="#noblesprite:draw">noblesprite:draw</a></li>
 							<li><a href="#noblesprite:play">noblesprite:play</a></li>
 							<li><a href="#noblesprite:pause">noblesprite:pause</a></li>
 							<li><a href="#noblesprite:stop">noblesprite:stop</a></li>
@@ -112,7 +113,9 @@
 						<span class="item-name">noblesprite:init([__view[, __viewIsSpritesheet=false[, __singleState=false[, __singleStateLoop=true]]]])<span>
 					</dt>
 					<dd>
-						Do not call an "init" method directly.  Use <code>NobleSprite()</code> (see usage examples).
+						Do not call an "init" method directly.  Use <code>NobleSprite()</code> (see usage examples).</p>
+
+<p> <strong>NOTE:</strong> When <code>__view</code> is the path to an image file, or a <code>Graphics.image</code> object, the sprite's size is set automatically via <code>setImage()</code>. When <code>__view</code> is the path to a spritesheet/imagetable file, or a <a href="../modules/Noble.Animation.html#">Noble.Animation</a> object, the sprite's size is <em>not</em> set automatically. You must call <code>setSize(width, height)</code> with the dimensions of a single animation frame, or the sprite will never be drawn.
 
 								<h3>Parameters</h3>
 							<ul class="parameters">
@@ -152,13 +155,17 @@
 
 							<h3>Usage</h3>
 								<pre class="example"><span class="comment">-- Provide a spritesheet image file to create a new <a href="../modules/Noble.Animation.html#">Noble.Animation</a> for a NobleSprite's view.
-</span>myNobleSprite = <span class="function-name">NobleSprite</span>(<span class="string">"path/to/spritesheet"</span>, <span class="keyword">true</span>)</pre>
+</span><span class="comment">-- Sprites with animation views do not have their size set automatically,
+</span><span class="comment">-- so call setSize() with the dimensions of a single frame.
+</span>myNobleSprite = <span class="function-name">NobleSprite</span>(<span class="string">"path/to/spritesheet"</span>, <span class="keyword">true</span>)
+myNobleSprite:<span class="function-name">setSize</span>(<span class="number">32</span>, <span class="number">32</span>)</pre>
 								<pre class="example"><span class="comment">-- Provide an image file to create a new <code>Graphics.image</code> for a NobleSprite's view.
 </span>myNobleSprite = <span class="function-name">NobleSprite</span>(<span class="string">"path/to/image"</span>)</pre>
 								<pre class="example"><span class="comment">-- Use an existing <a href="../modules/Noble.Animation.html#">Noble.Animation</a> for a NobleSprite's view.
 </span>	<span class="keyword">local</span> myAnimation = Noble.Animation.<span class="function-name">new</span>(<span class="string">"path/to/spritesheet"</span>)
  myAnimation:<span class="function-name">addState</span>(<span class="string">"default"</span>, <span class="number">1</span>, animation.imageTable:<span class="function-name">getLength</span>(), <span class="keyword">nil</span>, <span class="keyword">true</span>)
-myNobleSprite = <span class="function-name">NobleSprite</span>(myAnimation)</pre>
+myNobleSprite = <span class="function-name">NobleSprite</span>(myAnimation)
+myNobleSprite:<span class="function-name">setSize</span>(<span class="number">32</span>, <span class="number">32</span>)	<span class="comment">-- The dimensions of a single frame.</span></pre>
 								<pre class="example"><span class="comment">-- Use an existing <code>Graphics.image</code> object for a NobleSprite's view.
 </span> <span class="keyword">local</span> myImage = Graphics.image.<span class="function-name">new</span>(<span class="string">"path/to/image"</span>)
 myNobleSprite = <span class="function-name">NobleSprite</span>(myImage)</pre>
@@ -170,11 +177,34 @@ myNobleSprite = <span class="function-name">NobleSprite</span>(myImage)</pre>
 
 <span class="keyword">function</span> MyCustomSprite:<span class="function-name">init</span>(__x, __y, __anotherFunArgument)
 	MyCustomSprite.super.<span class="function-name">init</span>(self, <span class="string">"path/to/spritesheet"</span>, <span class="keyword">true</span>)
-	<span class="comment">-- Etc. etc.
+	self:<span class="function-name">setSize</span>(<span class="number">32</span>, <span class="number">32</span>)	<span class="comment">-- The dimensions of a single frame.
+</span>	<span class="comment">-- Etc. etc.
 </span><span class="keyword">end</span>
 
 <span class="comment">-- MyNobleScene.lua
 </span>myNobleSprite = <span class="function-name">MyCustomSprite</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="string">"Fun!"</span>)</pre>
+
+					</dd>
+					<dt>
+						<a name = "noblesprite:draw"></a>
+						<span class="item-name">noblesprite:draw()<span>
+					</dt>
+					<dd>
+						Do not call this method directly.</p>
+
+<p> This method is the sprite's draw callback (see <code>playdate.graphics.sprite:draw()</code> in the Playdate SDK), which is invoked by <code>Graphics.sprite.update()</code> whenever this sprite is marked dirty. It runs in sprite-local coordinates, where (0, 0) is the top-left corner of the sprite's bounds, so calling it manually will not draw this sprite at its position in the scene.</p>
+
+<p> To draw an animation directly to the screen without adding a sprite to the scene ("immediate mode"), use <code>myNobleSprite.animation:draw(x, y)</code> instead. To place an animated NobleSprite in a scene, use <code>setSize()</code> and <code>add(x, y)</code>.
+
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.Animation.html#animation:draw">Noble.Animation:draw</a></li>
+									<li><a href="../classes/NobleSprite.html#noblesprite:add">NobleSprite:add</a></li>
+							</ul>
+
 
 					</dd>
 					<dt>

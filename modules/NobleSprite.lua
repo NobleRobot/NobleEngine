@@ -11,6 +11,8 @@ NobleSprite = {}
 class("NobleSprite").extends(Graphics.sprite)
 
 --- Do not call an "init" method directly. Use `NobleSprite()` (see usage examples).
+--
+-- <strong>NOTE:</strong> When `__view` is the path to an image file, or a `Graphics.image` object, the sprite's size is set automatically via `setImage()`. When `__view` is the path to a spritesheet/imagetable file, or a `Noble.Animation` object, the sprite's size is <em>not</em> set automatically. You must call `setSize(width, height)` with the dimensions of a single animation frame, or the sprite will never be drawn.
 -- @string[opt] __view This can be: the path to an image or spritesheet image file, an image object (`Graphics.image`) or an animation object (`Noble.Animation`)
 -- @bool[opt=false] __viewIsSpritesheet Set this to `true` to indicate that `__view` is a spritesheet. Will only be considered if `__view` is a string path to an image.
 -- @bool[opt=false] __singleState If this sprite has just one animation, set this to true. It saves you from having to use Noble.Animation.addState()
@@ -18,7 +20,10 @@ class("NobleSprite").extends(Graphics.sprite)
 --
 -- @usage
 --	-- Provide a spritesheet image file to create a new `Noble.Animation` for a NobleSprite's view.
+--	-- Sprites with animation views do not have their size set automatically,
+--	-- so call setSize() with the dimensions of a single frame.
 --	myNobleSprite = NobleSprite("path/to/spritesheet", true)
+--	myNobleSprite:setSize(32, 32)
 --
 -- @usage
 --	-- Provide an image file to create a new `Graphics.image` for a NobleSprite's view.
@@ -29,6 +34,7 @@ class("NobleSprite").extends(Graphics.sprite)
 -- 	local myAnimation = Noble.Animation.new("path/to/spritesheet")
 --  myAnimation:addState("default", 1, animation.imageTable:getLength(), nil, true)
 --	myNobleSprite = NobleSprite(myAnimation)
+--	myNobleSprite:setSize(32, 32)	-- The dimensions of a single frame.
 --
 -- @usage
 --	-- Use an existing `Graphics.image` object for a NobleSprite's view.
@@ -44,6 +50,7 @@ class("NobleSprite").extends(Graphics.sprite)
 --
 --	function MyCustomSprite:init(__x, __y, __anotherFunArgument)
 --		MyCustomSprite.super.init(self, "path/to/spritesheet", true)
+--		self:setSize(32, 32)	-- The dimensions of a single frame.
 --		-- Etc. etc.
 --	end
 --
@@ -97,6 +104,13 @@ function NobleSprite:init(__view, __viewIsSpritesheet, __singleState, __singleSt
 
 end
 
+--- Do not call this method directly.
+--
+-- This method is the sprite's draw callback (see `playdate.graphics.sprite:draw()` in the Playdate SDK), which is invoked by `Graphics.sprite.update()` whenever this sprite is marked dirty. It runs in sprite-local coordinates, where (0, 0) is the top-left corner of the sprite's bounds, so calling it manually will not draw this sprite at its position in the scene.
+--
+-- To draw an animation directly to the screen without adding a sprite to the scene ("immediate mode"), use `myNobleSprite.animation:draw(x, y)` instead. To place an animated NobleSprite in a scene, use `setSize()` and `add(x, y)`.
+-- @see Noble.Animation:draw
+-- @see NobleSprite:add
 function NobleSprite:draw()
 	if (self.animation ~= nil) then
 		self.animation:draw()

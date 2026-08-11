@@ -8,6 +8,8 @@ Noble.Animation = {}
 -- @section setup
 
 --- Create a new animation "state machine". This function is called automatically when creating a new `NobleSprite`.
+--
+-- <strong>NOTE:</strong> When using a `Noble.Animation` as the view for a `NobleSprite`, the sprite's size is not set automatically; call the sprite's `setSize()` method with the dimensions of a single animation frame.
 -- @string __view This can be: the path to a spritesheet image file or an image table object (`Graphics.imagetable`). See Playdate SDK docs for imagetable file naming conventions.
 -- @return `animation`, a new animation object.
 -- @usage
