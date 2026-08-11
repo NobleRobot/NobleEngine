@@ -95,6 +95,13 @@ function Noble.Transition:init(__duration, __arguments)
 
 	end
 
+	-- Callback properties for this invocation of this transition. When set, these
+	-- shadow the transition's own callback methods (they do not overwrite them).
+	if (__arguments.onStart ~= nil)				then self.onStart = __arguments.onStart end
+	if (__arguments.onMidpoint ~= nil)			then self.onMidpoint = __arguments.onMidpoint end
+	if (__arguments.onHoldTimeElapsed ~= nil)	then self.onHoldTimeElapsed = __arguments.onHoldTimeElapsed end
+	if (__arguments.onComplete ~= nil)			then self.onComplete = __arguments.onComplete end
+
 	self:setProperties(__arguments)
 
 end
@@ -135,8 +142,8 @@ function Noble.Transition:execute()
 	end
 
 	local onComplete = function()
-		self:onComplete()				-- If this transition has any custom code to run here, run it.
 		Noble.transitionCompleteHandler()
+		self:onComplete()				-- If this transition has any custom code to run here, run it. This runs after the engine's handler (matching onStart/onMidpoint), so a new transition may be started from within this callback.
 	end
 
 	local type = self._type
@@ -185,15 +192,23 @@ end
 function Noble.Transition:setProperties(__arguments) end
 
 --- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition starts. Default transitions in Noble Engine do not use this.
+-- You may also set this as a property (`onStart`) when invoking a transition, in order to run custom code for that invocation only. Callbacks set this way receive the transition object as their first argument.
+-- @see Noble.performTransition
 function Noble.Transition:onStart() end
 
 --- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition reaches its midpoint. Default transitions in Noble Engine do not use this.
+-- You may also set this as a property (`onMidpoint`) when invoking a transition, in order to run custom code for that invocation only. Callbacks set this way receive the transition object as their first argument.
+-- @see Noble.performTransition
 function Noble.Transition:onMidpoint() end
 
 --- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition's hold time has elapsed. Default transitions in Noble Engine do not use this.
+-- You may also set this as a property (`onHoldTimeElapsed`) when invoking a transition, in order to run custom code for that invocation only. Callbacks set this way receive the transition object as their first argument.
+-- @see Noble.performTransition
 function Noble.Transition:onHoldTimeElapsed() end
 
 --- *Do not call this directly.* Implement this in a custom transition in order to run custom code when the transition completes. Default transitions in Noble Engine do not use this.
+-- You may also set this as a property (`onComplete`) when invoking a transition, in order to run custom code for that invocation only. Callbacks set this way receive the transition object as their first argument.
+-- @see Noble.performTransition
 function Noble.Transition:onComplete() end
 
 --- *Do not call this directly.* Implement this in a custom transition to draw the transition. This runs once per frame while the transition is running. See existing transitions for implementation examples.

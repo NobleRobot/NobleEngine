@@ -31,6 +31,7 @@
 							<li><a href="#setConfig">.setConfig</a></li>
 							<li><a href="#resetConfig">.resetConfig</a></li>
 							<li><a href="#transition">.transition</a></li>
+							<li><a href="#performTransition">.performTransition</a></li>
 							<li><a href="#currentScene">.currentScene</a></li>
 							<li><a href="#currentSceneName">.currentSceneName</a></li>
 							<li><a href="#isTransitioning">.isTransitioning</a></li>
@@ -304,6 +305,7 @@
 
 							<h3>See</h3>
 							<ul>
+									<li><a href="../modules/Noble.html#performTransition">Noble.performTransition</a></li>
 									<li><a href="../modules/Noble.html#isTransitioning">Noble.isTransitioning</a></li>
 									<li><a href="../classes/NobleScene.html#">NobleScene</a></li>
 									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
@@ -333,6 +335,59 @@
 	{
 		levelName = <span class="string">"Level Two: The Second Level!"</span>
 		levelData = <span class="string">"levels/level2.json"</span>,
+	}
+)</pre>
+
+					</dd>
+					<dt>
+						<a name = "performTransition"></a>
+						<span class="item-name">performTransition([__duration=1.5[, __transition=Noble.Transition.DipToBlack[, __transitionProperties={}]]])<span>
+					</dt>
+					<dd>
+						Play a transition animation without changing scenes (at the end of this frame).
+ The current scene stays loaded and remains the active scene, but user input is disabled until the transition completes. To run code at specific moments during the transition, use the transition's callback properties, such as <code>onMidpoint</code> and <code>onComplete</code>.
+ Additional calls to this method (or to <code>Noble.transition</code>) within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
+
+								<h3>Parameters</h3>
+							<ul class="parameters">
+													<li><span class="parameter">__duration</span>
+															<span class="types"><span class="type">number</span></span>
+															<span class="default">= <span class="value">1.5</span> (default)</span>
+														<br/>
+														 The length of the transition, in seconds.
+													</li>
+													<li><span class="parameter">__transition</span>
+															<span class="types"><span class="type">Noble.Transition</span></span>
+															<span class="default">= <span class="value">Noble.Transition.DipToBlack</span> (default)</span>
+														<br/>
+														 If a transition duration is set, use this transition type. If not set, it will use the value of <code>configuration.defaultTransition</code>.
+													</li>
+													<li><span class="parameter">__transitionProperties</span>
+															<span class="types"><span class="type">table</span></span>
+															<span class="default">= <span class="value">{}</span> (default)</span>
+														<br/>
+														 A table consisting of properties for this transition. Properties not set here will use values that transition's <code>defaultProperties</code> table.
+													</li>
+							</ul>
+
+
+
+							<h3>See</h3>
+							<ul>
+									<li><a href="../modules/Noble.html#transition">Noble.transition</a></li>
+									<li><a href="../modules/Noble.html#isTransitioning">Noble.isTransitioning</a></li>
+									<li><a href="../modules/Noble.Transition.html#">Noble.Transition</a></li>
+							</ul>
+
+							<h3>Usage</h3>
+								<pre class="example">Noble.<span class="function-name">performTransition</span>(<span class="number">1.5</span>, Noble.Transition.DipToBlack,
+	{
+		holdTime = <span class="number">0.5</span>,
+		onMidpoint = <span class="keyword">function</span>()
+			<span class="comment">-- The screen is fully obscured, so we can modify the
+</span>			<span class="comment">-- current scene without the player seeing it happen.
+</span>			player:moveTo(<span class="number">50</span>, <span class="number">100</span>)
+		<span class="keyword">end</span>
 	}
 )</pre>
 

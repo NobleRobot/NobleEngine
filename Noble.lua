@@ -203,6 +203,8 @@ end
 --
 local currentTransition = nil
 local queuedScene = nil
+local transitionIsSceneless = false
+local scenelessTransitionInputHandler = nil
 
 --- Transition to a new scene (at the end of this frame).
 --- This method will create a new scene, mark the previous one for garbage collection, and animate between them.
@@ -238,6 +240,7 @@ local queuedScene = nil
 -- 		levelData = "levels/level2.json",
 -- 	}
 -- )
+-- @see Noble.performTransition
 -- @see Noble.isTransitioning
 -- @see NobleScene
 -- @see Noble.Transition
@@ -254,6 +257,47 @@ function Noble.transition(NewScene, __duration, __transition, __transitionProper
 
 	local sceneProperties = __sceneProperties or {}
 	queuedScene = NewScene(sceneProperties) -- Creates new scene object. Its init() function runs now.
+	transitionIsSceneless = false
+
+	currentTransition = (__transition or configuration.defaultTransition)(
+		__duration or configuration.defaultTransitionDuration,
+		__transitionProperties or {}
+	)
+end
+
+--- Play a transition animation without changing scenes (at the end of this frame).
+--- The current scene stays loaded and remains the active scene, but user input is disabled until the transition completes. To run code at specific moments during the transition, use the transition's callback properties, such as `onMidpoint` and `onComplete`.
+--- Additional calls to this method (or to `Noble.transition`) within the same frame (before the already-called transition begins), will override previous calls. Any calls to this method once a transition begins will be ignored until the transition completes.
+-- @number[opt=1.5] __duration The length of the transition, in seconds.
+-- @tparam[opt=Noble.Transition.DipToBlack] Noble.Transition __transition If a transition duration is set, use this transition type. If not set, it will use the value of `configuration.defaultTransition`.
+-- @tparam[opt={}] table __transitionProperties A table consisting of properties for this transition. Properties not set here will use values that transition's `defaultProperties` table.
+-- @usage
+-- Noble.performTransition(1.5, Noble.Transition.DipToBlack,
+-- 	{
+-- 		holdTime = 0.5,
+-- 		onMidpoint = function()
+-- 			-- The screen is fully obscured, so we can modify the
+-- 			-- current scene without the player seeing it happen.
+-- 			player:moveTo(50, 100)
+-- 		end
+-- 	}
+-- )
+-- @see Noble.transition
+-- @see Noble.isTransitioning
+-- @see Noble.Transition
+function Noble.performTransition(__duration, __transition, __transitionProperties)
+	if (isTransitioning) then
+		-- This bonk no longer throws an error (compared to previous versions of Noble Engine), but maybe it still should?
+		warn("BONK: You can't start a transition in the middle of another transition, silly!")
+		return -- Let's get otta here!
+	elseif (currentTransition ~= nil) then
+		-- Calling this method multiple times between Noble.update() calls is probably not intentional behavior.
+		warn("Soft-BONK: You are queueing multiple transitions within the same frame. Did you mean to do that?")
+		-- We don't return here because maybe the developer *did* intend to override a previous call.
+	end
+
+	queuedScene = nil					-- Discards any scene queued by a same-frame call to Noble.transition().
+	transitionIsSceneless = true
 
 	currentTransition = (__transition or configuration.defaultTransition)(
 		__duration or configuration.defaultTransitionDuration,
@@ -266,13 +310,18 @@ end
 
 function Noble.transitionStartHandler()
 	isTransitioning = true
-	if (currentScene ~= nil) then
+	if (transitionIsSceneless) then
+		scenelessTransitionInputHandler = Noble.Input.getHandler()	-- Capture the active inputHandler (which may not be the current scene's) so it can be restored when the transition completes.
+	elseif (currentScene ~= nil) then
 		currentScene:exit()				-- The current scene runs its "goodbye" code. Sprites are taken out of the simulation.
 	end
 	Noble.Input.setHandler(nil)			-- Disable user input.
 end
 
 function Noble.transitionMidpointHandler()
+	if (transitionIsSceneless) then
+		return							-- The current scene isn't going anywhere. Carry on!
+	end
 	if (currentScene ~= nil) then
 		currentScene:finish()
 		currentScene = nil				-- Allows current scene to be garbage collected.
@@ -285,7 +334,14 @@ end
 function Noble.transitionCompleteHandler()
 	isTransitioning = false				-- Reset
 	currentTransition = nil				-- Clear the transition variable.
-	currentScene:start()				-- The new scene is now active.
+	if (transitionIsSceneless) then
+		transitionIsSceneless = false	-- Reset
+		Noble.Input.setHandler(scenelessTransitionInputHandler)	-- Restore the inputHandler that was active when the transition started, without re-running the current scene's start() code.
+		scenelessTransitionInputHandler = nil
+		Graphics.sprite.redrawBackground()
+	else
+		currentScene:start()			-- The new scene is now active.
+	end
 end
 
 --- Get the current scene object
