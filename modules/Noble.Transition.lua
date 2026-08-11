@@ -59,7 +59,7 @@ function Noble.Transition:init(__duration, __arguments)
 		self.durationEnter = frameDuration + self.holdTime/2 + 0.001
 	end
 	if ((self.durationExit - self.holdTime/2) < frameDuration) then
-		self.durationEnter = frameDuration + self.holdTime/2 + 0.001
+		self.durationExit = frameDuration + self.holdTime/2 + 0.001
 	end
 
 	if (self._type == Noble.Transition.Type.MIX) then
