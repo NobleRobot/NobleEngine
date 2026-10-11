@@ -54,7 +54,11 @@ function Noble.Transition:init(__duration, __arguments)
 	-- out the time so that it takes at least one frame on either side. This is a
 	-- failsafe mostly in place for runtime-calculated transition durations. No one
 	-- would ever set a transition duration that short on purpose... right?
-	local frameDuration = 1/playdate.getFPS()
+	-- getFPS() reads 0 before the first frame on SDK 3, which made the launch transition infinite.
+	local fps = playdate.getFPS()
+	if (fps <= 0) then fps = playdate.display.getRefreshRate() end
+	if (fps <= 0) then fps = 30 end
+	local frameDuration = 1/fps
 	if ((self.durationEnter - self.holdTime/2) < frameDuration) then
 		self.durationEnter = frameDuration + self.holdTime/2 + 0.001
 	end
